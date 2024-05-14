@@ -3,9 +3,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const JobSchema = new Schema({
-
-
-
     companyName: {
         type: String,
         required: true
@@ -15,7 +12,7 @@ const JobSchema = new Schema({
         required: true
     },
     companyLogo: {
-        type:String,
+        type: String,
         required: true
     },
     minPrice: {
@@ -31,30 +28,33 @@ const JobSchema = new Schema({
         required: true
     },
     postingDate: {
-        type: String, 
+        type: String,
         required: true
-    },    
+    },
     expireryDate: {
-        type: String, 
+        type: String,
         required: true
-    },                        
+    },
     description: {
         type: String,
         required: true
     },
     postedBy: {
-        type:String,
+        type: String,
         required: true
     },
-    experienceLevel:{
-        type:String,
-        required:true
+    experienceLevel: {
+        type: String,
+        required: true
     },
-    jobCategory:{
-        type:String,
-        required:true
+    jobCategory: {
+        type: String,
+        required: false // or true if it's required
+    },
+    employmentType: {
+        type: String,
+        required: false // or true if it's required
     }
-   
 });
 
 const Job = mongoose.model("Job", JobSchema);

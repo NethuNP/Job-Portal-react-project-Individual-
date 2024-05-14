@@ -20,7 +20,7 @@ const Category = ({ handleChange }) => {
         <InputField handleChange={handleInputChange} value='Healthcare' title='Healthcare' name='category' />
         <InputField handleChange={handleInputChange} value='Marketing' title='Marketing' name='category' />
         <InputField handleChange={handleInputChange} value='Information Technology' title='Information Technology' name='category' />
-        <InputField handleChange={handleInputChange} value='Restaurant' title='Restaurant' name='category' />
+        <InputField handleChange={handleInputChange} value='Resturant' title='Restaurant' name='category' />
       </div>
     </div>
   );

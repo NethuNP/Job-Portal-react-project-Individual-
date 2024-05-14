@@ -15,9 +15,9 @@ const Type = ({ handleChange }) => {
           <span className='checkmark'></span>All
         </label>
 
-        <InputField handleChange={handleInputChange} value='Full-time' title='Full-time' name='test' />
-        <InputField handleChange={handleInputChange} value='Part-time' title='Part-time' name='test' />
-        <InputField handleChange={handleInputChange} value='Internship' title='Internship' name='test' />
+        <InputField handleChange={handleInputChange} value='full-time' title='Full-time' name='test' />
+        <InputField handleChange={handleInputChange} value='part-time' title='Part-time' name='test' />
+        <InputField handleChange={handleInputChange} value='internship' title='Internship' name='test' />
       </div>
     </div>
   );

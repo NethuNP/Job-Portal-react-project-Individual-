@@ -14,7 +14,18 @@ const Jobs = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
 
+ useEffect(()=>{
+  axios.get ("http://localhost:8070/jobs/")
+  .then ((res) =>{
+    setJobs(res.data);
 
+  })
+  .catch ((err)=>{
+    console.error(err);
+    alert ("Error fetching jobs");
+
+  })
+ })
   const handleInputChange = (event) => {
     setQuery(event.target.value);
   };
