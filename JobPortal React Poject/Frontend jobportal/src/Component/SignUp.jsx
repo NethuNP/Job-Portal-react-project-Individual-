@@ -49,7 +49,7 @@ const SignUp = () => {
       lastName,
       email,
       password,
-      confirmPassword,
+      confirmPassword
     };
 
     axios.post("http://localhost:8070/registers/add", newUser)
@@ -71,7 +71,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="min-h-screen py-14 bg-gray-100 ">
+    <div className="min-h-screen py-14 bg-gray-100 mt-20 ">
       <div className="container bg-gray-100 mx-auto">
         <div className="flex flex-col lg:flex-row w-10/12 lg:w-8/12 bg-white rounded-xl mx-auto shadow-lg overflow-hidden">
           <div

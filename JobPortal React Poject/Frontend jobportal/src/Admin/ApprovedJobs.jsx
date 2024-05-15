@@ -41,19 +41,19 @@ export default function ApprovedJobs() {
     return (
         <div>
             <AdminHeader />
-            <div className="container mx-auto xl:px-30 px-4 bg-[#F8F9FC] mt-20 h-full w-full pb-10">
+            <div className="container mx-auto xl:px-30 px-4 bg-[#F8F9FC] mt-20 h-full w-full ">
                 <div className="py-4 px-10">
                     <h1 className="text-blue text-[28px] leading-[40px] cursor-pointer font-semibold">
                         Approved Jobs
                     </h1>
                     <div className="mt-10">
                         <section>
-                            <div className="relative mx-1 mt-[130px]">
+                            <div className="relative mx-1 ">
                                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                                     <table className="w-full text-sm text-left text-black dark:text-white items-center m-auto border-2 shadow-3xl border-gray-300 rounded-xl">
                                         <thead className="text-xs uppercase bg-[#2c42a5] dark:bg-gray-900 text-white">
                                             <tr>
-                                                <th scope="col" className="p-5 text-center">#</th>
+                                                <th scope="col" className="p-5 text-center"></th>
                                                 <th scope="col" className="px-6 py-1 text-center">Company Name</th>
                                                 <th scope="col" className="px-6 py-3 text-center">Job Title</th>
                                                 <th scope="col" className="px-6 py-3 text-center">Job Location</th>

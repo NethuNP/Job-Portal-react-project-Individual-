@@ -1,11 +1,14 @@
-import React from 'react';
+import React, {useEffect } from "react";
 import InputField from '../Component/InputField';
+
 
 const Category = ({ handleChange }) => {
   const handleInputChange = (event) => {
     const selectedValue = event.target.value; // Extract the selected value
     handleChange(selectedValue); // Pass the selected value to the parent component
   };
+
+  
 
   return (
     <div className='bg-slate-100 rounded justify-center px-4 py-2 '>

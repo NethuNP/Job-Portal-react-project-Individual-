@@ -6,6 +6,7 @@ import { Sidebar } from "../Sidebar/Sidebar";
 import axios from "axios";
 import Category from "../Sidebar/Category";
 
+
 const Jobs = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
@@ -65,20 +66,20 @@ const filteredData = (jobs, selected, query) => {
     );
   }
 
-  if (typeof selected === 'string') { // Check if selected is a string
+  if (typeof selected === "string") {
     if (selected) {
       filteredJobs = filteredJobs.filter(
         ({ experienceLevel, employmentType, jobCategory }) =>
-          (experienceLevel && experienceLevel.toLowerCase() === selected.toLowerCase()) ||
-          (employmentType && employmentType.toLowerCase() === selected.toLowerCase()) ||
+          (experienceLevel &&
+            experienceLevel.toLowerCase() === selected.toLowerCase()) ||
+          (employmentType &&
+            employmentType.toLowerCase() === selected.toLowerCase()) ||
           (jobCategory && jobCategory.toLowerCase() === selected.toLowerCase())
       );
     }
   } else {
-    // Handle if selected is not a string (e.g., null or undefined)
-    console.error('Selected category is not a string:', selected);
+    console.error("Selected category is not a string:", selected);
   }
-
   // Slice the data based on current page
   const { startIndex, endIndex } = calculatePageRange();
   filteredJobs = filteredJobs.slice(startIndex, endIndex);
@@ -93,6 +94,9 @@ const filteredData = (jobs, selected, query) => {
   
 
   const result = filteredData(jobs, selectedCategory, query);
+
+
+  
 
   return (
     <div>
@@ -136,7 +140,7 @@ const filteredData = (jobs, selected, query) => {
           <div className="bg-slate-300 p-4 rounded shadow-gray-400 border-2 font-bold">
             Filter
           </div>
-          <Sidebar handleChange={setSelectedCategory} />
+          <Sidebar handleChange={setSelectedCategory}/>
         </div>
         {/* Job cards */}
         <div className="col-span-2 bg-white p-4 rounded-sm">

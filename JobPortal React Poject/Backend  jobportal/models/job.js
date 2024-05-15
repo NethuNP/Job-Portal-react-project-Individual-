@@ -45,15 +45,15 @@ const JobSchema = new Schema({
     },
     experienceLevel: {
         type: String,
-        required: true
+        required:true
     },
     jobCategory: {
         type: String,
-        required: false // or true if it's required
+        required:true // or true if it's required
     },
     employmentType: {
         type: String,
-        required: false // or true if it's required
+        required:false // or true if it's required
     }
 });
 

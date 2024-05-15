@@ -1,4 +1,6 @@
-import React from 'react'
+
+import React, {useEffect } from "react";
+
 import Location from './Location'
 import WorkExperience from './WorkExperience'
 import Type from './Type'
@@ -10,6 +12,10 @@ import Type from './Type'
 
 
 export const Sidebar = ({handleChange ,handleClick}) => {
+
+
+  
+
   return (
     
     <div className='space-y-5 mb-5 '>

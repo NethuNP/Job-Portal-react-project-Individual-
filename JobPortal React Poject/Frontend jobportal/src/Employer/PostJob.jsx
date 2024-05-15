@@ -249,7 +249,8 @@ axios.post("http://localhost:8070/jobs/add",newJob)
             <div className="lg:w-1/2 w-full ">
               <label className="block mb-2 font-semibold">Company Logo</label>
               <input
-                type="text"
+                type="file"
+                name="file"
                 placeholder="Paste your company logo url"
                 {...register("companyLogo")}
                 className="block w-full flex-1 border-1 bg-white py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6 border-2 border-neutral-200"

@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect } from "react";
 import axios from "axios";
 import { FaFacebookF, FaLinkedinIn, FaGoogle, FaRegEnvelope } from "react-icons/fa";
 import { MdLockOutline } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Aos from "aos";
+import "aos/dist/aos.css";
+
 
 
 const Login = () => {
@@ -54,10 +57,14 @@ const Login = () => {
     }
   };
 
+  useEffect(() => {
+    Aos.init({ duration: 3000 });
+  }, []);
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-gray-100 pt-2 mt-12">
+    <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-gray-100 pt-2 mt-12" >
       <div className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center bg-gray-100">
-        <div className="bg-white rounded-2xl shadow-2xl flex w-2/3 max-w-4xl">
+        <div className="bg-white rounded-2xl shadow-2xl flex w-2/3 max-w-4xl"data-aos="zoom-in">
           <div className="w-3/5 p-5">
             <div className="font-bold text-left">
               <span className="text-blue">JOB</span>NEST

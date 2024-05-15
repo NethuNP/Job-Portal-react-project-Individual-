@@ -17,7 +17,7 @@ const Navbar = () => {
     ];
 
     return (
-        <header className='max-w-screen-2xl container mx-auto xl:px-24 px-4 bg-white fixed top-0 z-50 drop-shadow-lg'>
+        <header className='max-w-screen-2xl container mx-auto xl:px-24 px-4 bg-white fixed top-0 z-50'>
             <nav className='flex justify-between items-center py-0 bg-white'>
                 <a href="/" className='flex items-center gap-3 text-2xl text-blue'>
                     <img src="./public/images/JOBNEST__1_-removebg-preview (1).png" className='w-[160px] h-[80px] mt-1' alt="Jobnest Logo"></img>

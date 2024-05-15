@@ -23,11 +23,7 @@ const RegSchema = new Schema({
         type: String,
         required: true
     },
-    role:{
-        type:String,
-        required:true
-
-    }
+   
 });
 
 const Reg = mongoose.model("Reg", RegSchema);
