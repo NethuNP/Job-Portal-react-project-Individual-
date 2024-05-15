@@ -15,7 +15,7 @@ const Jobs = () => {
   const itemsPerPage = 3;
 
  useEffect(()=>{
-  axios.get ("http://localhost:8070/jobs/")
+  axios.get ("http://localhost:8070/approvedjobs/")
   .then ((res) =>{
     setJobs(res.data);
 

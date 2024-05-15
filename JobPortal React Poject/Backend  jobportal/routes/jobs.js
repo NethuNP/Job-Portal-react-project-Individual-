@@ -1,32 +1,28 @@
-const router = require("express").Router();
-let job = require("../models/job");
+const express = require("express");
+const router = express.Router();
+const Job = require("../models/job");
+const ApprovedJob = require("../models/ApprovedJob");
 
 // Insert Route
 router.post('/add', async (req, res) => {
     try {
-        // Extract job data from request body
         const { jobTitle, companyName, minPrice, maxPrice, salaryType, jobLocation, postingDate, expireryDate, experienceLevel, requiredSkill, companyLogo, employmentType, description, postedBy, jobCategory } = req.body;
 
-        // Create a new job instance
-        const newJob = new job({
+        const newJob = new Job({
             jobTitle, companyName, minPrice, maxPrice, salaryType, jobLocation, postingDate, expireryDate, experienceLevel, requiredSkill, companyLogo, employmentType, description, postedBy, jobCategory
         });
 
-        // Save the new job to the database
         await newJob.save();
-
-        // Send success response
         res.json("Job added successfully");
     } catch (err) {
-        // Handle error
         console.error(err);
         res.status(500).send("Failed to add job");
     }
 });
 
 // Fetch all jobs
-router.route("/").get((req, res) => {
-    job.find()
+router.get("/", (req, res) => {
+    Job.find()
         .then((jobs) => {
             res.json(jobs);
         })
@@ -37,7 +33,7 @@ router.route("/").get((req, res) => {
 });
 
 // Update job by ID
-router.route("/update/:id").put(async (req, res) => {
+router.put("/update/:id", async (req, res) => {
     try {
         const jobId = req.params.id;
         const { jobTitle, companyName, minPrice, maxPrice, salaryType, jobLocation, postingDate, expireryDate, experienceLevel, requiredSkill, companyLogo, employmentType, description, jobCategory, postedBy } = req.body;
@@ -46,7 +42,7 @@ router.route("/update/:id").put(async (req, res) => {
             jobTitle, companyName, minPrice, maxPrice, salaryType, jobLocation, postingDate, expireryDate, experienceLevel, requiredSkill, companyLogo, employmentType, description, postedBy, jobCategory
         };
 
-        const updated = await job.findByIdAndUpdate(jobId, updateJob);
+        await Job.findByIdAndUpdate(jobId, updateJob);
         res.status(200).send({ status: "Job updated" });
     } catch (err) {
         console.error(err);
@@ -55,10 +51,10 @@ router.route("/update/:id").put(async (req, res) => {
 });
 
 // Delete job by ID
-router.route("/delete/:id").delete(async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
     try {
         const jobId = req.params.id;
-        await job.findByIdAndDelete(jobId);
+        await Job.findByIdAndDelete(jobId);
         res.status(200).send({ status: "Job deleted" });
     } catch (err) {
         console.error(err);
@@ -67,10 +63,10 @@ router.route("/delete/:id").delete(async (req, res) => {
 });
 
 // Fetch job by ID
-router.route("/get/:id").get(async (req, res) => {
+router.get("/get/:id", async (req, res) => {
     try {
         const jobId = req.params.id;
-        const fetchedJob = await job.findById(jobId);
+        const fetchedJob = await Job.findById(jobId);
         res.status(200).send({ status: "Job fetched", job: fetchedJob });
     } catch (err) {
         console.error(err);
@@ -78,24 +74,21 @@ router.route("/get/:id").get(async (req, res) => {
     }
 });
 
-// Approve job by ID
-router.put('/approve/:id', async (req, res) => {
+// Approve a job by ID
+router.put("/approve/:id", async (req, res) => {
     try {
-        const jobId = req.params.id;
-        const updatedJob = await job.findByIdAndUpdate(jobId, { $set: { approved: true } }, { new: true });
-
-        if (!updatedJob) {
-            return res.status(404).send({ message: "Job not found" });
-        }
-
-        res.status(200).send({ message: "Job approved successfully", job: updatedJob });
+        const job = await Job.findById(req.params.id);
+        if (!job) return res.status(404).send('Job not found');
+        
+        const approvedJob = new ApprovedJob(job.toObject());
+        await approvedJob.save();
+        await Job.findByIdAndDelete(req.params.id);
+        
+        res.send('Job approved successfully');
     } catch (err) {
         console.error(err);
-        res.status(500).send({ message: "Failed to approve job", error: err.message });
+        res.status(500).send('Server error');
     }
 });
-
-
-
 
 module.exports = router;

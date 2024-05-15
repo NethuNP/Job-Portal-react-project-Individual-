@@ -4,27 +4,16 @@ import { motion } from 'framer-motion';
 const About = () => {
   return (
     <div className='max-w-screen-2xl container mx-auto xl:px-24 px-4 mt-24'>
-      <div className="bg-blue md:grid grid-cols-3 gap-5 lg:px-24 px-4 py-12 mt-3 rounded-xl">
-        <div className='bg-white p-4 rounded shadow-3xl'>
+      <div className="bg-blue md:grid grid-cols-3 gap-5 lg:px-24 px- py-12 mt-3 rounded-xl">
+        <div className='bg-white p-4 rounded shadow-3xl flex items-center justify-center'>
           {/* First image */}
           <motion.img
-
-whileHover={{ scale: 1.05, transition: { duration: 0.2, ease: 'easeOut' } }} // Scale up smoothly on hover
-whileTap={{ scale: 0.95 }} // Scale down on tap
-          
-            src='/images/4966412.jpg'
+            whileHover={{ scale: 1.05, transition: { duration: 0.2, ease: 'easeOut' } }} // Scale up smoothly on hover
+            whileTap={{ scale: 0.95 }} // Scale down on tap
+            src='/images/2880399.jpg'
             alt='About Us Image'
-            className='w-full h-auto rounded-lg mb-4'
+            className='w-[500px] rounded-lg mb-4 h-[400px]'
           />
-          {/* Second image */}
-          <motion.img
-
-whileHover={{ scale: 1.05, transition: { duration: 0.2, ease: 'easeOut' } }} // Scale up smoothly on hover
-whileTap={{ scale: 0.95 }} // Scale down on tap
-            src='/images/4966408.jpg' // Replace with the path to your second image
-            alt='About Us Image'
-            className='w-full h-auto rounded-lg'
-          /> 
         </div>
         <div className='bg-white p-4 rounded col-span-2 shadow-3xl'>
           <div className='text-4xl font-semibold text-blue'> About Us </div>

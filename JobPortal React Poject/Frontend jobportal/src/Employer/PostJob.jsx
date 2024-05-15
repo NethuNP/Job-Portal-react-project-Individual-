@@ -82,13 +82,13 @@ axios.post("http://localhost:8070/jobs/add",newJob)
 
     
     
-    <div className="max-w-screen-2xl container mx-auto xl:px-30 px-4 bg-[#F8F9FC]  mt-16 h-full">
+    <div className="max-w-screen-2xl container mx-auto xl:px-30 px-4 bg-[#F8F9FC]  mt-16 h-full pb-10">
 
       <div className="text-black font-sans font-bold text-3xl ml-20 pt-[25px]">Post <span className="text-blue ">Jobs </span></div>
       {/*form*/}
       <form onSubmit={sendData} className="space-y-5">
       
-      <div className="bg-[#e2ebfa] py-[10px] px-4 lg:px-16 ml-[150px] mr-[150px] mt-10 border-2 shadow-3xl">
+      <div className="bg-gray-100 py-[10px] px- lg:px-16 ml-[150px] mr-[150px] mt-10 border-2 shadow-3xl pb-3">
        
           {/*first row*/}
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8 mt-5 ">
