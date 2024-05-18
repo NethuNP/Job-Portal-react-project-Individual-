@@ -1,4 +1,5 @@
 
+import Chatbot from './Component/chatbot';
 import Router from './Router/Router';
 
 import "./index.css";
@@ -9,6 +10,10 @@ const App = () => {
     <div>
       
     <Router/>
+    
+    
+
+    
     
     
     </div>

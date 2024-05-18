@@ -13,6 +13,7 @@ import ContactUs from "../Pages/ContactUs";
 import Layout from "../Component/Layouts/Layout";
 import AdminLayout from "../Component/Layouts/AdminLayout";
 
+
 import Adminlogin from "../Admin/Adminlogin";
 import Dashboard from "../Admin/Dashboard";
 import UserView from "../Admin/UserView";
@@ -30,6 +31,7 @@ import Emplogout from "../Employer/Emplogout";
 import EmpDashboard from "../Employer/EmpDashboard";
 import JDetails from "../Pages/JDetails";
 import ApprovedJobs from "../Admin/ApprovedJobs";
+import Chatbot from "../Component/chatbot";
 //import Feedbacks from "../Admin/Feedbacks";
 
 
@@ -49,6 +51,7 @@ const Router= () => {
       <Route path="/signup" element={<SignUp/>}/>
       <Route path="/emplogin" element={<EmpLogin/>}/>
       <Route path="/jobs/:id" element={<JDetails/>}/>
+     
    
       </Route>
 

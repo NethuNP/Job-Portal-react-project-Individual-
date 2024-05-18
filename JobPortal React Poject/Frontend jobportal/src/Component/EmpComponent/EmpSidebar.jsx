@@ -8,7 +8,7 @@ import { FaRegUserCircle } from "react-icons/fa";
 
 export const EmpSidebar = () => {
   return (
-    <div className="fixed top-0 left-0 bg-[#1E0342] text-white shadow-xl z-[999] w-[10rem] max-w-[10rem] overflow-hidden h-screen">
+    <div className="top-0 left-0 bg-[#1E0342] text-white shadow-xl z-[999] w-[10rem] max-w-[10rem] overflow-hidden h-screen">
       <FaRegUserCircle size={50} color="white" className="ml-12 mt-6" />
       <div className="px-[15px] py-[30px] flex items-center justify-center border-b-[1px] border-[#EDEDED]/[0.3]">
         <h1 className="text-white text-[20px] leading-[24px] font-extrabold cursor-pointer">

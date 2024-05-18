@@ -13,7 +13,7 @@ const JobSchema = new Schema({
     },
     companyLogo: {
         type: String,
-        required: true
+        required: false
     },
     minPrice: {
         type: String,

@@ -2,8 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiCalendar, FiDollarSign, FiMapPin } from "react-icons/fi";
-import Aos from "aos";
-import "aos/dist/aos.css";
+
 
 const Card = ({ data }) => {
   // Destructure data
@@ -20,15 +19,12 @@ const Card = ({ data }) => {
     jobTitle
   } = data || {}; // Ensure data object exists
 
-  useEffect(() => {
-    Aos.init({ duration: 2000 });
-  }, []);
-
+ 
   return (
     <motion.div
       className='card'
-      data-aos="zoom-in"
-      whileHover={{ scale: 1.05, transition: { duration: 0.1, ease: 'easeOut' } }} // Scale up smoothly on hover
+      
+      whileHover={{ scale: 1.05, transition: { duration: 0.5, ease: 'easeOut' } }} // Scale up smoothly on hover
       whileTap={{ scale: 0.95 }} // Scale down on tap
     >
       <Link to={`/jobs/${_id}`} className='flex gap-4 flex-col sm:flex-row items-start m-5 border-solid bg-slate-100 cursor-pointer drop-shadow-xl hover:bg-slate-300'>

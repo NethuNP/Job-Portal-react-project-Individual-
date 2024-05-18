@@ -11,7 +11,7 @@ const approvedJobSchema = new mongoose.Schema({
     expireryDate: { type: String, required: true },
     experienceLevel: { type: String, required: true },
     requiredSkill: { type: String, required: false },
-    companyLogo: { type: String, required: true },
+    companyLogo: { type: String, required: false},
     employmentType: { type: String, required: false },
     description: { type: String, required: true },
     postedBy: { type: String, required: true },
