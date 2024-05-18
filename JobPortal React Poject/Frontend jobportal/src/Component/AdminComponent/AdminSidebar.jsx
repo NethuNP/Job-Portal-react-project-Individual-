@@ -61,7 +61,7 @@ export const AdminSidebar = () => {
         </a>
       </div>
       <div className="absolute bottom-0 left-0 w-full px-5 pb-10">
-        <a href="/admin/logout" className="flex items-center gap-[15px]">
+        <a href="/login" className="flex items-center gap-[15px]">
           <LuLogOut color="white" />
           <button className="text-white font-normal">LogOut</button>
         </a>

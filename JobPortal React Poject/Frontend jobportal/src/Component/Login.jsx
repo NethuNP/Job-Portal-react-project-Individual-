@@ -14,7 +14,101 @@ const Login = () => {
   const [email, setEmail] = useState(""); // State for email
   const [password, setPassword] = useState(""); // State for password
   const [remember, setRemember] = useState(false); // State for remember checkbox
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
+
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Validate email and password
+    
+      if (email === "") {
+        toast.error("Email is required", {
+         // position: "top-center",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        });
+        
+      } else if (!email.includes("@")) {
+        toast.error("Email is invalid", {
+          // position: "top-center",
+           autoClose: 1000,
+           hideProgressBar: false,
+           closeOnClick: true,
+           pauseOnHover: true,
+           draggable: true,
+           progress: undefined
+         });
+
+      } else if (password === "") {
+        toast.error("Password is required", {
+          // position: "top-center",
+           autoClose: 1000,
+           hideProgressBar: false,
+           closeOnClick: true,
+           pauseOnHover: true,
+           draggable: true,
+           progress: undefined
+         });
+
+
+      } else if (password.length < 6) {
+        toast.error("Password must be at least 6 characters", {
+          // position: "top-center",
+           autoClose: 1000,
+           hideProgressBar: false,
+           closeOnClick: true,
+           pauseOnHover: true,
+           draggable: true,
+           progress: undefined
+         });
+
+      } else if (!remember) {
+        toast.error("Remember me checkbox is required", {
+          // position: "top-center",
+           autoClose: 1000,
+           hideProgressBar: false,
+           closeOnClick: true,
+           pauseOnHover: true,
+           draggable: true,
+           progress: undefined
+         });
+      }
+      
+      const response = await axios.post('http://localhost:8070/registers/login', { email, password });
+      const data = response.data;
+      
+  
+      if (data.status) {
+        toast.success(<div> 😊  Login Successful </div>);
+      
+  
+        if (data.role === 'seeker') {
+          window.location.href = '/home'; // Redirect to passenger dashboard
+        } else if (data.role === 'admin') {
+          window.location.href = '/admin/dashboard'; // Redirect to admin dashboard
+        }
+        toast.success(<div> 😊  Login Successful </div>);
+        setEmail("");
+        setPassword("");
+       
+      } else {
+        toast.error(data.message || <div> 😡 Login failed</div>);
+      
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      toast.error('An error occurred during login.');
+    }
+  };
+
+  /*
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -55,7 +149,7 @@ const Login = () => {
         console.error(err); 
       });
     }
-  };
+  };*/
 
   useEffect(() => {
     Aos.init({ duration: 3000 });

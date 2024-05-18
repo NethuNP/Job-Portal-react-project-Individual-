@@ -57,9 +57,9 @@ const Router= () => {
 
     
 
-      <Route path="/admin/login" element={<Adminlogin/>}/>
+      
       <Route path="/admin" element={<AdminLayout />}>
-        <Route path="/admin" element={<Navigate to="/admin/login" />} />
+        <Route path="/admin" element={<Navigate to="/admin/dashboard" />} />
         <Route path="/admin/dashboard" element={<Dashboard/>}/>
         <Route path="/admin/userview"   element={<UserView/>}/>
         <Route path="/admin/jobcategory" element={<JobCategory/>}/>

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const {roles}=require('../utils/constants');
 const Schema = mongoose.Schema;
 
 const RegSchema = new Schema({
@@ -22,7 +22,13 @@ const RegSchema = new Schema({
     confirmPassword: { 
         type: String,
         required: true
-    },
+    },   
+    roles: {
+        type: String,
+        enum: [roles.admin,roles.employer, roles.user, roles.seeker],
+        default: roles.user,
+        required: true
+    }
    
 });
 
