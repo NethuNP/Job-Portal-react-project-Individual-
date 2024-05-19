@@ -7,6 +7,8 @@ import { MdFileDownloadDone } from "react-icons/md";
 
 export default function JobCategory() {
     const [jobs, setJobs] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 5;
 
     useEffect(() => {
         function getJobs() {
@@ -59,6 +61,25 @@ export default function JobCategory() {
         }
     };
 
+    // Pagination logic
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentJobs = jobs.slice(indexOfFirstItem, indexOfLastItem);
+
+    const paginate = pageNumber => setCurrentPage(pageNumber);
+
+    const nextPage = () => {
+        if (currentPage < Math.ceil(jobs.length / itemsPerPage)) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const prevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
     return (
         <div>
             <AdminHeader />
@@ -84,12 +105,12 @@ export default function JobCategory() {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {jobs.map((job, index) => (
+                                            {currentJobs.map((job, index) => (
                                                 <tr
                                                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                                                     key={index}
                                                 >
-                                                    <td className="p-4 text-center">{index + 1}</td>
+                                                    <td className="p-4 text-center">{indexOfFirstItem + index + 1}</td>
                                                     <td className="px-6 py-4 text-center">{job.companyName}</td>
                                                     <td className="px-6 py-4 text-center">{job.jobTitle}</td>
                                                     <td className="px-6 py-4 text-center">{job.jobLocation}</td>
@@ -113,6 +134,26 @@ export default function JobCategory() {
                                 </div>
                             </div>
                         </section>
+                    </div>
+                    {/* Pagination */}
+                    <div className="flex justify-center mt-4 space-x-8 text-blue">
+                        <button
+                            onClick={prevPage}
+                            disabled={currentPage === 1}
+                            className="hover:underline"
+                        >
+                            Previous
+                        </button>
+                        <span className="mx-2 text-black">
+                            Page {currentPage} of {Math.ceil(jobs.length / itemsPerPage)}
+                        </span>
+                        <button
+                            onClick={nextPage}
+                            disabled={currentPage === Math.ceil(jobs.length / itemsPerPage)}
+                            className="hover:underline"
+                        >
+                            Next
+                        </button>
                     </div>
                 </div>
             </div>

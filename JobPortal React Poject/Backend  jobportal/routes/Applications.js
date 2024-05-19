@@ -1,6 +1,5 @@
 const express = require('express');
 const multer = require('multer');
-const mime = require('mime-types');
 const Application = require('../models/Application');
 const router = express.Router();
 const fs = require('fs');
@@ -31,12 +30,11 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// Insert Route
+// Insert Route to add new application
 router.post('/add', upload.single('application'), async (req, res) => {
     try {
         const { companyName, jobTitle, jobLocation, postingDate, email } = req.body;
         const application = req.file ? req.file.path : null;
-        const mimeType = req.file ? mime.lookup(req.file.originalname) : null;
 
         // Check if required fields are present
         if (!companyName || !jobTitle || !jobLocation || !postingDate || !email) {
@@ -54,8 +52,7 @@ router.post('/add', upload.single('application'), async (req, res) => {
             jobLocation,
             postingDate,
             email,
-            application,
-            mimeType
+            application
         });
 
         await newApplication.save();
@@ -67,15 +64,54 @@ router.post('/add', upload.single('application'), async (req, res) => {
 });
 
 // GET Route to fetch applications
-router.get("/", (req, res) => {
-    Application.find()
-        .then((applications) => {
-            res.json(applications);
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).send("Error fetching applications");
-        });
+router.get("/", async (req, res) => {
+    try {
+        const applications = await Application.find();
+        res.json(applications);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Error fetching applications");
+    }
 });
 
+// GET Route to download application file
+router.get("/download/:id", async (req, res) => {
+    try {
+        const application = await Application.findById(req.params.id);
+        if (!application) {
+            return res.status(404).send("Application not found");
+        }
+        const filePath = application.application;
+        if (!filePath) {
+            return res.status(404).send("Application file not found");
+        }
+        res.download(filePath);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Error downloading application file");
+    }
+});
+
+// DELETE Route to delete an application by ID
+router.delete('/delete/:id', async (req, res) => {
+    try {
+        const applicationId = req.params.id;
+        // Find the application by ID and delete it
+        const deletedApplication = await Application.findByIdAndDelete(applicationId);
+        if (!deletedApplication) {
+            return res.status(404).send("Application not found");
+        }
+        res.json({ message: "Application deleted successfully" });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error deleting application");
+    }
+});
+
+
 module.exports = router;
+
+
+
+
+

@@ -32,6 +32,8 @@ import EmpDashboard from "../Employer/EmpDashboard";
 import JDetails from "../Pages/JDetails";
 import ApprovedJobs from "../Admin/ApprovedJobs";
 import Chatbot from "../Component/chatbot";
+import Feedback from "../Admin/Feedback";
+
 //import Feedbacks from "../Admin/Feedbacks";
 
 
@@ -64,6 +66,8 @@ const Router= () => {
         <Route path="/admin/userview"   element={<UserView/>}/>
         <Route path="/admin/jobcategory" element={<JobCategory/>}/>
        <Route path="/admin/approvedjobs" element={<ApprovedJobs/>}/>
+       <Route path="/admin/feedback" element={<Feedback/>}/>
+       
         <Route path="/admin/reports" element={<Reports/>}/>
         <Route path="/admin/logout" element={<AdminLogout/>}/>
 

@@ -48,7 +48,7 @@ export const AdminSidebar = () => {
       </div>
 
       <div className="flex items-center gap-[15px] py-[20px] border-b-[1px] border-[#EDEDED]/[0.3] px-2">
-        <a href="/admin/feedbacks" className="flex items-center gap-[10px]">
+        <a href="/admin/feedback" className="flex items-center gap-[10px]">
           <MdFeedback color="white" />
           <button className="text-white font-normal">Feedbacks</button>
         </a>
@@ -60,8 +60,8 @@ export const AdminSidebar = () => {
           <button className="text-white font-normal">Reports</button>
         </a>
       </div>
-      <div className="absolute bottom-0 left-0 w-full px-5 pb-10">
-        <a href="/login" className="flex items-center gap-[15px]">
+      <div className="absolute bottom-0 left-0 w-full px-5 pb-5">
+        <a href="/login" className="flex items-center gap-[10px]">
           <LuLogOut color="white" />
           <button className="text-white font-normal">LogOut</button>
         </a>

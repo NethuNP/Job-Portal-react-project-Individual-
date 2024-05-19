@@ -19,62 +19,85 @@ const JDetails = () => {
             });
     }, [id]);
 
-    const [images, setImages] = useState([]);
+    const [files, setFiles] = useState([]);
     const [isDragging, setIsDragging] = useState(false);
     const fileInputRef = useRef(null);
 
-    function selectFile() {
+    const selectFile = () => {
         fileInputRef.current.click();
-    }
+    };
 
-    function onFileSelect(event) {
-        const files = event.target.files;
-        handleFiles(files);
-    }
+    const onFileSelect = (event) => {
+        const selectedFiles = event.target.files;
+        handleFiles(selectedFiles);
+    };
 
-    function handleFiles(files) {
-        if (files.length === 0) return;
-        for (let i = 0; i < files.length; i++) {
-            if (files[i].type.split('/')[0] !== 'image') continue;
-            if (!images.some((e) => e.name === files[i].name)) {
-                setImages((prevImages) => [
-                    ...prevImages,
+    const handleFiles = (selectedFiles) => {
+        if (selectedFiles.length === 0) return;
+        for (let i = 0; i < selectedFiles.length; i++) {
+            if (!files.some((e) => e.name === selectedFiles[i].name)) {
+                setFiles((prevFiles) => [
+                    ...prevFiles,
                     {
-                        name: files[i].name,
-                        url: URL.createObjectURL(files[i]),
+                        name: selectedFiles[i].name,
+                        url: URL.createObjectURL(selectedFiles[i]),
+                        file: selectedFiles[i],
+                        mimeType: selectedFiles[i].type
                     },
                 ]);
             }
         }
-    }
+    };
 
-    function onDrop(event) {
+    const onDrop = (event) => {
         event.preventDefault();
         setIsDragging(false);
-        const files = event.dataTransfer.files;
-        handleFiles(files);
-    }
+        const droppedFiles = event.dataTransfer.files;
+        handleFiles(droppedFiles);
+    };
 
-    function uploadImage() {
-        console.log('images:', images);
-    }
+    const uploadFile = () => {
+        if (files.length === 0 || !approvedJob) return;
 
-    function deleteImage(index) {
-        setImages((prevImages) =>
-            prevImages.filter((_, i) => i !== index)
-        );
-    }
+        const formData = new FormData();
+        const file = files[0].file; // Assuming single file upload for now
+        formData.append('application', file);
+        formData.append('companyName', approvedJob.companyName);
+        formData.append('jobTitle', approvedJob.jobTitle);
+        formData.append('jobLocation', approvedJob.jobLocation);
+        formData.append('postingDate', approvedJob.postingDate);
+        formData.append('email', approvedJob.email);
+        formData.append('mimeType', file.type);
 
-    function onDragOver(event) {
+        fetch('http://localhost:8070/applications/add', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            alert('Application uploaded successfully');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error uploading application');
+        });
+    };
+
+    const deleteFile = (index) => {
+        setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    };
+
+    const onDragOver = (event) => {
         event.preventDefault();
         setIsDragging(true);
         event.dataTransfer.dropEffect = "copy";
-    }
+    };
 
-    function onDragLeave(event) {
+    const onDragLeave = (event) => {
         event.preventDefault();
         setIsDragging(false);
-    }
+    };
 
     return (
         <div className='max-w-screen-2xl container mx-auto xl:px-24 px-4 mt-24'>
@@ -124,14 +147,14 @@ const JDetails = () => {
                                 <input name='file' type='file' className='file hidden' multiple ref={fileInputRef} onChange={onFileSelect} />
                             </div>
                             <div className='container w-[100%] h-auto flex justify-start items-start flex-wrap max-h-[200px] overflow-y-auto mt-[10px]'>
-                                {images.map((image, index) => (
+                                {files.map((file, index) => (
                                     <div className='image w-[75px] mr-[5px] h-[75px] relative mb-[8px]' key={index}>
-                                        <span className='delete absolute top-[-2px] r-[9px] font-[20px] cursor-pointer z-[999] text-blue' onClick={() => deleteImage(index)}>&times;</span>
-                                        <img src={image.url} alt={image.name} className='w-[100%] h-[100%] border-r-[5px]' />
+                                        <span className='delete absolute top-[-2px] r-[9px] font-[20px] cursor-pointer z-[999] text-blue' onClick={() => deleteFile(index)}>&times;</span>
+                                        <img src={file.url} alt={file.name} className='w-[100%] h-[100%] border-r-[5px] img-display ' />
                                     </div>
                                 ))}
                             </div>
-                            <button type='button' className='w-[100%] p-[8px 13px] font-bold cursor-pointer border-0 outline-0 border-[#fff] bg-blue text-white rounded-lg py-1' onClick={uploadImage}>
+                            <button type='button' className='w-[100%] p-[8px 13px] font-bold cursor-pointer border-0 outline-0 border-[#fff] bg-blue text-white rounded-lg py-1' onClick={uploadFile}>
                                 Upload
                             </button>
                         </div>

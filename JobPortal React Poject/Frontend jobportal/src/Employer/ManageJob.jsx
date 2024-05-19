@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaTrash, FaBell, FaEnvelope, FaUserCircle } from "react-icons/fa";
+import { FaTrash, FaEdit } from "react-icons/fa";
 import { GrView } from "react-icons/gr";
-import AdminHeader from "../Component/AdminComponent/AdminHeader";
-import { MdFileDownloadDone } from "react-icons/md";
-import { FaEdit } from "react-icons/fa";
 import EmpHeader from "../Component/EmpComponent/EmpHeader";
 
 export default function JobCategory() {
@@ -13,6 +10,8 @@ export default function JobCategory() {
   const [editedJob, setEditedJob] = useState(null);
   const [showDescription, setShowDescription] = useState(false);
   const [selectedJobDescription, setSelectedJobDescription] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5; // Adjust the number of items per page as needed
 
   useEffect(() => {
     function getJobs() {
@@ -30,15 +29,12 @@ export default function JobCategory() {
   }, []);
 
   jobs.sort((a, b) => {
-    // Convert postingDate strings to Date objects for comparison
     const dateA = new Date(a.postingDate);
     const dateB = new Date(b.postingDate);
-    
-    // Compare the Date objects in descending order
     return dateB - dateA;
   });
-  
-  const DeleteJob = (id, companyName) => {
+
+  const deleteJob = (id, companyName) => {
     if (window.confirm(`Are you sure you want to delete ${companyName}?`)) {
       axios
         .delete(`http://localhost:8070/jobs/delete/${id}`)
@@ -53,15 +49,11 @@ export default function JobCategory() {
   };
 
   const handleSubmitEdit = (e) => {
-    e.preventDefault(); // Prevent form submission
-
-    // Send a PUT request to update the edited job details in the database
+    e.preventDefault();
     axios
       .put(`http://localhost:8070/jobs/update/${editedJob._id}`, editedJob)
       .then(() => {
-        // If the update is successful, close the modal and update the jobs list
         setShowEditModal(false);
-        // Fetch the updated jobs list from the database again
         axios
           .get("http://localhost:8070/jobs/")
           .then((res) => {
@@ -102,6 +94,25 @@ export default function JobCategory() {
     setShowDescription(false);
   };
 
+  // Pagination logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentJobs = jobs.slice(indexOfFirstItem, indexOfLastItem);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const nextPage = () => {
+    if (currentPage < Math.ceil(jobs.length / itemsPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   return (
     <div>
       <EmpHeader />
@@ -139,12 +150,12 @@ export default function JobCategory() {
                       </tr>
                     </thead>
                     <tbody>
-                      {jobs.map((job, index) => (
+                      {currentJobs.map((job, index) => (
                         <tr
                           className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                           key={index}
                         >
-                          <td className="p-4 text-center">{index + 1}</td>
+                          <td className="p-4 text-center">{indexOfFirstItem + index + 1}</td>
                           <td className="px-6 py-4 text-center">{job.companyName}</td>
                           <td className="px-6 py-4 text-center">{job.jobTitle}</td>
                           <td className="px-6 py-4 text-center">{job.jobLocation}</td>
@@ -161,7 +172,7 @@ export default function JobCategory() {
                             </button>
                             <button
                               className="bg-red-500 hover:bg-red-600 text-gray-200 font-bold px-1 py-1 rounded ml-2 mt-3"
-                              onClick={() => DeleteJob(job._id, job.companyName)}
+                              onClick={() => deleteJob(job._id, job.companyName)}
                             >
                               <FaTrash />
                             </button>
@@ -181,10 +192,30 @@ export default function JobCategory() {
             </section>
           </div>
         </div>
+        {/* Pagination */}
+        <div className="flex justify-center mt-4 space-x-8 text-blue">
+          <button
+            onClick={prevPage}
+            disabled={currentPage === 1}
+            className="hover:underline"
+          >
+            Previous
+          </button>
+          <span className="mx-2 text-black">
+            Page {currentPage} of {Math.ceil(jobs.length / itemsPerPage)}
+          </span>
+          <button
+            onClick={nextPage}
+            disabled={currentPage === Math.ceil(jobs.length / itemsPerPage)}
+            className="hover:underline"
+          >
+            Next
+          </button>
+        </div>
         {showEditModal && (
           <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
             <div className="bg-white p-6 rounded-md w-96 mt-16">
-              <h2 className="text-lg font-semibold mb-4">Edit Job</h2>
+              <h2 className="text-lg font-semibold mb-4 bg-[#2c42a5] text-white py-1 px-3 rounded"> Edit Job</h2>   
               <form onSubmit={handleSubmitEdit}>
                 <div className="mb-2">
                   <label htmlFor="companyName" className="block">

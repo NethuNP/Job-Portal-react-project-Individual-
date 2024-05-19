@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaTrash } from "react-icons/fa";
 import { GrView } from "react-icons/gr";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import AdminHeader from '../Component/AdminComponent/AdminHeader';
 
 export default function ApprovedJobs() {
     const [approvedJobs, setApprovedJobs] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 5;
 
     useEffect(() => {
         getApprovedJobs();
@@ -18,7 +22,7 @@ export default function ApprovedJobs() {
             })
             .catch((err) => {
                 console.error(err);
-                alert("Error fetching approved jobs");
+                toast.error("Error fetching approved jobs");
             });
     };
 
@@ -29,21 +33,39 @@ export default function ApprovedJobs() {
                 .then(() => {
                     // Filter out the deleted job from the state
                     setApprovedJobs(prevJobs => prevJobs.filter(job => job._id !== id));
-                    alert("Job deleted successfully!");
+                    toast.success("Job deleted successfully!");
                 })
                 .catch((err) => {
                     console.log(err);
-                    alert("Error deleting job");
+                    toast.error("Error deleting job");
                 });
+        }
+    };
+
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentJobs = approvedJobs.slice(indexOfFirstItem, indexOfLastItem);
+
+    const paginate = pageNumber => setCurrentPage(pageNumber);
+
+    const nextPage = () => {
+        if (currentPage < Math.ceil(approvedJobs.length / itemsPerPage)) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const prevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
         }
     };
 
     return (
         <div>
             <AdminHeader />
-            <div className="container mx-auto xl:px-30 px-4 bg-[#F8F9FC] mt-20 h-full w-full ">
+            <div className="container mx-auto xl:px-30 px-4 bg-white mt-20 h-full w-full ">
                 <div className="py-4 px-10">
-                    <h1 className="text-blue text-[28px] leading-[40px] cursor-pointer font-semibold">
+                    <h1 className="text-blue text-[28px] leading-[40px] cursor-pointer font-semibold text-center">
                         Approved Jobs
                     </h1>
                     <div className="mt-10">
@@ -63,17 +85,17 @@ export default function ApprovedJobs() {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {approvedJobs.map((job, index) => (
+                                            {currentJobs.map((job, index) => (
                                                 <tr
-                                                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                                                    className="bg-gray-100 border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
                                                     key={index}
                                                 >
-                                                    <td className="p-4 text-center">{index + 1}</td>
+                                                    <td className="p-4 text-center">{indexOfFirstItem + index + 1}</td>
                                                     <td className="px-6 py-4 text-center">{job.companyName}</td>
                                                     <td className="px-6 py-4 text-center">{job.jobTitle}</td>
                                                     <td className="px-6 py-4 text-center">{job.jobLocation}</td>
                                                     <td className="px-6 py-4 text-center">{job.postingDate}</td>
-                                                    <td className="px-6 py-4 text-center">{job.expiryDate}</td>
+                                                    <td className="px-6 py-4 text-center">{job.expireryDate}</td>
                                                     <td className="px-6 py-4 text-center flex justify-center">
                                                         <button className="bg-green-500 hover:bg-yellow-600 text-gray-200 font-bold px-1 py-1 rounded mt-3">
                                                             <GrView />
@@ -90,8 +112,31 @@ export default function ApprovedJobs() {
                             </div>
                         </section>
                     </div>
+                    {/* Pagination */}
+                    <div className="flex justify-center mt-4 space-x-8 text-[#2c42a5]">
+                        <button
+                            onClick={prevPage}
+                            disabled={currentPage === 1}
+                            className="hover:underline"
+                        >
+                            Previous
+                        </button>
+                        <span className="mx-2 text-black">
+                            Page {currentPage} of {Math.ceil(approvedJobs.length / itemsPerPage)}
+                        </span>
+                        <button
+                            onClick={nextPage}
+                            disabled={currentPage === Math.ceil(approvedJobs.length / itemsPerPage)}
+                            className="hover:underline"
+                        >
+                            Next
+                        </button>
+                    </div>
+
+                    
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 }

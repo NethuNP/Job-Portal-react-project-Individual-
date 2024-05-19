@@ -14,7 +14,7 @@ const applicationSchema = new mongoose.Schema({
         required: true,
     },
     postingDate: {
-        type: Date,
+        type: String,
         required: true,
     },
     email: {
@@ -25,10 +25,8 @@ const applicationSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    mimeType: {
-        type: String,
-        required: true,
-    }
+    
 });
 
 module.exports = mongoose.model('Application', applicationSchema);
+

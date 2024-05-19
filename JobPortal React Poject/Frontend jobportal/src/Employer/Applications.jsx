@@ -6,6 +6,8 @@ import { FaTrash } from "react-icons/fa";
 
 const Applications = () => {
     const [applications, setApplications] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 5; // Adjust the number of items per page as needed
 
     useEffect(() => {
         fetchApplications(); // Fetch applications data when the component mounts
@@ -60,6 +62,43 @@ const Applications = () => {
         }
     };
 
+    const handleDelete = async (applicationId) => {
+        try {
+            const response = await fetch(`http://localhost:8070/applications/delete/${applicationId}`, {
+                method: 'DELETE',
+            });
+            if (!response.ok) {
+                throw new Error('Failed to delete application');
+            }
+            setApplications((prevApplications) => 
+                prevApplications.filter((application) => application._id !== applicationId)
+            );
+            alert('Application deleted successfully');
+        } catch (error) {
+            console.error('Error deleting application:', error);
+            alert('Error deleting application');
+        }
+    };
+
+    // Pagination logic
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentApplications = applications.slice(indexOfFirstItem, indexOfLastItem);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    const nextPage = () => {
+        if (currentPage < Math.ceil(applications.length / itemsPerPage)) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const prevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
     return (
         <div>
             <EmpHeader />
@@ -92,46 +131,39 @@ const Applications = () => {
                                                     E-mail
                                                 </th>
                                                 <th scope="col" className="px-6 py-3 text-center">
-                                                    Application
-                                                </th>
-                                                <th scope="col" className="px-6 py-3 text-center">
                                                     Actions
                                                 </th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {applications.map((application, index) => (
+                                            {currentApplications.map((application, index) => (
                                                 <tr
                                                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                                                     key={index}
                                                 >
-                                                    <td className="p-4 text-center">{index + 1}</td>
+                                                    <td className="p-4 text-center">{indexOfFirstItem + index + 1}</td>
                                                     <td className="px-6 py-4 text-center">{application.companyName}</td>
                                                     <td className="px-6 py-4 text-center">{application.jobTitle}</td>
                                                     <td className="px-6 py-4 text-center">{application.jobLocation}</td>
                                                     <td className="px-6 py-4 text-center">{application.postingDate}</td>
                                                     <td className="px-6 py-4 text-center">{application.email}</td>
-                                                    <td className="px-6 py-4 text-center">{application.application}</td>
-
                                                     <td className="px-6 py-4 text-center flex justify-center">
                                                         <button
                                                             className="bg-green-500 hover:bg-yellow-600 text-gray-200 font-bold px-1 py-1 rounded mt-3"
                                                             onClick={() => handleView(application)}
                                                         >
-                                                            View
                                                             <GrView />
                                                         </button>
                                                         <button
                                                             className="bg-red-500 hover:bg-red-600 text-gray-200 font-bold px-1 py-1 rounded ml-2 mt-3"
+                                                            onClick={() => handleDelete(application._id)}
                                                         >
-                                                            Delete
                                                             <FaTrash />
                                                         </button>
                                                         <button
-                                                            className="bg-yellow-500 hover:bg-yellow-600 text-gray-200 font-bold px-1 py-1 rounded ml-2 mt-3 flex items-center"
+                                                            className="bg-blue hover:bg-yellow-600 text-gray-200 font-bold px-1 py-1 rounded ml-2 mt-3"
                                                             onClick={() => handleDownload(application)}
                                                         >
-                                                            Download
                                                             <FaDownload className="ml-1" />
                                                         </button>
                                                     </td>
@@ -143,6 +175,26 @@ const Applications = () => {
                             </div>
                         </section>
                     </div>
+                </div>
+                {/* Pagination */}
+                <div className="flex justify-center mt-4 space-x-8 text-blue">
+                    <button
+                        onClick={prevPage}
+                        disabled={currentPage === 1}
+                        className="hover:underline"
+                    >
+                        Previous
+                    </button>
+                    <span className="mx-2 text-black">
+                        Page {currentPage} of {Math.ceil(applications.length / itemsPerPage)}
+                    </span>
+                    <button
+                        onClick={nextPage}
+                        disabled={currentPage === Math.ceil(applications.length / itemsPerPage)}
+                        className="hover:underline"
+                    >
+                        Next
+                    </button>
                 </div>
             </div>
         </div>

@@ -15,7 +15,7 @@ const ContactUs = () => {
 
   return (
     <div className="bg-gray-100 antialiased pt-5 mt-20">
-      <div className="flex w-full min-h-[80vh] justify-center items-center">
+      <div className="flex w-full min-h-[60vh] justify-center items-center">
         <div
           className="flex flex-col md:flex-row md:space-x-56 space-y-6 md:space-y-0 w-full max-w-4xl p-8 sm:p-10 rounded-xl shadow-lg text-white overflow-hidden mb-5"
           data-aos="zoom-in"

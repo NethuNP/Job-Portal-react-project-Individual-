@@ -36,7 +36,7 @@ const Dashboard = () => {
       <div>
       <div className='pt-[25px] px-[25px] bg-[#F8F9FC]'>
         <div className='flex items-center justify-between'>
-          <h1 className='text-[#2E59D9] text-[28px] leading-[34px] font-normal cursor-pointer'>Dashboard</h1>
+          <h1 className='text-[#2E59D9] text-[28px] leading-[34px]  cursor-pointer font-semibold'>Dashboard</h1>
         </div>
 
         {/* User Info */}

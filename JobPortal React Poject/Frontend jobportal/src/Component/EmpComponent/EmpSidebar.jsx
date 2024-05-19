@@ -49,7 +49,7 @@ export const EmpSidebar = () => {
       </div>
 
       <div className="absolute bottom-0 left-0 w-full px-5 pb-10">
-        <a href="/admin/logout" className="flex items-center gap-[10px]">
+        <a href="/login" className="flex items-center gap-[10px]">
           <LuLogOut color="white" />
           <button className="text-white font-normal">LogOut</button>
         </a>
