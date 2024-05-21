@@ -86,7 +86,7 @@ const Login = () => {
       
   
       if (data.status) {
-        toast.success(<div> 😊  Login Successful </div>);
+        toast.success(<div>Login Successful </div>);
       
   
         if (data.role === 'seeker') {
@@ -94,12 +94,12 @@ const Login = () => {
         } else if (data.role === 'admin') {
           window.location.href = '/admin/dashboard'; // Redirect to admin dashboard
         }
-        toast.success(<div> 😊  Login Successful </div>);
+        toast.success(<div>Login Successful </div>);
         setEmail("");
         setPassword("");
        
       } else {
-        toast.error(data.message || <div> 😡 Login failed</div>);
+        toast.error(data.message || <div>Login failed</div>);
       
       }
     } catch (error) {

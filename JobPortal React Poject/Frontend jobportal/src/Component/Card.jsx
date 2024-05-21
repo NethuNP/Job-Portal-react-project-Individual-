@@ -2,6 +2,11 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiCalendar, FiDollarSign, FiMapPin } from "react-icons/fi";
+import { FaUserTie } from "react-icons/fa6";
+import { FaLocationDot } from "react-icons/fa6";
+import { FaMoneyCheckDollar } from "react-icons/fa6";
+import { GoClockFill } from "react-icons/go";
+import { TbClockX } from "react-icons/tb";
 
 
 const Card = ({ data }) => {
@@ -13,7 +18,7 @@ const Card = ({ data }) => {
     minPrice,
     maxPrice,
     jobLocation,
-    postingDate,
+
     expireryDate,
     employmentType,
     jobTitle
@@ -31,7 +36,7 @@ const Card = ({ data }) => {
         <motion.img
           src={companyLogo}
           alt=""
-          className='h-20 flex gap-5' // Ensure companyLogo is a valid URL or path
+          className=' flex gap-4 mt-3 ml-3 h-16 w-16' // Ensure companyLogo is a valid URL or path
           initial={{ opacity: 0 }} // Initial opacity
           animate={{ opacity: 1, transition: { duration: 0.5 } }} // Fade in animation
         />
@@ -40,12 +45,12 @@ const Card = ({ data }) => {
         <div>
           <h4 className='text-primary mb-1'>{companyName}</h4>
           <h3 className='text-lg font-semibold mb-2'>{jobTitle}</h3>
-          <div className='text-primary/70 text-base flex flex-wrap gap-5 mb-2'>
+          <div className='text-primary/70 text-base flex flex-wrap gap-8 mb-2'>
 
-            <span className='flex items-center gap-'><FiMapPin />{jobLocation}</span>
-            <span className='flex items-center gap-2'> LKR {minPrice}-{maxPrice}</span>
-            <span className='flex items-center gap-2' >{employmentType}</span>
-            <span className='flex items-center gap-2'><FiCalendar /> {postingDate} to {expireryDate} </span>
+            <span className='flex items-center gap-2'><FaLocationDot /> {jobLocation}</span>
+            <span className='flex items-center gap-2 '> <FiDollarSign/>LKR {minPrice} - {maxPrice}</span>
+            <span className='flex items-center gap-2' ><FaUserTie/>{employmentType}</span>
+            <span className='flex items-center gap-2 '><TbClockX /> {expireryDate} </span>
           </div>
         </div>
       </Link>

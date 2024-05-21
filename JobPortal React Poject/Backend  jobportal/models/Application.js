@@ -3,30 +3,30 @@ const mongoose = require('mongoose');
 const applicationSchema = new mongoose.Schema({
     companyName: {
         type: String,
-        required: true,
+        required: true
     },
     jobTitle: {
         type: String,
-        required: true,
+        required: true
     },
     jobLocation: {
         type: String,
-        required: true,
+        required: true
     },
     postingDate: {
-        type: String,
-        required: true,
+        type: Date,
+        required: true
     },
     email: {
         type: String,
-        required: true,
+        required: true
     },
     application: {
-        type: String,
-        required: true,
-    },
-    
+        type: Buffer,
+        required: true // Path to the uploaded application file
+    }
+}, {
+    timestamps: true
 });
 
 module.exports = mongoose.model('Application', applicationSchema);
-

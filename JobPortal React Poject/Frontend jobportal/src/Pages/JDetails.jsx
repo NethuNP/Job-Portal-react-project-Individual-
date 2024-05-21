@@ -107,7 +107,7 @@ const JDetails = () => {
                         <div className='bg-white p-4 rounded shadow-3xl'>
                             <div className='font-bold pb-5 text-2xl text-blue'>Details</div>
                             <div className='flex items-center mb-4 justify-center'>
-                                <span className='font-semibold text-xl bg-gray-200 text-black py-2 border-2 rounded-full px-28 hover:bg-gray-400 hover:text-white'>{approvedJob.companyName}</span>
+                                <span className='font-semibold text-xl bg-gray-200 text-black py-2 border-2 rounded-full  hover:bg-gray-400 px-5 hover:text-white'>{approvedJob.companyName}</span>
                             </div>
                             <div className='flex items-center mb-4'>
                                 <FaUserTie className='mr-2 text-[20px]' />
@@ -128,7 +128,7 @@ const JDetails = () => {
                         </div>
                         <div className='bg-white p-4 rounded col-span-2 shadow-3xl'>
                             <div className='font-semibold text-2xl text-blue'>Description</div>
-                            <div>{approvedJob.description}</div>
+                            <div className='mt-5 font-medium'>{approvedJob.description}</div>
                         </div>
 
                         <div className='bg-white p-4 rounded shadow-3xl col-span-full mt-5'>
