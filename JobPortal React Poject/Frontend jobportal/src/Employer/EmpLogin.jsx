@@ -4,7 +4,7 @@ import {MdLockOutline} from 'react-icons/md'
 
 const EmpLogin = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-gray-100">
+    <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-gray-100 mt-12">
       <div className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center bg-gray-100">
         <div className="bg-white rounded-2xl shadow-2xl flex w-2/3 max-w-4xl">
           <div className="w-3/5 p-5">
@@ -64,14 +64,15 @@ const EmpLogin = () => {
             </div>
           </div>
 
-          <div className="w-2/5 bg-blue text-white rounded-tr-2xl rounded-br-2xl py-36 px-12 ">
+          <div className="w-2/5 bg-blue text-white rounded-tr-2xl rounded-br-2xl py-36 px-12 "style={{ backgroundImage: "url('/images/27053.jpg')" }}
+>
             <h2 className="text-3xl font-bold mb-2">Welcome!</h2>
             <div className="border-2 w-10 border-white inline-block mb-2 "></div>
             <p className="mb-10 ">
               Fill up personal information and start journey with us
             </p>
             <a
-              href="./signup"
+              href=""
               className="border-2 border-white rounded-full px-12 py-2 inline-block font-semibold hover:bg-white hover:text-blue"
             >
               Sign Up

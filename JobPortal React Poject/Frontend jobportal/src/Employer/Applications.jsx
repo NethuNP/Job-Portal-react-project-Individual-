@@ -131,6 +131,9 @@ const Applications = () => {
                                                     E-mail
                                                 </th>
                                                 <th scope="col" className="px-6 py-3 text-center">
+                                                    Status
+                                                </th>
+                                                <th scope="col" className="px-6 py-3 text-center">
                                                     Actions
                                                 </th>
                                             </tr>
@@ -147,6 +150,7 @@ const Applications = () => {
                                                     <td className="px-6 py-4 text-center">{application.jobLocation}</td>
                                                     <td className="px-6 py-4 text-center">{application.postingDate}</td>
                                                     <td className="px-6 py-4 text-center">{application.email}</td>
+                                                    <td className='px-6 py-4 text-center'>{application.status}</td>
                                                     <td className="px-6 py-4 text-center flex justify-center">
                                                         <button
                                                             className="bg-green-500 hover:bg-yellow-600 text-gray-200 font-bold px-1 py-1 rounded mt-3"

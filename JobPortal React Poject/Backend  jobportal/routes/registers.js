@@ -192,7 +192,7 @@ router.route("/get/:id").get(async (req,res) => {
 
 
 
-// Route to login a Passenger 
+// Route to login a user
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -213,6 +213,8 @@ router.post('/login', async (req, res) => {
     if (req.body.email === 'admin@gmail.com') {
       role = roles.admin;
     }
+    else role=roles.employer;
+    
 
     // Generate JWT token with role information
     const token = jwt.sign({ email: seeker.email, role: role }, process.env.JWT_SECRET, { expiresIn: '1h' });

@@ -46,6 +46,7 @@ router.post('/add', upload.single('application'), async (req, res) => {
             jobLocation,
             postingDate,
             email,
+            status,
             application,
             mimeType
         });

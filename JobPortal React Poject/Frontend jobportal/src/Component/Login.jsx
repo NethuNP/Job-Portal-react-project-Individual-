@@ -94,6 +94,12 @@ const Login = () => {
         } else if (data.role === 'admin') {
           window.location.href = '/admin/dashboard'; // Redirect to admin dashboard
         }
+        else if (data.role === 'employer'){
+          window.location.href='/employer/empdashboard';  
+        }
+        else {
+          window.location.href='/home'
+        }
         toast.success(<div>Login Successful </div>);
         setEmail("");
         setPassword("");

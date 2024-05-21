@@ -21,6 +21,10 @@ const applicationSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    status:{
+        type:String,
+        required:true
+    },
     application: {
         type: Buffer,
         required: true // Path to the uploaded application file

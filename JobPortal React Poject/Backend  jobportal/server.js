@@ -34,6 +34,8 @@ const jobRouter = require ("./routes/jobs.js");
 const registerRouter = require ("./routes/registers.js");
 const approvedJobRouter = require("./routes/ApprovedJobs.js");
 const applicationRouter =require ("./routes/Applications.js");
+const employerRouter =require ("./routes/Employers.js")
+
 
 
 app.use("/jobs",jobRouter);
@@ -42,6 +44,7 @@ app.use("/approvedjobs", approvedJobRouter)
 app.use(cors());
 app.use(express.json());
 app.use('/applications', applicationRouter);
+app.use('/employers', employerRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is up and running on port number: ${PORT}`);
