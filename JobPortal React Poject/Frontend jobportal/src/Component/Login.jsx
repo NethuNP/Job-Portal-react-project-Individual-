@@ -1,112 +1,58 @@
-import React, { useState ,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaFacebookF, FaLinkedinIn, FaGoogle, FaRegEnvelope } from "react-icons/fa";
 import { MdLockOutline } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Aos from "aos";
 import "aos/dist/aos.css";
-
-
+import Switch from '@mui/material/Switch';
 
 const Login = () => {
   const [email, setEmail] = useState(""); // State for email
   const [password, setPassword] = useState(""); // State for password
   const [remember, setRemember] = useState(false); // State for remember checkbox
-  //const navigate = useNavigate();
-
-
+  const [role, setRole] = useState("user"); // State for role selection
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       // Validate email and password
-    
       if (email === "") {
-        toast.error("Email is required", {
-         // position: "top-center",
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined
-        });
-        
+        toast.error("Email is required");
       } else if (!email.includes("@")) {
-        toast.error("Email is invalid", {
-          // position: "top-center",
-           autoClose: 1000,
-           hideProgressBar: false,
-           closeOnClick: true,
-           pauseOnHover: true,
-           draggable: true,
-           progress: undefined
-         });
-
+        toast.error("Email is invalid");
       } else if (password === "") {
-        toast.error("Password is required", {
-          // position: "top-center",
-           autoClose: 1000,
-           hideProgressBar: false,
-           closeOnClick: true,
-           pauseOnHover: true,
-           draggable: true,
-           progress: undefined
-         });
-
-
+        toast.error("Password is required");
       } else if (password.length < 6) {
-        toast.error("Password must be at least 6 characters", {
-          // position: "top-center",
-           autoClose: 1000,
-           hideProgressBar: false,
-           closeOnClick: true,
-           pauseOnHover: true,
-           draggable: true,
-           progress: undefined
-         });
-
+        toast.error("Password must be at least 6 characters");
       } else if (!remember) {
-        toast.error("Remember me checkbox is required", {
-          // position: "top-center",
-           autoClose: 1000,
-           hideProgressBar: false,
-           closeOnClick: true,
-           pauseOnHover: true,
-           draggable: true,
-           progress: undefined
-         });
-      }
-      
-      const response = await axios.post('http://localhost:8070/registers/login', { email, password });
-      const data = response.data;
-      
-  
-      if (data.status) {
-        toast.success(<div>Login Successful </div>);
-      
-  
-        if (data.role === 'seeker') {
-          window.location.href = '/home'; // Redirect to passenger dashboard
-        } else if (data.role === 'admin') {
-          window.location.href = '/admin/dashboard'; // Redirect to admin dashboard
-        }
-        else if (data.role === 'employer'){
-          window.location.href='/employer/empdashboard';  
-        }
-        else {
-          window.location.href='/home'
-        }
-        toast.success(<div>Login Successful </div>);
-        setEmail("");
-        setPassword("");
-       
+        toast.error("Remember me checkbox is required");
       } else {
-        toast.error(data.message || <div>Login failed</div>);
-      
+        const response = await axios.post('http://localhost:8070/registers/login', { email, password, role });
+        const data = response.data;
+
+        if (data.status) {
+          toast.success("Login Successful");
+          switch (role) {
+            case 'user':
+              window.location.href = '/home';
+              break;
+            case 'admin':
+              window.location.href = '/admin/dashboard';
+              break;
+            case 'employer':
+              window.location.href = '/employer/empdashboard';
+              break;
+            default:
+              window.location.href = '/home';
+          }
+          setEmail("");
+          setPassword("");
+        } else {
+          toast.error(data.message || "Login failed");
+        }
       }
     } catch (error) {
       console.error('Error during login:', error);
@@ -114,66 +60,27 @@ const Login = () => {
     }
   };
 
-  /*
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  
-    // Email and password validation
-    if (email === "") {
-      toast.error(<div>  Email is required  </div>);
-    } else if (!email.includes("@")) {
-      toast.error(<div>  Email is invalid  </div>);
-    } else if (password === "") {
-      toast.error(<div>  Password is required  </div>);
-    } else if (password.length < 6) {
-      toast.error(<div>  Password must be at least 6 characters </div>);
-    } 
-
-       else if (!remember) {
-      toast.error(<div>  Remember me checkbox is required</div>);
-    } else {
-      // If email and password are valid, proceed with login
-      axios.post('http://localhost:8070/registers/login', {
-        email,
-        password,
-      })
-      .then((res) => {
-        if (res.data.status) {
-          toast.success(<div>  Login Successful </div>);
-          navigate('/home'); // Redirect to dashboard if login is successful
-          setEmail(""); // Clear email field
-          setPassword(""); // Clear password field
-          setRemember(false); // Reset checkbox
-          
-        } else {
-          // If login fails due to incorrect password, show error message
-          toast.error(<div>  Incorrect password</div>);
-        }
-      })
-      .catch((err) => {
-        console.error(err); 
-      });
-    }
-  };*/
-
   useEffect(() => {
     Aos.init({ duration: 3000 });
   }, []);
 
+  useEffect(() => {
+    if (email === "admin@gmail.com") {
+      setRole("admin");
+    }
+  }, [email]);
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-gray-100 pt-2 mt-12" >
+    <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-gray-100 pt-2 mt-12">
       <div className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center bg-gray-100">
-        <div className="bg-white rounded-2xl shadow-2xl flex w-2/3 max-w-4xl"data-aos="zoom-in">
-          <div className="w-3/5 p-5">
+        <div className="bg-white rounded-2xl shadow-2xl flex w-2/3 max-w-4xl" data-aos="zoom-in">
+          <div className="w-3/5 p-5 relative">
             <div className="font-bold text-left">
               <span className="text-blue">JOB</span>NEST
             </div>
-
             <div className="py-10">
               <h2 className="text-3xl font-bold text-blue">Sign in to Account</h2>
               <div className="border-2 w-10 border-white inline-block mb-2 "></div>
-
               <div className="flex justify-center  my-2">
                 <a href="#" className="border-2 border-gray-200 rounded-full p-3 mx-1 hover:text-blue">
                   <FaFacebookF className="text-sm" />
@@ -227,6 +134,14 @@ const Login = () => {
                       Forget Password?
                     </a>
                   </div>
+                  <div className="flex items-center justify-between mb-5 absolute top-0 right-0 mt-3 mr-3  px-2 rounded-full">
+                    <span className="text-blue font-bold">Post Job</span>
+                    <span className="text-blue font-semibold "></span>
+                    <Switch
+                      checked={role === "employer"}
+                      onChange={() => setRole(role === "employer" ? "user" : "employer")}
+                    />
+                  </div>
                   <button
                     type="submit"
                     className="border-2 border-blue-500 text-blue-500 rounded-full px-12 py-2 inline-block font-semibold hover:bg-blue hover:text-white"
@@ -237,11 +152,10 @@ const Login = () => {
               </form>
             </div>
           </div>
-
+          {/* Right side content */}
           <div
             className="w-2/5  rounded-tr-2xl rounded-br-2xl py-36 px-12 flex flex-col justify-center items-center"
             style={{ backgroundImage: "url('/images/27053.jpg')" }}
-
           >
             <h2 className="text-3xl font-bold mb-3 text-white ">WelCome!</h2>
             <div className="border-2 w-10 border-white mb-3"></div>
@@ -259,6 +173,8 @@ const Login = () => {
       </div>
     </div>
   );
+
+  
 };
 
 export default Login;
