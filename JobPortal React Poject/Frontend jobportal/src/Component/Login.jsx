@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Modal from "react-modal";
 import { FaFacebookF, FaLinkedinIn, FaGoogle, FaRegEnvelope } from "react-icons/fa";
 import { MdLockOutline } from "react-icons/md";
 import { toast } from "react-toastify";
@@ -13,6 +14,12 @@ const Login = () => {
   const [password, setPassword] = useState(""); // State for password
   const [remember, setRemember] = useState(false); // State for remember checkbox
   const [role, setRole] = useState("user"); // State for role selection
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal
+  const [resetEmail, setResetEmail] = useState(""); // State for reset email
+  const [otp, setOtp] = useState(""); // State for OTP
+  const [newPassword, setNewPassword] = useState(""); // State for new password
+  const [confirmNewPassword, setConfirmNewPassword] = useState(""); // State for confirm new password
+  const [isOtpSent, setIsOtpSent] = useState(false); // State to check if OTP is sent
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -57,6 +64,65 @@ const Login = () => {
     } catch (error) {
       console.error('Error during login:', error);
       toast.error('An error occurred during login.');
+    }
+  };
+
+  const handleSendOtp = async (e) => {
+    e.preventDefault();
+
+    try {
+      if (resetEmail === "") {
+        toast.error("Email is required for password reset");
+      } else if (!resetEmail.includes("@")) {
+        toast.error("Email is invalid");
+      } else {
+        const response = await axios.post('http://localhost:8070/registers/send-otp', { email: resetEmail });
+        const data = response.data;
+
+        if (data.status) {
+          toast.success("OTP sent to your email");
+          setIsOtpSent(true);
+        } else {
+          toast.error(data.message || "Failed to send OTP");
+        }
+      }
+    } catch (error) {
+      console.error('Error during sending OTP:', error);
+      toast.error('An error occurred during sending OTP.');
+    }
+  };
+
+  const handlePasswordReset = async (e) => {
+    e.preventDefault();
+
+    try {
+      if (otp === "") {
+        toast.error("OTP is required");
+      } else if (newPassword === "") {
+        toast.error("New password is required");
+      } else if (newPassword.length < 6) {
+        toast.error("New password must be at least 6 characters");
+      } else if (newPassword !== confirmNewPassword) {
+        toast.error("Passwords do not match");
+      } else {
+        const response = await axios.post('http://localhost:8070/registers/reset-password', { email: resetEmail, otp, newPassword });
+        const data = response.data;
+
+        if (data.status) {
+          toast.success("Password reset successful");
+          setResetEmail("");
+          setOtp("");
+          setNewPassword("");
+          setConfirmNewPassword("");
+          setIsOtpSent(false);
+          setIsModalOpen(false);
+        } else {
+          toast.error(data.message || "Failed to reset password");
+        }
+      }
+    } catch (error) {
+      console.error('Error during password reset:', error);
+      toast.error('An error occurred during password reset.');
     }
   };
 
@@ -130,7 +196,7 @@ const Login = () => {
                       />
                       Remember me
                     </label>
-                    <a href="" className="text-xs">
+                    <a href="#" onClick={() => setIsModalOpen(true)} className="text-xs">
                       Forget Password?
                     </a>
                   </div>
@@ -171,10 +237,81 @@ const Login = () => {
           </div>
         </div>
       </div>
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)}
+        contentLabel="Password Reset"
+        className="modal fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-lg shadow-lg outline-none"
+        overlayClassName="modal-overlay fixed inset-0 bg-black bg-opacity-50"
+      >
+        <h2 className="text-2xl font-bold mb-3">Reset Password</h2>
+        <form onSubmit={isOtpSent ? handlePasswordReset : handleSendOtp}>
+          <div className="flex flex-col items-center mb-3">
+            <div className="bg-gray-100 w-64 p-2 flex items-center">
+              <FaRegEnvelope className="text-gray-400 mr-2" />
+              <input
+                type="email"
+                name="resetEmail"
+                placeholder="Email"
+                className="bg-gray-100 outline-none text-sm flex-1"
+                value={resetEmail}
+                onChange={(e) => setResetEmail(e.target.value)}
+              />
+            </div>
+          </div>
+          {isOtpSent && (
+            <>
+              <div className="flex flex-col items-center mb-3">
+                <div className="bg-gray-100 w-64 p-2 flex items-center">
+                  <FaRegEnvelope className="text-gray-400 mr-2" />
+                  <input
+                    type="text"
+                    name="otp"
+                    placeholder="OTP"
+                    className="bg-gray-100 outline-none text-sm flex-1"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col items-center mb-3">
+                <div className="bg-gray-100 w-64 p-2 flex items-center">
+                  <MdLockOutline className="text-gray-400 mr-2" />
+                  <input
+                    type="password"
+                    name="newPassword"
+                    placeholder="New Password"
+                    className="bg-gray-100 outline-none text-sm flex-1"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col items-center mb-3">
+                <div className="bg-gray-100 w-64 p-2 flex items-center">
+                  <MdLockOutline className="text-gray-400 mr-2" />
+                  <input
+                    type="password"
+                    name="confirmNewPassword"
+                    placeholder="Confirm New Password"
+                    className="bg-gray-100 outline-none text-sm flex-1"
+                    value={confirmNewPassword}
+                    onChange={(e) => setConfirmNewPassword(e.target.value)}
+                  />
+                </div>
+              </div>
+            </>
+          )}
+          <button
+            type="submit"
+            className="border-2 border-blue-500 text-blue-500 rounded-full px-12 py-2 inline-block font-semibold hover:bg-blue hover:text-white"
+          >
+            {isOtpSent ? "Reset Password" : "Send OTP"}
+          </button>
+        </form>
+      </Modal>
     </div>
   );
-
-  
 };
 
 export default Login;

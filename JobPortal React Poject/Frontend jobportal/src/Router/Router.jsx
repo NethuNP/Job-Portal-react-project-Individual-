@@ -33,6 +33,8 @@ import JDetails from "../Pages/JDetails";
 import ApprovedJobs from "../Admin/ApprovedJobs";
 import Chatbot from "../Component/chatbot";
 import Feedback from "../Admin/Feedback";
+import Myjobs from "../Pages/Myjobs";
+
 
 //import Feedbacks from "../Admin/Feedbacks";
 
@@ -46,13 +48,15 @@ const Router= () => {
     < Route path= "/"  element= {<Layout/>}> 
       < Route path= "/"  element= {<Navigate to= "/home" />}/>
       < Route path= "/home"  element= {<Home />}/> 
-      < Route path= "/jobs"  element= {<Jobs />}/> 
+      < Route path= "/jobs"  element= {<Jobs />}/>
+      <Route path="/myjobs" element={<Myjobs/>} />
       < Route path= "/aboutus"  element= {<About />}/> 
       < Route path= "/contactus"  element= {<ContactUs />}/>  
       <Route path="/login" element={<Login/>}/>
       <Route path="/signup" element={<SignUp/>}/>
       <Route path="/emplogin" element={<EmpLogin/>}/>
       <Route path="/jobs/:id" element={<JDetails/>}/>
+    
      
    
       </Route>

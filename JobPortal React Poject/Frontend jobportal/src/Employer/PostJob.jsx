@@ -6,6 +6,7 @@ import EmpHeader from "../Component/EmpComponent/EmpHeader";
 
 const PostJob = () => {
   const { register, formState: { errors } } = useForm();
+  
 
   const [companyName, setCompanyName] = useState("");
   const [jobTitle, setJobTitle] = useState("");
@@ -80,12 +81,12 @@ const PostJob = () => {
   return (
     <div>
       <EmpHeader />
-      <div className="max-w-screen-2xl container mx-auto xl:px-30 px-4 bg-[#F8F9FC] mt-16 h-full pb-10 rounded">
+      <div className="max-w-screen-2xl container mx-auto xl:px-30 px-4 bg-[#F8F9FC] mt-16 h-full pb-10">
         <div className="text-black font-sans font-bold text-3xl ml-20 pt-[25px]">
           Post <span className="text-blue">Jobs</span>
         </div>
         <form onSubmit={sendData} className="space-y-5">
-          <div className="bg-gray-100 py-[10px] px-lg:px-16 ml-[150px] mr-[150px] mt-10 border-2 shadow-3xl pb-3">
+          <div className="bg-gray-100 py-[10px] px-lg:px-16 ml-[150px] mr-[150px] mt-10 border-2 shadow-3xl p-6 rounded-3xl">
             {/* First row */}
             <div className="flex flex-col lg:flex-row items-center justify-between gap-8 mt-5">
               <div className="lg:w-1/2 w-full">

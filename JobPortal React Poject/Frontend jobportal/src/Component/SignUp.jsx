@@ -93,7 +93,7 @@ const SignUp = () => {
               href="./login"
               className="border-2 border-white rounded-full px-12 py-2 inline-block font-semibold hover:bg-white hover:text-black text-slate-200 "
             >
-              Login
+              Sign In
             </a>
           </div>
           <div className="w-full lg:w-3/5 py-10 px-12 bg-white">
@@ -103,14 +103,14 @@ const SignUp = () => {
                 <input
                   type="text"
                   placeholder="First Name"
-                  className="bg-gray-100 rounded py-1 px-2 w-4/5 ml-10 text-gray-400"
+                  className="bg-gray-100 rounded py-1 px-2 w-4/5 ml-10 text-black placeholder:text-gray-400"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                 />
                 <input
                   type="text"
                   placeholder="Last Name"
-                  className="bg-gray-100 text-gray-400 rounded py-1 px-2 w-4/5"
+                  className="bg-gray-100 text-black placeholder:text-gray-400 rounded py-1 px-2 w-4/5"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                 />
@@ -119,7 +119,7 @@ const SignUp = () => {
                 <input
                   type="text"
                   placeholder="Email"
-                  className="bg-gray-100 text-gray-400 rounded py-1 px-2 w-4/5 ml-10 "
+                  className="bg-gray-100 text-black placeholder:text-gray-400 rounded py-1 px-2 w-4/5 ml-10 "
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -128,7 +128,7 @@ const SignUp = () => {
                 <input
                   type="password"
                   placeholder="Password"
-                  className="bg-gray-100 text-gray-400 rounded py-1 px-2 w-4/5 ml-10"
+                  className="bg-gray-100 text-black placeholder:text-gray-400 rounded py-1 px-2 w-4/5 ml-10"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -137,7 +137,7 @@ const SignUp = () => {
                 <input
                   type="password"
                   placeholder="Confirm Password"
-                  className="bg-gray-100 text-gray-400 rounded py-1 px-2 w-4/5 ml-10"
+                  className="bg-gray-100 text-black placeholder:text-gray-400 rounded py-1 px-2 w-4/5 ml-10"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
@@ -151,7 +151,7 @@ const SignUp = () => {
                     onChange={(e) => setIsChecked(e.target.checked)}
                   />
                   <span>
-                    I accept the{" "}
+                     I accept the{" "}
                     <a href="#" className="text-blue font-semibold">
                       Terms of use
                     </a>{" "}

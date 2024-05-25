@@ -14,7 +14,7 @@ const applicationSchema = new mongoose.Schema({
         required: true
     },
     postingDate: {
-        type: Date,
+        type: String,
         required: true
     },
     email: {

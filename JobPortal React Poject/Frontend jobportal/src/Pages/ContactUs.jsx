@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios"; // Add this import statement
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { IoMdMail } from "react-icons/io";
 import { FaLocationDot } from "react-icons/fa6";
@@ -9,6 +10,28 @@ import "aos/dist/aos.css";
 import Chatbot from "../Component/chatbot";
 
 const ContactUs = () => {
+  const sendData = (e) => {
+    e.preventDefault();
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const message = document.getElementById("message").value;
+
+    const newFeedback = {
+      name,
+      email,
+      message,
+    };
+
+    axios
+      .post("http://localhost:8070/fedbacks/add", newFeedback)
+      .then(() => {
+        alert("Feedback Added");
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  };
+
   useEffect(() => {
     Aos.init({ duration: 3000 });
   }, []);
@@ -58,7 +81,7 @@ const ContactUs = () => {
             </div>
           </div>
           <div className="rounded-xl shadow-2xl p-8 text-white md:w-80 bg-white rounded-tl-[35px] rounded-br-[35px]">
-            <form action="" className="flex flex-col space-y-4">
+            <form onSubmit={sendData} className="flex flex-col space-y-4">
               <div>
                 <label htmlFor="name" className="text-sm text-blue font-bold">
                   Name
@@ -92,16 +115,15 @@ const ContactUs = () => {
                   className="ring-1 ring-gray-300 w-full rounded px-4 py-2 mt-2 outline-none focus:ring-2 focus:ring-blue bg-gray-100 text-black"
                 />
               </div>
-              <button className="inline-block self-end bg-blue text-white hover:bg-white hover:text-blue border-2 border-blue font-bold rounded-lg px-6 py-2 uppercase text-sm">
+              <button
+                type="submit"
+                className="inline-block self-end bg-blue text-white hover:bg-white hover:text-blue border-2 border-blue font-bold rounded-lg px-6 py-2 uppercase text-sm"
+              >
                 Send Message
               </button>
             </form>
           </div>
-        
         </div>
-
-
-        
       </div>
     </div>
   );

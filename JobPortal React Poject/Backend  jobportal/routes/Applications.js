@@ -33,10 +33,11 @@ router.post('/add', upload.single('application'), async (req, res) => {
     try {
         const { companyName, jobTitle, jobLocation, postingDate, email, mimeType } = req.body;
         const application = req.file ? req.file.path : null;
+        const status = 'Pending'; // Default status
 
         // Check if required fields are present
         if (!companyName || !jobTitle || !jobLocation || !postingDate || !email || !application) {
-            return res.status(400).send("All fields are required");
+            throw new Error("All fields are required");
         }
 
         // Save file data to database
@@ -54,6 +55,10 @@ router.post('/add', upload.single('application'), async (req, res) => {
         await newApplication.save();
         res.json("Application added successfully");
     } catch (err) {
+        // If an error occurred, delete the uploaded file if it exists
+        if (req.file) {
+            fs.unlinkSync(req.file.path);
+        }
         console.error(err);
         res.status(500).send("Failed to add application");
     }
@@ -96,10 +101,26 @@ router.delete('/delete/:id', async (req, res) => {
         if (!deletedApplication) {
             return res.status(404).send("Application not found");
         }
+        fs.unlinkSync(deletedApplication.application); // Delete the file from the filesystem
         res.json({ message: "Application deleted successfully" });
     } catch (err) {
         console.error(err);
         res.status(500).send("Error deleting application");
+    }
+});
+
+// Route to approve an application by ID
+router.put('/approve/:id', async (req, res) => {
+    try {
+        const applicationId = req.params.id;
+        const updatedApplication = await Application.findByIdAndUpdate(applicationId, { status: 'Approved' }, { new: true });
+        if (!updatedApplication) {
+            return res.status(404).send("Application not found");
+        }
+        res.json({ message: "Application approved successfully", application: updatedApplication });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error approving application");
     }
 });
 

@@ -7,6 +7,7 @@ import { FaLocationDot } from "react-icons/fa6";
 import { FaMoneyCheckDollar } from "react-icons/fa6";
 import { GoClockFill } from "react-icons/go";
 import { TbClockX } from "react-icons/tb";
+import { GiReceiveMoney } from "react-icons/gi";
 
 
 const Card = ({ data }) => {
@@ -36,7 +37,7 @@ const Card = ({ data }) => {
         <motion.img
           src={companyLogo}
           alt=""
-          className=' flex gap-4 mt-3 ml-3 h-16 w-16' // Ensure companyLogo is a valid URL or path
+          className=' flex gap-4 mt-3 ml-3 h-16 w-16 ' // Ensure companyLogo is a valid URL or path
           initial={{ opacity: 0 }} // Initial opacity
           animate={{ opacity: 1, transition: { duration: 0.5 } }} // Fade in animation
         />
@@ -45,10 +46,10 @@ const Card = ({ data }) => {
         <div>
           <h4 className='text-primary mb-1'>{companyName}</h4>
           <h3 className='text-lg font-semibold mb-2'>{jobTitle}</h3>
-          <div className='text-primary/70 text-base flex flex-wrap gap-8 mb-2'>
+          <div className='text-primary/70 text-base flex flex-wrap gap-10 mb-2'>
 
             <span className='flex items-center gap-2'><FaLocationDot /> {jobLocation}</span>
-            <span className='flex items-center gap-2 '> <FiDollarSign/>LKR {minPrice} - {maxPrice}</span>
+            <span className='flex items-center gap-2 '> <FiDollarSign className='text-black font-bold'/>LKR {minPrice} - {maxPrice}</span>
             <span className='flex items-center gap-2' ><FaUserTie/>{employmentType}</span>
             <span className='flex items-center gap-2 '><TbClockX /> {expireryDate} </span>
           </div>
