@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const UserProfileForm = () => {
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     username: '',
     name: '',
     email: '',
@@ -18,8 +18,9 @@ const UserProfileForm = () => {
     instagram: '',
     profileImage: null,
     profileImagePreview: '',
-  });
+  };
 
+  const [formData, setFormData] = useState(initialFormData);
   const [currentSection, setCurrentSection] = useState('general');
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
@@ -52,14 +53,79 @@ const UserProfileForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic, such as sending data to the server
+
+    try {
+      const formDataToSend = new FormData();
+      for (const key in formData) {
+        formDataToSend.append(key, formData[key]);
+      }
+
+      const response = await fetch('/api/user/profile', {
+        method: 'PUT',
+        body: formDataToSend,
+      });
+
+      if (response.ok) {
+        const updatedUser = await response.json();
+        setFormData({
+          ...formData,
+          ...updatedUser,
+          profileImagePreview: URL.createObjectURL(updatedUser.profileImage),
+        });
+        alert('Profile updated successfully');
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.message}`);
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      alert('Error updating profile');
+    }
   };
 
-  const handlePasswordSubmit = (e) => {
+  const handlePasswordSubmit = async (e) => {
     e.preventDefault();
-    // Handle password change logic, such as sending data to the server
+
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      alert('New password and confirm password do not match');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/user/change-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(passwordData),
+      });
+
+      if (response.ok) {
+        alert('Password changed successfully');
+        setPasswordData({
+          currentPassword: '',
+          newPassword: '',
+          confirmPassword: '',
+        });
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.message}`);
+      }
+    } catch (error) {
+      console.error('Error changing password:', error);
+      alert('Error changing password');
+    }
+  };
+
+  const handleCancel = () => {
+    setFormData(initialFormData);
+    setPasswordData({
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+    });
   };
 
   return (
@@ -116,13 +182,11 @@ const UserProfileForm = () => {
                         </span>
                         <input type="file" onChange={handleImageChange} className="hidden" />
                       </label>
-                    {/*}  <p className="text-xs text-gray-500 mt-1">Allowed JPG, GIF or PNG. Max size of 800K</p>*/}
                     </div>
                   </div>
                   <button className="px-3 py-1 rounded-md text-blue">
                     View Profile
                   </button>
-                  
                 </div>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
@@ -166,7 +230,7 @@ const UserProfileForm = () => {
                     />
                   </div>
                   <div className="flex justify-end space-x-4">
-                    <button type="button" className="px-4 py-2 border border-gray-300 rounded-md text-gray-700">Cancel</button>
+                    <button type="button" className="px-4 py-2 border border-gray-300 rounded-md text-gray-700" onClick={handleCancel}>Cancel</button>
                     <button type="submit" className="px-4 py-2 bg-blue text-white rounded-md">Save changes</button>
                   </div>
                 </form>
@@ -207,15 +271,15 @@ const UserProfileForm = () => {
                     />
                   </div>
                   <div className="flex justify-end space-x-4">
-                    <button type="button" className="px-4 py-2 border border-gray-300 rounded-md text-gray-700">Cancel</button>
-                    <button type="submit" className="px-4 py-2 bg-blue text-white rounded-md">Change Password</button>
+                    <button type="button" className="px-4 py-2 border border-gray-300 rounded-md text-gray-700" onClick={handleCancel}>Cancel</button>
+                    <button type="submit" className="px-4 py-2 bg-blue text-white rounded-md">Save changes</button>
                   </div>
                 </form>
               </div>
             )}
             {currentSection === 'info' && (
               <div id="info" className="mt-6">
-                <h3 className="text-2xl font-semibold text-gray-700 mb-4">Info</h3>
+                <h3 className="text-2xl font-semibold text-gray-700 mb-4">Additional Info</h3>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
                     <label className="block text-gray-700">Bio</label>
@@ -259,7 +323,7 @@ const UserProfileForm = () => {
                   <div>
                     <label className="block text-gray-700">Website</label>
                     <input
-                      type="url"
+                      type="text"
                       name="website"
                       value={formData.website}
                       onChange={handleChange}
@@ -267,7 +331,7 @@ const UserProfileForm = () => {
                     />
                   </div>
                   <div className="flex justify-end space-x-4">
-                    <button type="button" className="px-4 py-2 border border-gray-300 rounded-md text-gray-700">Cancel</button>
+                    <button type="button" className="px-4 py-2 border border-gray-300 rounded-md text-gray-700" onClick={handleCancel}>Cancel</button>
                     <button type="submit" className="px-4 py-2 bg-blue text-white rounded-md">Save changes</button>
                   </div>
                 </form>
@@ -280,7 +344,7 @@ const UserProfileForm = () => {
                   <div>
                     <label className="block text-gray-700">Twitter</label>
                     <input
-                      type="url"
+                      type="text"
                       name="twitter"
                       value={formData.twitter}
                       onChange={handleChange}
@@ -290,7 +354,7 @@ const UserProfileForm = () => {
                   <div>
                     <label className="block text-gray-700">Facebook</label>
                     <input
-                      type="url"
+                      type="text"
                       name="facebook"
                       value={formData.facebook}
                       onChange={handleChange}
@@ -300,7 +364,7 @@ const UserProfileForm = () => {
                   <div>
                     <label className="block text-gray-700">Google Plus</label>
                     <input
-                      type="url"
+                      type="text"
                       name="googlePlus"
                       value={formData.googlePlus}
                       onChange={handleChange}
@@ -310,7 +374,7 @@ const UserProfileForm = () => {
                   <div>
                     <label className="block text-gray-700">LinkedIn</label>
                     <input
-                      type="url"
+                      type="text"
                       name="linkedIn"
                       value={formData.linkedIn}
                       onChange={handleChange}
@@ -320,7 +384,7 @@ const UserProfileForm = () => {
                   <div>
                     <label className="block text-gray-700">Instagram</label>
                     <input
-                      type="url"
+                      type="text"
                       name="instagram"
                       value={formData.instagram}
                       onChange={handleChange}
@@ -328,13 +392,12 @@ const UserProfileForm = () => {
                     />
                   </div>
                   <div className="flex justify-end space-x-4">
-                    <button type="button" className="px-4 py-2 border border-gray-300 rounded-md text-gray-700">Cancel</button>
+                    <button type="button" className="px-4 py-2 border border-gray-300 rounded-md text-gray-700" onClick={handleCancel}>Cancel</button>
                     <button type="submit" className="px-4 py-2 bg-blue text-white rounded-md">Save changes</button>
                   </div>
                 </form>
               </div>
             )}
-            {/* Additional sections for "Connections" and "Notifications" would follow a similar structure */}
           </div>
         </div>
       </div>

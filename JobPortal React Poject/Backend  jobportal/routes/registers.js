@@ -28,49 +28,46 @@ const authenticateRole = (role) => (req, res, next) => {
   });
 };
 
+
 // Route for registering a new user
+
 router.post('/add', async (req, res) => {
   try {
-    const { firstName, lastName, email, password, confirmPassword } = req.body;
+    const { firstName, lastName, email, password,confirmPassword} =
+      req.body;
 
-    if (!(firstName && lastName && email && password && confirmPassword)) {
-      return res.status(400).send('All fields are compulsory');
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedConfirmedPassword = await bcrypt.hash(confirmPassword, 10);
+
+    let role = roles.seeker; 
+    if (email === "admin@gmail.com") {
+      role = roles.admin;
     }
 
-    if (password !== confirmPassword) {
-      return res.status(400).send('Passwords do not match');
-    }
-
-    const existingUser = await register.findOne({ email });
-    if (existingUser) {
-      return res.status(401).send('User already exists');
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    const user = await register.create({
+    const newUser = new register({
       firstName,
       lastName,
       email,
-      password: hashedPassword
+      password: hashedPassword,
+      confirmPassword:hashedConfirmedPassword,
+      role,
     });
 
-    const token = jwt.sign(
-      { id: user._id, email, role: roles.user }, // Assuming new users get 'user' role by default
-      process.env.JWT_SECRET,
-      { expiresIn: "2h" }
-    );
-
-    user.token = token;
-    user.password = undefined;
-
+    await newUser.save();
     await sendApprovalEmail(email);
 
-    res.status(201).json(user);
+    res.status(200).json({
+      success: true,
+      message: "Successfully registered",
+    });
   } catch (error) {
-    console.log(error);
-    res.status(500).send('Error registering user');
+    console.error("Error registering user:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to register. Please try again later.",
+      error: error.message,
+    });
   }
 });
 
@@ -91,7 +88,8 @@ router.put('/update/:id', async (req, res) => {
       firstName,
       lastName,
       email,
-      password: hashedPassword
+      password: hashedPassword,
+      confirmPassword:hashedConfirmedPassword
     };
 
     await register.findByIdAndUpdate(id, updatedUser);
@@ -126,75 +124,95 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Route to fetch a user by ID
-router.get('/get/:id', async (req, res) => {
-  const { id } = req.params;
+
+// Get Single User by ID
+router.route("/get/:id").get(async (req, res) => {
+  const id = req.params.id;
 
   try {
-    const user = await register.findById(id);
-    res.status(200).send({ status: "User fetched", user });
-  } catch (err) {
-    console.log(err.message);
-    res.status(500).send({ status: "Error with fetching user", error: err.message });
-  }
-});
-
-// Route to login a user
-router.post('/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    // Validate the input
-    if (!email || !password) {
-      return res.status(400).json({ message: 'Please provide both email and password' });
+    const seeker = await register.findById(id);
+    if (!seeker) {
+      return res.status(404).json({
+        success: false,
+        message: "seeker not found",
+      });
     }
 
-    // Find the user by email
-    const user = await register.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ message: 'User is not registered' });
-    }
+    console.log("Fetched seeker:", seeker);
 
-    // Check if the password is correct
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return res.status(400).json({ message: 'Invalid password' });
-    }
-
-    // Generate a token
-    const token = jwt.sign(
-      { id: user._id, email: user.email, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: '2h' }
-    );
-
-    // Set token in a cookie
-    const options = {
-      expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 days
-      httpOnly: true,
-    };
-
-    // Prepare user data for response (without the password)
-    const userResponse = {
-      id: user._id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      role: user.role,
-    };
-
-    // Send the token and user data in the response
-    res.status(200).cookie('token', token, options).json({
+    res.status(200).json({
       success: true,
-      message: 'Login successful',
-      token,
-      user: userResponse,
+      message: "User found",
+      data: seeker,
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: 'Error logging in' });
+    console.error("Error fetching seeker:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch user",
+    });
   }
 });
+
+// Route to login a seeker 
+
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Find user by email
+    const seeker = await register.findOne({ email });
+
+    if (!seeker) {
+      return res.status(404).json({
+        success: false,
+        message: "Seeker not found",
+      });
+    }
+
+    // Check if password is correct
+    const checkCorrectPassword = await bcrypt.compare(password, seeker.password);
+
+    if (!checkCorrectPassword) {
+      return res.status(401).json({
+        success: false,
+        message: "Incorrect email or password",
+      });
+    }
+
+    // Create JWT token
+    const token = jwt.sign(
+      {
+        id: seeker._id,
+        role: seeker.role, // Assuming role is stored in the user document
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "15d" }
+    );
+
+    // Set token in the browser cookie
+    res.cookie("accessToken", token, {
+      httpOnly: true,
+      secure: true, // Enable for HTTPS
+      expires: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000), // 15 days
+    });
+
+    res.status(200).json({
+      token: token,
+      success: true,
+      message: "Successfully logged in",
+      data: { seeker: { ...seeker._doc, password: undefined }, role: seeker.role }, // Exclude password from response
+    });
+  } catch (error) {
+    console.error("Error logging in:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to login. Please try again later.",
+      error: error.message,
+    });
+  }
+});
+
 
 // Function to send approval email
 async function sendApprovalEmail(email) {

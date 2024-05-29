@@ -1,17 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { FaBarsStaggered, FaXmark } from "react-icons/fa6";
 import Switch from '@mui/material/Switch';
 import { FaRegUserCircle } from "react-icons/fa";
 import Dropdown from './Dropdown';
-
+import { AuthContext} from"../Component/context/AuthContext";
+import { toast } from "react-toastify"; 
+import "react-toastify/dist/ReactToastify.css";
 const Navbar = () => {
     const [isMenuOpen, setMenuOpen] = useState(false);
+    const { seeker, dispatch } = useContext(AuthContext);
 
     const handleMenuToggler = () => {
         setMenuOpen(!isMenuOpen);
     };
 
+    const handleLogout = () => {
+        dispatch({ type: "LOGOUT" });
+        window.location.href = "/home";
+      };
+      
+      useEffect(() => {
+        // Check if the toast message has been displayed
+        const toastDisplayed = localStorage.getItem("toastDisplayed");
+      
+        if (seeker && !toastDisplayed) {
+          // Display welcome message when user logs in
+          toast.success(`Welcome ${seeker.firstName}`);
+          // Set flag to indicate that the toast message has been displayed
+          localStorage.setItem("toastDisplayed", true);
+        }
+      }, [seeker]);
     const navItems = [
         { path: "/home", title: "Home" },
         { path: "/jobs", title: "Jobs" },
@@ -19,7 +38,7 @@ const Navbar = () => {
         { path: "/aboutus", title: "About Us" },
         { path: "/contactus", title: "Contact Us" },
     ];
-    const [role, setRole] = useState("user"); // State for role selection
+    
 
     return (
         <header className='max-w-screen-2xl container mx-auto xl:px-24 px-4 bg-white fixed top-0 z-50'>
@@ -40,10 +59,45 @@ const Navbar = () => {
                         </li>
                     ))}
                 </ul>
-                <div className='text-base text-primary font-medium space-x-5 hidden lg:flex items-center'>
-                    <Link to="/login" className='py-2 px-5 border rounded text-blue hover:bg-blue hover:text-white border-[#4bacd3] '>Login</Link>
-                    <Dropdown />
-                </div>
+                
+
+   {/* Signup and login */}
+   {seeker ? (
+            <div className="flex items-center space-x-4">
+              <span className="text-black">Welcome, {seeker.firstName}</span>
+              <button
+                onClick={handleLogout}
+                className="py-2 px-5 border rounded bg-blue text-white  hover:bg-blue dark:hover:text-white"
+              >
+                Logout
+              </button>
+               {/* User Profile */}
+    
+               <Dropdown />
+            </div>
+          ) : (
+
+        <div className="text base text-primary font-medium space-x-5 hidden lg:block">
+          <NavLink to="/login" className="py-2 px-5 bg-gray-300 border rounded  font-bold  dark:hover:text-white">
+            Log in
+          </NavLink>
+          
+        </div>   
+        
+
+      )}
+
+
+
+
+
+
+
+
+
+
+
+
                 <div className='md:hidden block'>
                     <button onClick={handleMenuToggler}>
                         {isMenuOpen ? <FaXmark className='w-5 h-5 text-primary' /> : <FaBarsStaggered className='w-5 h-5 text-primary' />}
@@ -63,7 +117,7 @@ const Navbar = () => {
                             </NavLink>
                         </li>
                     ))}
-                    <li className='text-white py-1'><Link to="/login" className='py-2 px-5 rounded'>Login</Link></li>
+                    
                 </ul>
             </div>
         </header>

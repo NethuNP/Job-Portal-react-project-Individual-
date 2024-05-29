@@ -24,14 +24,15 @@ const RegSchema = new Schema({
         required: false
     },   
 
-    token:{
+    /*token:{
         type:String,
         default:null
     },
-    
-    roles: {
+  
+*/
+    role: {
         type: String,
-        enum: [roles.admin,roles.employer, roles.user, roles.seeker],
+        enum: ["admin", "seeker",],
         default: roles.seeker,
         required: true
     }

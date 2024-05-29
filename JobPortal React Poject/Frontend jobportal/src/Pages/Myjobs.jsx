@@ -22,10 +22,12 @@ const Myjobs = () => {
   useEffect(() => {
     // Fetch jobs applied by logged-in user's email
     const fetchJobs = async () => {
+      if (!loggedInUserEmail) return; // Exit early if email is not set
+
       try {
-        const response = await axios.get('http://localhost:8070/jobs', {
+        const response = await axios.get('http://localhost:8070/myjobs', {
           params: {
-            email:user.email,
+            email: loggedInUserEmail,
           },
         });
         setJobs(response.data);
@@ -34,9 +36,7 @@ const Myjobs = () => {
       }
     };
 
-    if (loggedInUserEmail) {
-      fetchJobs();
-    }
+    fetchJobs();
   }, [loggedInUserEmail]);
 
   return (
