@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import EmpHeader from "../Component/EmpComponent/EmpHeader";
-import { FaDownload } from "react-icons/fa";
-import { GrView } from "react-icons/gr";
-import { FaTrash } from "react-icons/fa";
+import { FaDownload, FaTrash } from "react-icons/fa";
 import { MdFileDownloadDone } from "react-icons/md";
+import { AuthContext } from '../Component/context/AuthContext';
 
 const Applications = () => {
+  const { seeker } = useContext(AuthContext); 
   const [applications, setApplications] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4; // Adjust the number of items per page as needed
+  const itemsPerPage = 4; 
 
   useEffect(() => {
-    fetchApplications(); // Fetch applications data when the component mounts
+    fetchApplications(); 
   }, []);
 
   const fetchApplications = async () => {
@@ -33,14 +33,9 @@ const Applications = () => {
       const mimeType = application.mimeType;
 
       // Check MIME type to handle preview accordingly
-      if (mimeType.startsWith("image/")) {
-        // For images, open in a new tab
-        window.open(fileUrl, "_blank");
-      } else if (mimeType === "application/pdf") {
-        // For PDFs, open in a new tab
+      if (mimeType.startsWith("image/") || mimeType === "application/pdf") {
         window.open(fileUrl, "_blank");
       } else {
-        // For other types, attempt to open in a new tab
         window.open(fileUrl, "_blank");
       }
     } else {
@@ -53,7 +48,7 @@ const Applications = () => {
     if (application.application) {
       const link = document.createElement("a");
       link.href = application.application;
-      link.download = application.application.split("/").pop(); // Extract the file name from the URL
+      link.download = application.application.split("/").pop();
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -62,7 +57,6 @@ const Applications = () => {
       alert("Application file URL not found");
     }
   };
-  
 
   const handleDelete = async (applicationId) => {
     try {
@@ -198,13 +192,12 @@ const Applications = () => {
                             {application.postingDate}
                           </td>
                           <td className="px-6 py-4 text-center">
-                            {application.email}
+                            {seeker && seeker.email ? seeker.email : ""}
                           </td>
                           <td className="px-6 py-4 text-center">
                             {application.status}
                           </td>
                           <td className="px-6 py-4 text-center flex justify-center">
-                           
                             <button
                               className="bg-red-500 hover:bg-red-600 text-gray-200 font-bold px-1 py-1 rounded ml-2 mt-3"
                               onClick={() => handleDelete(application._id)}

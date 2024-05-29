@@ -5,8 +5,7 @@ import Creatable from "react-select/creatable";
 import EmpHeader from "../Component/EmpComponent/EmpHeader";
 
 const PostJob = () => {
-  const { register, formState: { errors } } = useForm();
-  
+  const { register, formState: { errors }, reset } = useForm();
 
   const [companyName, setCompanyName] = useState("");
   const [jobTitle, setJobTitle] = useState("");
@@ -72,7 +71,7 @@ const PostJob = () => {
     axios.post("http://localhost:8070/jobs/add", newJob)
       .then(() => {
         alert("Job Added");
-        
+        reset(); // Reset all form fields
       })
       .catch((err) => {
         alert(err);

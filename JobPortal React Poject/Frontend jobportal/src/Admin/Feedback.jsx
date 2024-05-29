@@ -4,13 +4,13 @@ import { FaTrash } from "react-icons/fa";
 import { RiMessage2Fill } from "react-icons/ri";
 import AdminHeader from '../Component/AdminComponent/AdminHeader';
 
-
 export default function JobCategory() {
     const [feedback, setFeedback] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [showReplyPopup, setShowReplyPopup] = useState(false);
     const [selectedFeedback, setSelectedFeedback] = useState(null);
     const [replyContent, setReplyContent] = useState("");
+    const [error, setError] = useState(null);
 
     const itemsPerPage = 5;
 
@@ -21,7 +21,7 @@ export default function JobCategory() {
                     setFeedback(res.data);
                 })
                 .catch((err) => {
-                    alert(err.message);
+                    setError(err.message);
                 });
         }
         getFeedback();
@@ -64,6 +64,18 @@ export default function JobCategory() {
         closeReplyPopup();
     };
 
+    const deleteFeedback = (feedbackId) => {
+        axios.delete(`http://localhost:8070/fedbacks/delete/${feedbackId}`)
+            .then((res) => {
+                const updatedFeedback = feedback.filter(item => item._id !== feedbackId);
+                setFeedback(updatedFeedback);
+                alert("Feedback deleted successfully");
+            })
+            .catch((err) => {
+                setError(err.message);
+            });
+    };
+
     return (
         <div>
             <AdminHeader />
@@ -102,6 +114,7 @@ export default function JobCategory() {
                                                     <td className="px-6 py-4 text-center flex justify-center">
                                                         <button
                                                             className="bg-red-500 hover:bg-red-600 text-gray-200 font-bold px-1 py-1 rounded ml-2 mt-3"
+                                                            onClick={() => deleteFeedback(feedbackItem._id)}
                                                         >
                                                             <FaTrash />
                                                         </button>

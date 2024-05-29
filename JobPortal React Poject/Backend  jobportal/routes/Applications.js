@@ -93,6 +93,22 @@ router.get("/download/:id", async (req, res) => {
     }
 });
 
+// Route to fetch applications by email
+router.get('/applications', async (req, res) => {
+    const { email } = req.query;
+
+    if (!email) {
+        return res.status(400).send('Email is required');
+    }
+
+    try {
+        const applications = await Application.find({ email });
+        res.json(applications);
+    } catch (error) {
+        res.status(500).send('Server error');
+    }
+});
+
 // Route to delete an application by ID
 router.delete('/delete/:id', async (req, res) => {
     try {

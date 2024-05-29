@@ -1,34 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { FaRegUser } from "react-icons/fa";
 import { IoSettingsOutline } from "react-icons/io5";
-import { PiSignOutBold } from "react-icons/pi";
+import { RiLogoutBoxRLine } from "react-icons/ri";
 import Switch from '@mui/material/Switch';
+import { AuthContext } from "./context/AuthContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const Dropdown = ({ history }) => {
+const Dropdown = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [role, setRole] = useState("user");
+  const { seeker, dispatch } = useContext(AuthContext);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const handleSwitch = () => {
-    if (role === 'user') {
-      setRole('employer');
-      window.location.href = '/employer/empdashboard';
-    } else {
-      setRole('user');
-      window.location.href = '/home';
-    }
+  const handleLogout = () => {
+    dispatch({ type: "LOGOUT" });
+    window.location.href = "/home";
   };
 
+  useEffect(() => {
+    // Check if the toast message has been displayed
+    const toastDisplayed = localStorage.getItem("toastDisplayed");
   
+    if (seeker && !toastDisplayed) {
+      // Display welcome message when user logs in
+      toast.success(`Welcome ${seeker.firstName}`);
+      // Set flag to indicate that the toast message has been displayed
+      localStorage.setItem("toastDisplayed", "true");
+    }
+  }, [seeker]);
 
   return (
-    <div className="flex items-center justify-end -mr-44 relative">
+    <div className="flex items-center justify-end relative">
       <button
         type="button"
-        className="flex text-sm bg-blue-950 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+        className="flex text-sm bg-blue-950 rounded-full md:me-0 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-400 "
         id="user-menu-button"
         aria-expanded={isDropdownOpen ? "true" : "false"}
         aria-controls="user-dropdown"
@@ -44,49 +52,51 @@ const Dropdown = ({ history }) => {
 
       {isDropdownOpen && (
         <div
-          className="absolute right-0 z-50 text-base list-none bg-white divide-y divide-gray-100 rounded-xl shadow dark:bg-blue-950 dark:divide-gray-60 mt-64 w-44 "
+          className="absolute right-0 z-50 text-base list-none bg-white divide-y divide-gray-100 rounded-xl shadow dark:bg-blue-950 dark:divide-gray-60 mt-72 w-[120px]"
           id="user-dropdown"
         >
           <div className="px-4 py-3 flex items-center justify-between">
             <div>
               <span className="block text-sm text-gray-900 dark:text-black">
-                Nethu
+              {seeker.firstName}
               </span>
               <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
-                nethu@gmail.com
+                {seeker.email}
               </span>
             </div>
 
-            <Switch
-              checked={role === "employer"}
-              onChange={handleSwitch}
-            />
+            {/* Assuming you need a Switch component */}
+           {/*} <Switch
+              checked={false} // Adjust this based on your role logic
+              onChange={() => {}}
+      />*/}
           </div>
-          <ul className="py-2" aria-labelledby="user-menu-button">
+          <ul className="py-2 bg-white rounded-xl w-56 px-10" aria-labelledby="user-menu-button">
             <li className="flex items-center">
-              <FaRegUser className="mr-2 ml-2" />
+              <FaRegUser  />
               <a
                 href="/userprofile"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                className=" px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white flex items-center"
               >
                 Profile
               </a>
             </li>
 
             <li className="flex items-center">
-              <IoSettingsOutline className="mr-2 ml-2" />
+              <IoSettingsOutline />
               <a
                 href="#"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white flex items-center"
               >
                 Settings
               </a>
             </li>
             <li className="flex items-center">
-              <PiSignOutBold className="mr-2 ml-2" />
+              <RiLogoutBoxRLine/>
               <a
-                href="/login"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                href="#"
+                onClick={handleLogout}
+                className=" px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white flex items-center"
               >
                 Sign out
               </a>

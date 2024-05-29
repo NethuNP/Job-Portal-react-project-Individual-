@@ -15,11 +15,7 @@ const Navbar = () => {
         setMenuOpen(!isMenuOpen);
     };
 
-    const handleLogout = () => {
-        dispatch({ type: "LOGOUT" });
-        window.location.href = "/home";
-      };
-      
+    
       useEffect(() => {
         // Check if the toast message has been displayed
         const toastDisplayed = localStorage.getItem("toastDisplayed");
@@ -64,13 +60,13 @@ const Navbar = () => {
    {/* Signup and login */}
    {seeker ? (
             <div className="flex items-center space-x-4">
-              <span className="text-black">Welcome, {seeker.firstName}</span>
-              <button
+              <span className="text-[#6f8ebd]">Welcome, {seeker.firstName}</span>
+             {/*} <button
                 onClick={handleLogout}
                 className="py-2 px-5 border rounded bg-blue text-white  hover:bg-blue dark:hover:text-white"
               >
                 Logout
-              </button>
+   </button>*/}
                {/* User Profile */}
     
                <Dropdown />
@@ -78,7 +74,7 @@ const Navbar = () => {
           ) : (
 
         <div className="text base text-primary font-medium space-x-5 hidden lg:block">
-          <NavLink to="/login" className="py-2 px-5 bg-gray-300 border rounded  font-bold  dark:hover:text-white">
+          <NavLink to="/login" className="py-2 px-5 bg-blue text-white border-2 border-blue  rounded  font-bold  hover:text-blue hover:bg-white">
             Log in
           </NavLink>
           

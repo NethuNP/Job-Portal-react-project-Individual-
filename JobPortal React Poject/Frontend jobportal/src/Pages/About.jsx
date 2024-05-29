@@ -11,7 +11,7 @@ const About = () => {
     <div className='max-w-screen-2xl container mx-auto xl:px-24 px-4 mt-24 pb-10'>
       <div className="grid gap-5 lg:px-10 py-12 mt-3 rounded-xl bg-gradient-to-b from-blue-300 to-blue-100 shadow-xl">
         {/* Image Section */}
-        <div className='relative w-full h-80 overflow-hidden rounded-lg shadow-2xl'>
+        <div className='relative w-full h-80 overflow-hidden rounded-lg shadow-3xl'>
           <video
             src="/images/vecteezy_a-man-sitting-at-a-desk-with-a-computer-and-a-magnifying-glass_36249554 (1).mp4" autoPlay muted loop
             className='w-full h-full object-cover  '
@@ -25,9 +25,9 @@ const About = () => {
           </div>
         </div>
         {/* Text Section */}
-        <div className='bg-white p-6 rounded-lg shadow-2xl'>
+        <div className='bg-[#b8ccf1] p-6 rounded-lg shadow-2xl'>
           <div className='text-4xl font-semibold text-blue mb-8'data-aos="zoom-in"> About Us </div>
-          <div className='bg-gray-100 border-2 rounded-lg p-6 shadow-2xl mb-8'data-aos="fade-up">
+          <div className='bg-white border-2 rounded-lg p-6 shadow-2xl mb-8'data-aos="fade-up">
             <p className='text-gray-700'>
               Welcome to JOBNEST, Sri Lanka's premier job portal connecting talented individuals with exciting career opportunities across the nation.
               <br /><br />
@@ -37,7 +37,7 @@ const About = () => {
             </p>
           </div>
           <div className='text-4xl font-semibold text-blue mb-8' data-aos="zoom-in"> Why Choose Us ?? </div>
-          <div className='bg-gray-100 border-2 rounded-lg p-6 shadow-2xl'data-aos="fade-up">
+          <div className='bg-white border-2 rounded-lg p-6 shadow-2xl'data-aos="fade-up">
             <p className='text-gray-700'>
               We have been able to win the trust of employers and clients for a long time and JobNest can identify us as a job portal that is constantly in touch with the job market.
               <br /><br />

@@ -10,11 +10,17 @@ import "aos/dist/aos.css";
 import Chatbot from "../Component/chatbot";
 
 const ContactUs = () => {
-  const sendData = (e) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    Aos.init({ duration: 3000 });
+  }, []);
+
+  const sendData = async (e) => {
     e.preventDefault();
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    const message = document.getElementById("message").value;
 
     const newFeedback = {
       name,
@@ -22,19 +28,17 @@ const ContactUs = () => {
       message,
     };
 
-    axios
-      .post("http://localhost:8070/fedbacks/add", newFeedback)
-      .then(() => {
-        alert("Feedback Added");
-      })
-      .catch((err) => {
-        alert(err);
-      });
+    try {
+      await axios.post("http://localhost:8070/fedbacks/add", newFeedback);
+      alert("Feedback Added");
+      setName("");
+      setEmail("");
+      setMessage("");
+    } catch (err) {
+      console.error("Error adding feedback:", err);
+      setError("There was an error adding the feedback.");
+    }
   };
-
-  useEffect(() => {
-    Aos.init({ duration: 3000 });
-  }, []);
 
   return (
     <div className="bg-gray-100 antialiased pt-5 mt-20 min-h-screen">
@@ -90,6 +94,8 @@ const ContactUs = () => {
                   id="name"
                   type="text"
                   placeholder="Your Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   className="ring-1 ring-gray-300 w-full rounded px-4 py-2 mt-2 outline-none focus:ring-2 focus:ring-blue bg-gray-100 text-black"
                 />
               </div>
@@ -101,6 +107,8 @@ const ContactUs = () => {
                   id="email"
                   type="email"
                   placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="ring-1 ring-gray-300 w-full rounded px-4 py-2 mt-2 outline-none focus:ring-2 focus:ring-blue bg-gray-100 text-black"
                 />
               </div>
@@ -112,6 +120,8 @@ const ContactUs = () => {
                   id="message"
                   placeholder="Message"
                   rows="4"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
                   className="ring-1 ring-gray-300 w-full rounded px-4 py-2 mt-2 outline-none focus:ring-2 focus:ring-blue bg-gray-100 text-black"
                 />
               </div>

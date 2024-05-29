@@ -1,61 +1,73 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
+import { AuthContext } from '../Component/context/AuthContext';
+import { FaUserTie } from "react-icons/fa";
+import { MdOutlineMailOutline } from "react-icons/md";
+import { TfiEmail } from "react-icons/tfi";
 
-const Myjobs = () => {
+const MyJobs = () => {
+  const { seeker } = useContext(AuthContext);
   const [jobs, setJobs] = useState([]);
-  const [loggedInUserEmail, setLoggedInUserEmail] = useState('');
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch logged-in user's email from your authentication state or context
-    const fetchLoggedInUser = async () => {
-      try {
-        const response = await axios.get('http://localhost:8070/registers/login'); // Replace with your endpoint to get logged-in user details
-        setLoggedInUserEmail(response.data.email); // Assuming the endpoint returns the logged-in user's email
-      } catch (error) {
-        console.error('Error fetching logged-in user:', error);
-      }
-    };
-
-    fetchLoggedInUser();
-  }, []);
-
-  useEffect(() => {
-    // Fetch jobs applied by logged-in user's email
+    // Fetch jobs applied by logged-in seeker's email
     const fetchJobs = async () => {
-      if (!loggedInUserEmail) return; // Exit early if email is not set
+      if (!seeker || !seeker.email) return; // Exit early if seeker or email is not set
 
       try {
-        const response = await axios.get('http://localhost:8070/myjobs', {
+        const response = await axios.get('http://localhost:8070/jobs', {
           params: {
-            email: loggedInUserEmail,
+            email: seeker.email,
           },
         });
         setJobs(response.data);
       } catch (error) {
         console.error('Error fetching jobs:', error);
+        setError('There was an error fetching the jobs.');
       }
     };
 
     fetchJobs();
-  }, [loggedInUserEmail]);
+  }, [seeker]);
 
   return (
-    <div className="myjobs">
-      <h1>Jobs Applied by Logged-in User</h1>
-      <p>Logged in as: {loggedInUserEmail}</p>
-      <ul>
-        {jobs.map((job) => (
-          <li key={job._id}>
-            <h3>{job.title}</h3>
-            <p>{job.description}</p>
-            <p>Company: {job.company}</p>
-            <p>Location: {job.location}</p>
-            {/* Add more details as needed */}
-          </li>
-        ))}
-      </ul>
+    <div className="myjobs mt-28 bg-[#b8ccf1] grid md:grid-cols-2 gap-5 lg:px-24 px-4 py-12 h-[300px] mb-10 rounded-3xl shadow-3xl">
+      <div className="left-column bg-gray-100 w-80 pl-7 pt-10 rounded-2xl shadow-3xl">
+        {seeker && (
+          <div className="flex items-center gap-3 font-semibold">
+            <FaUserTie className="inline" /> :
+            <p>{seeker.firstName} {seeker.lastName}</p>
+          </div>
+        )}
+        {seeker && (
+          <div className="flex items-center gap-3 font-semibold space-between">
+            <MdOutlineMailOutline className="inline" /> :
+            <p>{seeker.email}</p>
+          </div>
+        )}
+        {error && (
+          <p className="error">{error}</p>
+        )}
+      </div>
+      <div className="right-column">
+        <ul>
+          {jobs.map((job) => (
+            <li key={job._id} className="mb-5">
+              <h3>{job.title}</h3>
+              <p>{job.description}</p>
+              <p>Company: {job.company}</p>
+              <p>Location: {job.location}</p>
+              {/* Add more details as needed */}
+            </li>
+          ))}
+          {jobs.length === 0 && !error && (
+            <p>No jobs found.</p>
+          )}
+        </ul>
+      </div>
     </div>
   );
 };
 
-export default Myjobs;
+export default MyJobs;
