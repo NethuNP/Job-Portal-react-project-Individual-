@@ -34,6 +34,8 @@ import ApprovedJobs from "../Admin/ApprovedJobs";
 import Chatbot from "../Component/chatbot";
 import Feedback from "../Admin/Feedback";
 import Myjobs from "../Pages/Myjobs";
+import Plans from "../Employer/Plans";
+import UserProfile from "../Pages/UserProfile";
 
 
 //import Feedbacks from "../Admin/Feedbacks";
@@ -52,10 +54,11 @@ const Router= () => {
       <Route path="/myjobs" element={<Myjobs/>} />
       < Route path= "/aboutus"  element= {<About />}/> 
       < Route path= "/contactus"  element= {<ContactUs />}/>  
-      <Route path="/login" element={<Login/>}/>
+      <Route path="/login" element= {<Login/>}/>
       <Route path="/signup" element={<SignUp/>}/>
       <Route path="/emplogin" element={<EmpLogin/>}/>
       <Route path="/jobs/:id" element={<JDetails/>}/>
+      <Route path="/userprofile" element={<UserProfile/>}/>
     
      
    
@@ -85,10 +88,14 @@ const Router= () => {
         <Route path ="/employer/empdashboard" element={<EmpDashboard/>}/>
         <Route path="/employer" element={<Navigate to="/emplogin"/>}/>
         <Route path="/employer/postjob" element={<PostJob/>}/>
+        <Route path="/employer/plans" element={<Plans/>}/>
         <Route path="/employer/managejob" element ={<ManageJob/>}/>
         <Route path="/employer/applications" element={<Applications/>}/>
         <Route path="/employer/logout" element={<Emplogout/>}/>
         </Route>
+
+        
+        
 
 
 

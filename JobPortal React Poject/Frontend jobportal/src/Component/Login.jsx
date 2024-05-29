@@ -23,7 +23,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
       // Validate email and password
       if (email === "") {
@@ -37,11 +37,12 @@ const Login = () => {
       } else if (!remember) {
         toast.error("Remember me checkbox is required");
       } else {
-        const response = await axios.post('http://localhost:8070/registers/login', { email, password, role });
+        const response = await axios.post('http://localhost:8070/registers/login', { email, password });
         const data = response.data;
-
-        if (data.status) {
+  
+        if (data.success) { // Assuming your backend returns 'success' field for successful login
           toast.success("Login Successful");
+  
           switch (role) {
             case 'user':
               window.location.href = '/home';
@@ -55,6 +56,7 @@ const Login = () => {
             default:
               window.location.href = '/home';
           }
+  
           setEmail("");
           setPassword("");
         } else {
@@ -62,11 +64,15 @@ const Login = () => {
         }
       }
     } catch (error) {
-      console.error('Error during login:', error);
-      toast.error('An error occurred during login.');
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message);
+      } else {
+        console.error('Error during login:', error);
+        toast.error('An error occurred during login.');
+      }
     }
   };
-
+  
   const handleSendOtp = async (e) => {
     e.preventDefault();
 
@@ -200,14 +206,7 @@ const Login = () => {
                       Forget Password?
                     </a>
                   </div>
-                  <div className="flex items-center justify-between mb-5 absolute top-0 right-0 mt-3 mr-3  px-2 rounded-full">
-                    <span className="text-blue font-bold">Post Job</span>
-                    <span className="text-blue font-semibold "></span>
-                    <Switch
-                      checked={role === "employer"}
-                      onChange={() => setRole(role === "employer" ? "user" : "employer")}
-                    />
-                  </div>
+                  
                   <button
                     type="submit"
                     className="border-2 border-blue-500 text-blue-500 rounded-full px-12 py-2 inline-block font-semibold hover:bg-blue hover:text-white"

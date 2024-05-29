@@ -99,12 +99,12 @@ const Home = () => {
 
         <div>
         <Slider/>
-        </div>
+  </div>
 
         
 
         {/* Subscribe Us Section */}
-        <div className="flex-col md:flex-row flex items-center justify-center p-6 bg-white  rounded-tl-[35px] rounded-br-[35px] shadow-3xl mt-20 border-gray-300"data-aos="fade-down">
+        <div className="flex-col md:flex-row flex items-center justify-center p-6 bg-white  rounded-tl-[35px] rounded-br-[35px] shadow-3xl mt-20 border-gray-300"data-aos="fade-up">
           <div className="md:w-1/4 w-full mb-6 md:mb-0 pr-10">
             <img
               src="/images/44125599-removebg-preview.png"

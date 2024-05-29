@@ -1,19 +1,14 @@
-const router = require ("express").Router();
-let register = require ("../models/register");
-const nodemailer=require('nodemailer');
-
-require('dotenv').config();
-
+const express = require('express');
+const router = express.Router();
+const register = require('../models/register');
+const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const {roles}=require('../utils/constants');
+require('dotenv').config();
+const { roles } = require('../utils/constants');
 
-
-
-
-//middleware for authenticating role
+// Middleware for authenticating role
 const authenticateRole = (role) => (req, res, next) => {
-  // Check if user is authenticated and has the required role
   const token = req.headers['authorization'];
   if (!token) {
     return res.status(401).send('Unauthorized: No token provided');
@@ -33,253 +28,200 @@ const authenticateRole = (role) => (req, res, next) => {
   });
 };
 
-
-
 // Route for registering a new user
 router.post('/add', async (req, res) => {
   try {
-    let role = roles.seeker; // Default role is 'member'
-    if (req.body.email === 'admin@gmail.com') {
-      role = roles.admin; // If email is admin, set role to 'admin'
+    const { firstName, lastName, email, password, confirmPassword } = req.body;
+
+    if (!(firstName && lastName && email && password && confirmPassword)) {
+      return res.status(400).send('All fields are compulsory');
     }
-    const newUser = new register({ ...req.body, role });
-    await newUser.save();
-    res.status(200).send('User added successfully');
-  } catch (err) {
-    console.error('Error adding user:', err);
-    res.status(500).send('Error registering user: ' + err.message);
+
+    if (password !== confirmPassword) {
+      return res.status(400).send('Passwords do not match');
+    }
+
+    const existingUser = await register.findOne({ email });
+    if (existingUser) {
+      return res.status(401).send('User already exists');
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const user = await register.create({
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword
+    });
+
+    const token = jwt.sign(
+      { id: user._id, email, role: roles.user }, // Assuming new users get 'user' role by default
+      process.env.JWT_SECRET,
+      { expiresIn: "2h" }
+    );
+
+    user.token = token;
+    user.password = undefined;
+
+    await sendApprovalEmail(email);
+
+    res.status(201).json(user);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('Error registering user');
   }
 });
 
+// Route to update a user
+router.put('/update/:id', async (req, res) => {
+  const { id } = req.params;
+  const { firstName, lastName, email, password, confirmPassword } = req.body;
 
+  if (password !== confirmPassword) {
+    return res.status(400).send('Passwords do not match');
+  }
 
-
-
-/*
-
-//Insert Route
-
-router.post('/add', async (req, res) => {
-    try {
-      const {
-        firstName,
-        lastName,
-        email,
-        password,
-        confirmPassword
-        } = req.body;
-
-
-        //Check if email already exist
-
-        const existingUser =await register.findOne ({email: email});
-        if (existingUser){
-          return res.status (400).send ('Email already exists');
-        }
-             // Generate salt
+  try {
     const salt = await bcrypt.genSalt(10);
-
-    // Hash password and confirmPassword
     const hashedPassword = await bcrypt.hash(password, salt);
-    const hashedConfirmedPassword = await bcrypt.hash(confirmPassword, salt); 
 
-      const newRegister = new register({
-        firstName,
-        lastName,
-        email,
-        password:hashedPassword,
-        confirmPassword:hashedConfirmedPassword
-       
-      });
-  
-      await newRegister.save();
-      await sendApprovalEmail(email);
-  
-      res.json("User added successfully");
-    } catch (err) {
-      console.error(err);
-      res.status(500).send("Failed to add User");
-    }
-  });
-*/
+    const updatedUser = {
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword
+    };
 
-
-
-
-        //fetch
-
-    
-    router.route ("/").get ((req,res)=>{
-
-        register.find().then ((registers) => {
-
-                res.json(registers)
-
-        }).catch((err)=>{
-
-            console.log(err)
-        })
-
-    })
-
-
-router.route ("/update/:id").put(async(req,res)=>{
-    let registerId = req.params.id;
-    const { 
-        firstName,
-        lastName,
-        email,
-        password,
-        confirmPassword
-    } =req.body;    //D structure method 
- 
-    const updateRegister ={
-        firstName,
-        lastName,
-        email,
-        password,
-        confirmPassword
-       
-
-    }
-
-    const update = await register.findByIdAndUpdate(registerId, updateRegister)
-    .then (() => {
-    res.status (200).send ({status: "User updated" })
-    }).catch ((err)=>{
-
+    await register.findByIdAndUpdate(id, updatedUser);
+    res.status(200).send({ status: "User updated" });
+  } catch (err) {
     console.log(err);
-    res.status(500).send ({status: "Error with updating user" , error: err.message})
+    res.status(500).send({ status: "Error with updating user", error: err.message });
+  }
+});
 
+// Route to delete a user
+router.delete('/delete/:id', async (req, res) => {
+  const { id } = req.params;
 
+  try {
+    await register.findByIdAndDelete(id);
+    res.status(200).send({ status: "User deleted" });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send({ status: "Error with deleting user", error: err.message });
+  }
+});
 
+// Route to fetch all users
+router.get('/', async (req, res) => {
+  try {
+    const users = await register.find();
+    res.json(users);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('Error fetching users');
+  }
+});
 
-    })
+// Route to fetch a user by ID
+router.get('/get/:id', async (req, res) => {
+  const { id } = req.params;
 
-})
-
-router.route ("/delete/:id") .delete (async (req ,res) => {
-    let registerId =req.params.id;
-
-    await register.findByIdAndDelete (registerId)
-    .then (() =>{
-        res.status(200).send ({status:"User deleted"});
-    }).catch ((err)=>{
-
-        console.log(err.message);
-        res.status(500).send ({status: "Error with delete User" , error :err.message});
-
-
-    })
-    
-})
-
-
-// fetch data from one userid
-
-router.route("/get/:id").get(async (req,res) => {
-
-    let registerId =req.params.id;
-    const Register = await register.findById(registerId) 
-    .then ((register) =>{
-        res.status(200).send({status: "user fetched",register })
-    }).catch (() => {
-            console.log(err.message);
-            res.status(500).send ({status: "Error with get register" , error : err.message});
-
-    })
-})
-
-
+  try {
+    const user = await register.findById(id);
+    res.status(200).send({ status: "User fetched", user });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send({ status: "Error with fetching user", error: err.message });
+  }
+});
 
 // Route to login a user
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-
   try {
-    // Find user by email
-    const seeker = await register.findOne({ email: email });
-    if (!seeker) {
-      return res.status(400).json({ message: 'passenger is not registered' });
+    const { email, password } = req.body;
+
+    // Validate the input
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Please provide both email and password' });
     }
 
-    // Compare password
-    if (password !== seeker.password) {
+    // Find the user by email
+    const user = await register.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: 'User is not registered' });
+    }
+
+    // Check if the password is correct
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
       return res.status(400).json({ message: 'Invalid password' });
     }
 
-    // Determine user role
-    let role = roles.seeker;
-    if (req.body.email === 'admin@gmail.com') {
-      role = roles.admin;
-    }
-    else role=roles.employer;
-    
+    // Generate a token
+    const token = jwt.sign(
+      { id: user._id, email: user.email, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '2h' }
+    );
 
-    // Generate JWT token with role information
-    const token = jwt.sign({ email: seeker.email, role: role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    // Set token in a cookie
+    const options = {
+      expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 days
+      httpOnly: true,
+    };
 
-    // Set token as a cookie
-    res.cookie('token', token, { httpOnly: true, maxAge: 360000 });
+    // Prepare user data for response (without the password)
+    const userResponse = {
+      id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      role: user.role,
+    };
 
-    return res.json({ status: true, message: "Login successfully", role: role });
-   
+    // Send the token and user data in the response
+    res.status(200).cookie('token', token, options).json({
+      success: true,
+      message: 'Login successful',
+      token,
+      user: userResponse,
+    });
   } catch (error) {
-    console.error('Error during login:', error);
-    return res.status(500).json({ message: 'Internal Server Error' });
+    console.log(error);
+    res.status(500).json({ message: 'Error logging in' });
   }
 });
-/*
-    // Route to login 
-router.post('/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await register.findOne({ email: email });
-    if (!user) {
-      return res.status(400).json({ status: false, message: 'User is not registered' });
-    }
-
-    const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword) {
-      return res.status(400).json({ status: false, message: 'Invalid password' });
-    }
-
-    const token = jwt.sign({ email: user.email }, process.env.KEY, { expiresIn: '1h' });
-    res.cookie('token', token, { httpOnly: true, maxAge: 360000 });
-    return res.json({ status: true, message: "Login successfully" });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ status: false, message: 'Internal server error' });
-  }
-});*/
 
 // Function to send approval email
 async function sendApprovalEmail(email) {
   try {
-    // Create a transporter object using SMTP transport
     let transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 465,
-      secure: true, // false for other ports
+      secure: true,
       auth: {
-        user: 'jobnestlanka@gmail.com', // your email
-        pass: 'setk uqql cczt jvee ' // your password
+        user: 'jobnestlanka@gmail.com',
+        pass: process.env.EMAIL_PASSWORD
       }
     });
 
-    // send mail with defined transport object and capture the result
     let info = await transporter.sendMail({
-      from: 'jobnestlanka@gmail.com', // sender address
-      to: email, // list of receivers
-      subject: 'Approval Email', // Subject line
-      text: `Your JOBNEST account has been approved ✅! . 
-            your email : ${email} 
-            Hurry Up...🥳🥳🥳 Log in to your account and access the world of jobs with us...Thanks-JOBNEST Team`
+      from: 'jobnestlanka@gmail.com',
+      to: email,
+      subject: 'Approval Email',
+      text: `Your JOBNEST account has been approved ✅! 
+            Your email: ${email} 
+            Hurry up...🥳🥳🥳 Log in to your account and access the world of jobs with us... Thanks - JOBNEST Team`
     });
 
     console.log('Message sent: %s', info.messageId);
   } catch (error) {
     console.error('Error sending approval email:', error);
-    }
-  }
-module.exports =router;
+  }
+}
+
+module.exports = router;

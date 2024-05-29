@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { NavLink, Link } from "react-router-dom";
 import { FaBarsStaggered, FaXmark } from "react-icons/fa6";
 import Switch from '@mui/material/Switch';
+import { FaRegUserCircle } from "react-icons/fa";
+import Dropdown from './Dropdown';
 
 const Navbar = () => {
     const [isMenuOpen, setMenuOpen] = useState(false);
@@ -13,12 +15,11 @@ const Navbar = () => {
     const navItems = [
         { path: "/home", title: "Home" },
         { path: "/jobs", title: "Jobs" },
-        {path:"/myjobs" , title:"My Jobs"},
+        { path: "/myjobs", title: "My Jobs" },
         { path: "/aboutus", title: "About Us" },
         { path: "/contactus", title: "Contact Us" },
     ];
     const [role, setRole] = useState("user"); // State for role selection
-
 
     return (
         <header className='max-w-screen-2xl container mx-auto xl:px-24 px-4 bg-white fixed top-0 z-50'>
@@ -39,16 +40,9 @@ const Navbar = () => {
                         </li>
                     ))}
                 </ul>
-                <div className='text-base text-primary font-medium space-x-5 hidden lg:block'>
-                    <div>
-                    
-                  
-                    <Link to="/login" className='py-2 px-5 border rounded text-blue hover:bg-blue hover:text-white border-[#4bacd3] ml-5'>Login</Link>
-                   {/*} <Link to="/login" className='py-2 px-5 border rounded bg-[#4F81C7] text-white hover:bg-white hover:text-blue border-[#4bacd3] '>Post Job</Link>*/}
-                 {/*</div>  <div className="flex items-center justify-between  mb-5 absolute top-0 right-0  mr-3 bg-gray-200 px-2 rounded-full mt-6">*/}
-                    
-                  </div>
-                   
+                <div className='text-base text-primary font-medium space-x-5 hidden lg:flex items-center'>
+                    <Link to="/login" className='py-2 px-5 border rounded text-blue hover:bg-blue hover:text-white border-[#4bacd3] '>Login</Link>
+                    <Dropdown />
                 </div>
                 <div className='md:hidden block'>
                     <button onClick={handleMenuToggler}>

@@ -5,10 +5,11 @@ import { IoIosArrowBack } from "react-icons/io";
 import { MdPostAdd, MdManageAccounts } from "react-icons/md";
 import { FaRegNewspaper } from "react-icons/fa";
 import { FaRegUserCircle } from "react-icons/fa";
+import { FaGem } from "react-icons/fa";
 
 export const EmpSidebar = () => {
   return (
-    <div className="top-0 left-0 bg-[#1E0342] text-white shadow-xl z-[999] w-[10rem] max-w-[10rem] overflow-hidden h-screen">
+    <div className="top-0 left-0 bg-[#1E0342] text-white shadow-xl z-[999] w-[10rem] max-w-[10rem] overflow-hidden h-screen fixed">
       <FaRegUserCircle size={50} color="white" className="ml-12 mt-6" />
       <div className="px-[15px] py-[30px] flex items-center justify-center border-b-[1px] border-[#EDEDED]/[0.3]">
         <h1 className="text-white text-[20px] leading-[24px] font-extrabold cursor-pointer">
@@ -26,10 +27,17 @@ export const EmpSidebar = () => {
           </a>
         </div>
 
-        <div className="py-[20px] border-b-[1px] border-[#EDEDED]/[0.3] w-full px-2">
+        <div className="py-[20px] border-b-[1px] border-[#EDEDED]/[0.3] w-full px-2 gap-[15px]">
           <a href="/employer/postjob" className="flex items-center gap-[10px]">
             <MdPostAdd color="white" />
             <button className="text-white font-normal">Post Job</button>
+          </a>
+        </div>
+
+        <div className="py-[20px] border-b-[1px] border-[#EDEDED]/[0.3] w-full px-2">
+          <a href="/employer/plans" className="flex items-center gap-[10px]">
+            <FaGem color="white" />
+            <button className="text-white font-normal">Packages</button>
           </a>
         </div>
 
@@ -48,7 +56,7 @@ export const EmpSidebar = () => {
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full px-5 pb-10">
+      <div className="absolute bottom-0 left-0 w-full px-5 pb-5">
         <a href="/login" className="flex items-center gap-[10px]">
           <LuLogOut color="white" />
           <button className="text-white font-normal">LogOut</button>

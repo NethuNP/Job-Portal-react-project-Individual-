@@ -72,6 +72,7 @@ const PostJob = () => {
     axios.post("http://localhost:8070/jobs/add", newJob)
       .then(() => {
         alert("Job Added");
+        
       })
       .catch((err) => {
         alert(err);
@@ -154,7 +155,7 @@ const PostJob = () => {
                 <label className="block mb-2 font-semibold">Job Location</label>
                 <input
                   type="text"
-                  placeholder="Ex: New York"
+                  placeholder="Ex: Colombo"
                   {...register("jobLocation")}
                   className="block w-full flex-1 border-1 bg-white py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6 border-2 border-neutral-200"
                   onChange={(e) => setJobLocation(e.target.value)}

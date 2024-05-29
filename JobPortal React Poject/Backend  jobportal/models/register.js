@@ -17,16 +17,22 @@ const RegSchema = new Schema({
     },
     password: {
         type: String,
-        required: true
+        required: false
     },
     confirmPassword: { 
         type: String,
-        required: true
+        required: false
     },   
+
+    token:{
+        type:String,
+        default:null
+    },
+    
     roles: {
         type: String,
         enum: [roles.admin,roles.employer, roles.user, roles.seeker],
-        default: roles.user,
+        default: roles.seeker,
         required: true
     }
    
