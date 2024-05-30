@@ -52,7 +52,7 @@ const Dropdown = () => {
 
       {isDropdownOpen && (
         <div
-          className="absolute right-0 z-50 text-base list-none bg-white divide-y divide-gray-100 rounded-xl shadow dark:bg-blue-950 dark:divide-gray-60 mt-72 w-[120px]"
+          className="absolute right-0 z-50 text-base list-none bg-white divide-y divide-gray-100 rounded-xl shadow dark:bg-blue-950 dark:divide-gray-60 mt-72"
           id="user-dropdown"
         >
           <div className="px-4 py-3 flex items-center justify-between">

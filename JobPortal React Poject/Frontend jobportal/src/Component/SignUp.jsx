@@ -81,19 +81,19 @@ const SignUp = () => {
       <div className="container bg-gray-100 mx-auto">
         <div className="flex flex-col lg:flex-row w-10/12 lg:w-8/12 bg-white rounded-2xl mx-auto shadow-2xl overflow-hidden" data-aos="zoom-out">
           <div
-            className="w-full lg:w-2/5 flex flex-col items-center justify-center p-12"
+            className="w-full lg:w-2/5 flex flex-col items-center justify-center"
             style={{ backgroundImage: "url('/images/27053.jpg')" }}>
 
-            <h2 className="text-3xl font-bold mb-3 text-white ">Welcome!</h2>
+            <h2 className="text-3xl font-bold mb-3 text-white ">Register as Company</h2>
             <div className="border-2 w-10 border-white mb-3"></div>
             <p className="mb-6 text-white text-center">
-              You have already an Account, Log-in here
+              Want to post jobs for your <br/> company
             </p>
             <a
-              href="./login"
+              href="./employer/empsignup"
               className="border-2 border-white rounded-full px-12 py-2 inline-block font-semibold hover:bg-white hover:text-black text-slate-200 "
             >
-              Sign In
+              Click here
             </a>
           </div>
           <div className="w-full lg:w-3/5 py-10 px-12 bg-white">

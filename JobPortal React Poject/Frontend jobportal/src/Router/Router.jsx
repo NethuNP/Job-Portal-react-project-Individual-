@@ -36,6 +36,8 @@ import Feedback from "../Admin/Feedback";
 import Myjobs from "../Pages/Myjobs";
 import Plans from "../Employer/Plans";
 import UserProfile from "../Pages/UserProfile";
+import EmpSignup from "../Employer/EmpSignup";
+
 
 
 //import Feedbacks from "../Admin/Feedbacks";
@@ -87,12 +89,16 @@ const Router= () => {
         <Route path="/employer" element={<EmpLayout/>}>
         <Route path ="/employer/empdashboard" element={<EmpDashboard/>}/>
         <Route path="/employer" element={<Navigate to="/emplogin"/>}/>
+        
         <Route path="/employer/postjob" element={<PostJob/>}/>
         <Route path="/employer/plans" element={<Plans/>}/>
         <Route path="/employer/managejob" element ={<ManageJob/>}/>
         <Route path="/employer/applications" element={<Applications/>}/>
         <Route path="/employer/logout" element={<Emplogout/>}/>
+        
         </Route>
+
+        <Route path="/employer/empsignup" element={<EmpSignup/>}/>
 
         
         
