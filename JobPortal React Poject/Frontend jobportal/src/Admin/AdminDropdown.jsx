@@ -45,19 +45,19 @@ const AdminDropdown = () => {
         <span className="sr-only">Open user menu</span>
         <img
           className="h-12 w-12 rounded-full"
-          src="./images/9131529.png"
+          src="/images/9131529.png"
           alt="user photo"
         />
       </button>
 
       {isDropdownOpen && (
         <div
-          className="absolute right-0 z-50 text-base list-none bg-white divide-y divide-gray-100 rounded-xl shadow dark:bg-blue-950 dark:divide-gray-60 w-auto mt-64"
+          className="absolute right-0 z-50 text-base list-none bg-white divide-y divide-gray-100  shadow dark:bg-blue-950 dark:divide-gray-60 w-auto mt-64"
           id="user-dropdown"
         >
           <div className="px-4 py-3 flex items-center justify-between">
             <div>
-              <span className="block text-sm text-gray-900 dark:text-black">
+              <span className="block text-sm text-blue font-semibold">
               {seeker.firstName}
               </span>
               <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
@@ -71,8 +71,8 @@ const AdminDropdown = () => {
               onChange={() => {}}
       />*/}
           </div>
-          <ul className="py-2" aria-labelledby="user-menu-button">
-            <li className="flex items-center">
+          <ul className="py-2 " aria-labelledby="user-menu-button ">
+            <li className="flex items-center pl-5 hover:bg-gray-100 dark:hover:bg-gray-600">
               <FaRegUser  />
               <a
                 href="/userprofile"
@@ -82,7 +82,7 @@ const AdminDropdown = () => {
               </a>
             </li>
 
-            <li className="flex items-center">
+            <li className="flex items-center pl-5 hover:bg-gray-100 dark:hover:bg-gray-600">
               <IoSettingsOutline />
               <a
                 href="#"
@@ -91,7 +91,7 @@ const AdminDropdown = () => {
                 Settings
               </a>
             </li>
-            <li className="flex items-center">
+            <li className="flex items-center pl-5 hover:bg-gray-100 dark:hover:bg-gray-600">
               <RiLogoutBoxRLine/>
               <a
                 href="#"

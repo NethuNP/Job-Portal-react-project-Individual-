@@ -35,7 +35,8 @@ const registerRouter = require ("./routes/registers.js");
 const approvedJobRouter = require("./routes/ApprovedJobs.js");
 const applicationRouter =require ("./routes/Applications.js");
 const employerRouter =require ("./routes/Employers.js");
-const fedbackRouter = require ("./routes/Fedbacks.js")
+const fedbackRouter = require ("./routes/Fedbacks.js");
+const empsignupsRouter = require ("./routes/EmpSignups.js")
 
 
 
@@ -48,7 +49,10 @@ app.use(cors());
 app.use(express.json());
 app.use('/applications', applicationRouter);
 app.use('/employers', employerRouter);
-app.use ('/fedbacks', fedbackRouter)
+app.use ('/fedbacks', fedbackRouter);
+app.use ('/empsignups',empsignupsRouter)
+
+
 
 
 

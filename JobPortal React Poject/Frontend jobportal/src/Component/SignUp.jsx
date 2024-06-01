@@ -90,7 +90,7 @@ const SignUp = () => {
               Want to post jobs for your <br/> company
             </p>
             <a
-              href="./employer/empsignup"
+              href="./empsignup"
               className="border-2 border-white rounded-full px-12 py-2 inline-block font-semibold hover:bg-white hover:text-black text-slate-200 "
             >
               Click here

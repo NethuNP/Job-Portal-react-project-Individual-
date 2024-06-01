@@ -3,6 +3,7 @@ const multer = require('multer');
 const Application = require('../models/Application');
 const router = express.Router();
 const fs = require('fs');
+const path = require('path'); // Added path module
 
 const directory = './uploads';
 
@@ -86,9 +87,26 @@ router.get("/download/:id", async (req, res) => {
         if (!filePath) {
             return res.status(404).send("Application file not found");
         }
-        res.download(filePath);
+
+        // Check if the file exists
+        fs.access(filePath, fs.constants.F_OK, (err) => {
+            if (err) {
+                console.error(err);
+                return res.status(404).send("Application file not found");
+            }
+
+            // Set headers to force download
+            const fileName = path.basename(filePath);
+            const mimeType = application.mimeType;
+            res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
+            res.setHeader("Content-Type", mimeType);
+
+            // Create a read stream from the file and pipe it to the response
+            const fileStream = fs.createReadStream(filePath);
+            fileStream.pipe(res);
+        });
     } catch (err) {
-        console.log(err);
+        console.error(err);
         res.status(500).send("Error downloading application file");
     }
 });

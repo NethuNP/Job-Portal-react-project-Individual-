@@ -1,24 +1,18 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
-import Modal from "react-modal";
 import { FaFacebookF, FaLinkedinIn, FaGoogle, FaRegEnvelope } from "react-icons/fa";
 import { MdLockOutline } from "react-icons/md";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Aos from "aos";
-import "aos/dist/aos.css";
-import { AuthContext} from"../Component/context/AuthContext";
-import { useNavigate } from 'react-router-dom'; 
-
+import { AuthContext } from "../Component/context/AuthContext";
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const [email, setEmail] = useState(""); 
-  const [password, setPassword] = useState(""); 
-  const [remember, setRemember] = useState(false); 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [remember, setRemember] = useState(false);
   const { dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
-
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,39 +22,67 @@ const Login = () => {
         toast.error("Email and password are required.");
         return;
       }
-      
+
       if (!remember) {
         toast.error("Remember me option is required.");
         return;
       }
-      
 
-      const response = await axios.post('http://localhost:8070/registers/login', { email, password });
+      let response;
 
-      const { data } = response;
+      try {
+        // Attempt login as seeker
+        response = await axios.post('http://localhost:8070/registers/login', { email, password });
 
-      if (data.success) {
-        toast.success(data.message);
+        if (response.data.success) {
+          const { data } = response;
+          toast.success(data.message);
 
-        if (data.data.role === "seeker") {
-          navigate("/home");
-        } else if (data.data.role === "admin") {
-          navigate("/admin/dashboard");
+          if (data.data.role === "seeker") {
+            navigate("/home");
+          } else if (data.data.role === "admin") {
+            navigate("/admin/dashboard");
+          }
+
+          dispatch({ type: "LOGIN_SUCCESS", payload: data.data.seeker });
+          setEmail("");
+          setPassword("");
+          setRemember(false);
+          return; // Exit function after successful login
         }
-
-        dispatch({ type: "LOGIN_SUCCESS", payload: data.data.seeker });
-        setEmail("");
-        setPassword("");
-        setRemember("");
-      } else {
-        toast.error(data.message || "Login failed");
+      } catch (error) {
+        console.error("Seeker login error:", error);
       }
+
+      try {
+        // Attempt login as employer
+        response = await axios.post('http://localhost:8070/empsignups/login', { email, password });
+
+        if (response.data.success) {
+          const { data } = response;
+          toast.success(data.message);
+
+          if (data.data.role === "employer") {
+            navigate("/employer/empdashboard");
+          }
+
+          dispatch({ type: "LOGIN_SUCCESS", payload: data.data.employer });
+          setEmail("");
+          setPassword("");
+          setRemember(false);
+          return; // Exit function after successful login
+        }
+      } catch (error) {
+        console.error("Employer login error:", error);
+      }
+
+      // If no successful login occurs, show error message
+      toast.error("Login failed. Please check your credentials.");
     } catch (error) {
       console.error("Error during login:", error);
       toast.error("An error occurred during login.");
     }
   };
-
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-gray-100 pt-2 mt-12">
       <div className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center bg-gray-100">

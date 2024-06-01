@@ -52,12 +52,12 @@ const Dropdown = () => {
 
       {isDropdownOpen && (
         <div
-          className="absolute right-0 z-50 text-base list-none bg-white divide-y divide-gray-100 rounded-xl shadow dark:bg-blue-950 dark:divide-gray-60 mt-72"
+          className="absolute right-0 z-50 text-base list-none bg-white divide-y divide-gray-100 rounded-xl shadow dark:bg-blue-950 dark:divide-gray-60 mt-64 w-[210px]"
           id="user-dropdown"
         >
           <div className="px-4 py-3 flex items-center justify-between">
             <div>
-              <span className="block text-sm text-gray-900 dark:text-black">
+              <span className="block text-sm text-blue font-semibold">
               {seeker.firstName}
               </span>
               <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
@@ -72,7 +72,7 @@ const Dropdown = () => {
       />*/}
           </div>
           <ul className="py-2 bg-white rounded-xl w-56 px-10" aria-labelledby="user-menu-button">
-            <li className="flex items-center">
+            <li className="flex items-center hover:bg-gray-100 dark:hover:bg-gray-600">
               <FaRegUser  />
               <a
                 href="/userprofile"
@@ -82,7 +82,7 @@ const Dropdown = () => {
               </a>
             </li>
 
-            <li className="flex items-center">
+            <li className="flex items-center hover:bg-gray-100 dark:hover:bg-gray-600">
               <IoSettingsOutline />
               <a
                 href="#"
@@ -91,7 +91,7 @@ const Dropdown = () => {
                 Settings
               </a>
             </li>
-            <li className="flex items-center">
+            <li className="flex items-center hover:bg-gray-100 dark:hover:bg-gray-600">
               <RiLogoutBoxRLine/>
               <a
                 href="#"

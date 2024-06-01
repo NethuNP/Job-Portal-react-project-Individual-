@@ -21,13 +21,17 @@ const applicationSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    status:{
-        type:String,
-        required:true
+    status: {
+        type: String,
+        required: true
     },
     application: {
-        type: Buffer,
+        type: String,
         required: true // Path to the uploaded application file
+    },
+    mimeType: {
+        type: String,
+        required: true
     }
 }, {
     timestamps: true

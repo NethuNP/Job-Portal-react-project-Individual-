@@ -23,7 +23,7 @@ export const Sidebar = ({handleChange ,handleClick}) => {
        
         <WorkExperience handleChange={handleChange}/>
         <Type handleChange={handleChange}/>
-       
+        <img src="./images/vecteezy-a-man-sitting-on-a-ch-unscreen.gif" autoPlay muted loop className='h-[180px]' ></img>
         
 
          

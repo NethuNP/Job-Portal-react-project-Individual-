@@ -11,6 +11,7 @@ const Category = ({ handleChange }) => {
   
 
   return (
+    <div>
     <div className='bg-slate-100 rounded justify-center px-4 py-2 '>
       <h4 className='text-lg font-medium mb-2 text-blue'>Select Category</h4>
       <div>
@@ -25,6 +26,14 @@ const Category = ({ handleChange }) => {
         <InputField handleChange={handleInputChange} value='Information Technology' title='Information Technology' name='category' />
         <InputField handleChange={handleInputChange} value='Restaurant' title='Restaurant' name='category' />
       </div>
+    </div>
+    <div>
+        <img src="./images/vecteezy-businessman-with-a-la-unscreen.gif" autoPlay muted loop className='h-[180px] mt-10 ' ></img>
+        
+    </div>
+    <div className=" text-blue px-10 font-semibold mt-24">
+      jobnestlanka@gmail.com
+    </div>
     </div>
   );
 };

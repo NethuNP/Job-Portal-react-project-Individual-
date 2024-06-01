@@ -16,7 +16,7 @@ export default function JobCategory() {
   useEffect(() => {
     function getJobs() {
       axios
-        .get("http://localhost:8070/jobs/")
+        .get("http://localhost:8070/approvedjobs/")
         .then((res) => {
           console.log(res.data);
           setJobs(res.data);

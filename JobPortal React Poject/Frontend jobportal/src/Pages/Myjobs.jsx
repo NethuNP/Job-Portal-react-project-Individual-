@@ -33,7 +33,7 @@ const MyJobs = () => {
 
   return (
     <div className="myjobs mt-28 bg-[#b8ccf1] grid md:grid-cols-2 gap-5 lg:px-24 px-4 py-12 h-[300px] mb-10 rounded-3xl shadow-3xl">
-      <div className="left-column bg-gray-100 w-80 pl-7 pt-10 rounded-2xl shadow-3xl">
+      <div>
         {seeker && (
           <div className="flex items-center gap-3 font-semibold">
             <FaUserTie className="inline" /> :
@@ -62,7 +62,7 @@ const MyJobs = () => {
             </li>
           ))}
           {jobs.length === 0 && !error && (
-            <p>No jobs found.</p>
+            <p className='font-semibold text-2xl text-blue'>No jobs found.</p>
           )}
         </ul>
       </div>

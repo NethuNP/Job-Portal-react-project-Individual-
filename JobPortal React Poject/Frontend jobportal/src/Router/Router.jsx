@@ -61,6 +61,8 @@ const Router= () => {
       <Route path="/emplogin" element={<EmpLogin/>}/>
       <Route path="/jobs/:id" element={<JDetails/>}/>
       <Route path="/userprofile" element={<UserProfile/>}/>
+      <Route path="/empsignup" element={<EmpSignup/>}/>
+
     
      
    
@@ -98,8 +100,7 @@ const Router= () => {
         
         </Route>
 
-        <Route path="/employer/empsignup" element={<EmpSignup/>}/>
-
+        
         
         
 
