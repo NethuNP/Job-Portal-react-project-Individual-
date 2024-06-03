@@ -3,25 +3,17 @@ const multer = require('multer');
 const Application = require('../models/Application');
 const router = express.Router();
 const fs = require('fs');
-const path = require('path'); // Added path module
+const path = require('path');
 
-const directory = './uploads';
-
-// Ensure the uploads directory exists synchronously
-try {
-    if (!fs.existsSync(directory)) {
-        fs.mkdirSync(directory, { recursive: true });
-        console.log('Directory created successfully.');
-    } else {
-        console.log('Directory already exists.');
-    }
-} catch (err) {
-    console.error('Error creating directory:', err);
+// Ensure the uploads directory exists
+const uploadDir = path.join(__dirname, '../uploads');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
 }
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './uploads'); // Set upload directory
+        cb(null, uploadDir); // Set upload directory
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + '-' + file.originalname); // Unique filename
@@ -33,15 +25,13 @@ const upload = multer({ storage: storage });
 router.post('/add', upload.single('application'), async (req, res) => {
     try {
         const { companyName, jobTitle, jobLocation, postingDate, email, mimeType } = req.body;
-        const application = req.file ? req.file.path : null;
+        const application = req.file ? req.file.filename : null; // Store only filename
         const status = 'Pending'; // Default status
 
-        // Check if required fields are present
         if (!companyName || !jobTitle || !jobLocation || !postingDate || !email || !application) {
             throw new Error("All fields are required");
         }
 
-        // Save file data to database
         const newApplication = new Application({
             companyName,
             jobTitle,
@@ -56,12 +46,35 @@ router.post('/add', upload.single('application'), async (req, res) => {
         await newApplication.save();
         res.json("Application added successfully");
     } catch (err) {
-        // If an error occurred, delete the uploaded file if it exists
         if (req.file) {
             fs.unlinkSync(req.file.path);
         }
         console.error(err);
         res.status(500).send("Failed to add application");
+    }
+});
+
+// Route to download an application file
+router.get("/download/:filename", async (req, res) => {
+    try {
+        const fileName = req.params.filename;
+        const filePath = path.join(uploadDir, fileName);
+
+        fs.access(filePath, fs.constants.F_OK, (err) => {
+            if (err) {
+                console.error(err);
+                return res.status(404).send("Application file not found");
+            }
+
+            res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
+            res.setHeader("Content-Type", 'application/pdf');
+
+            const fileStream = fs.createReadStream(filePath);
+            fileStream.pipe(res);
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error downloading application file");
     }
 });
 
@@ -76,56 +89,17 @@ router.get("/", async (req, res) => {
     }
 });
 
-// Route to download an application file
-router.get("/download/:id", async (req, res) => {
-    try {
-        const application = await Application.findById(req.params.id);
-        if (!application) {
-            return res.status(404).send("Application not found");
-        }
-        const filePath = application.application;
-        if (!filePath) {
-            return res.status(404).send("Application file not found");
-        }
-
-        // Check if the file exists
-        fs.access(filePath, fs.constants.F_OK, (err) => {
-            if (err) {
-                console.error(err);
-                return res.status(404).send("Application file not found");
-            }
-
-            // Set headers to force download
-            const fileName = path.basename(filePath);
-            const mimeType = application.mimeType;
-            res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
-            res.setHeader("Content-Type", mimeType);
-
-            // Create a read stream from the file and pipe it to the response
-            const fileStream = fs.createReadStream(filePath);
-            fileStream.pipe(res);
-        });
-    } catch (err) {
-        console.error(err);
-        res.status(500).send("Error downloading application file");
-    }
-});
-
 // Route to fetch applications by email
 router.get('/applications', async (req, res) => {
-    const { email } = req.query;
-
-    if (!email) {
-        return res.status(400).send('Email is required');
-    }
-
     try {
-        const applications = await Application.find({ email });
-        res.json(applications);
-    } catch (error) {
-        res.status(500).send('Server error');
+      const applications = await Application.find().populate('seeker', 'email');
+      res.json(applications);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
     }
-});
+  });
+
+
 
 // Route to delete an application by ID
 router.delete('/delete/:id', async (req, res) => {
@@ -135,7 +109,7 @@ router.delete('/delete/:id', async (req, res) => {
         if (!deletedApplication) {
             return res.status(404).send("Application not found");
         }
-        fs.unlinkSync(deletedApplication.application); // Delete the file from the filesystem
+        fs.unlinkSync(path.join(uploadDir, deletedApplication.application)); // Delete the file from the filesystem
         res.json({ message: "Application deleted successfully" });
     } catch (err) {
         console.error(err);

@@ -1,14 +1,15 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import EmpHeader from "../Component/EmpComponent/EmpHeader";
 import { FaDownload, FaTrash } from "react-icons/fa";
 import { MdFileDownloadDone } from "react-icons/md";
-import { AuthContext } from '../Component/context/AuthContext';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 const Applications = () => {
-  const { seeker } = useContext(AuthContext);
   const [applications, setApplications] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
+  const pdfRef = useRef(null);
 
   useEffect(() => {
     fetchApplications();
@@ -16,7 +17,7 @@ const Applications = () => {
 
   const fetchApplications = async () => {
     try {
-      const response = await fetch("http://localhost:8070/applications");
+      const response = await fetch("http://localhost:8070/applications/");
       if (!response.ok) {
         throw new Error("Failed to fetch applications");
       }
@@ -31,32 +32,6 @@ const Applications = () => {
     if (application.application) {
       const fileUrl = `http://localhost:8070/applications/download/${application.application}`;
       window.open(fileUrl, "_blank");
-    } else {
-      console.error("Application file not found");
-      alert("Application file not found");
-    }
-  };
-
-  const handleDownload = async (application) => {
-    if (application.application) {
-      try {
-        const fileUrl = `http://localhost:8070/applications/download/${application.application}`;
-        const response = await fetch(fileUrl);
-        if (!response.ok) {
-          throw new Error("Failed to download application");
-        }
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(new Blob([blob]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", application.application.split('/').pop());
-        document.body.appendChild(link);
-        link.click();
-        link.parentNode.removeChild(link);
-      } catch (error) {
-        console.error("Error downloading application:", error);
-        alert("Error downloading application");
-      }
     } else {
       console.error("Application file not found");
       alert("Application file not found");
@@ -84,6 +59,16 @@ const Applications = () => {
       console.error("Error deleting application:", error);
       alert("Error deleting application");
     }
+  };
+
+  const downloadPDF = () => {
+    const input = pdfRef.current;
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('landscape', 'mm', 'a3');
+      pdf.addImage(imgData, 'JPEG', 0, 0);
+      pdf.save("applications.pdf");
+    });
   };
 
   const handleApprove = async (applicationId) => {
@@ -197,7 +182,7 @@ const Applications = () => {
                             {application.postingDate}
                           </td>
                           <td className="px-6 py-4 text-center">
-                            {seeker && seeker.email ? seeker.email : ""}
+                            {application.email}
                           </td>
                           <td className="px-6 py-4 text-center">
                             {application.status}
@@ -211,7 +196,7 @@ const Applications = () => {
                             </button>
                             <button
                               className="bg-blue hover:bg-yellow-600 text-gray-200 font-bold px-1 py-1 rounded ml-2 mt-3"
-                              onClick={() => handleDownload(application)}
+                              onClick={() => handleView(application)}
                             >
                               <FaDownload className="ml-1" />
                             </button>

@@ -27,7 +27,7 @@ const applicationSchema = new mongoose.Schema({
     },
     application: {
         type: String,
-        required: true // Path to the uploaded application file
+        required: true // Store only filename
     },
     mimeType: {
         type: String,
