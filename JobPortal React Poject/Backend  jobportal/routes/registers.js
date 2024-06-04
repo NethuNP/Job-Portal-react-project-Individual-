@@ -27,6 +27,16 @@ const authenticateRole = (role) => (req, res, next) => {
     next();
   });
 };
+//get total 
+router.get('/total', async (req, res) => {
+  try {
+      const totalRegisters = await register.countDocuments({});
+      res.json({ total: totalRegisters });
+  } catch (err) {
+      console.error(err);
+      res.status(500).send("Error fetching total registered users count");
+  }
+});
 
 
 // Route for registering a new user
@@ -153,6 +163,8 @@ router.route("/get/:id").get(async (req, res) => {
     });
   }
 });
+
+
 
 // Route to login a seeker 
 

@@ -91,15 +91,46 @@ router.get("/", async (req, res) => {
 
 // Route to fetch applications by email
 router.get('/applications', async (req, res) => {
-    try {
-      const applications = await Application.find().populate('seeker', 'email');
-      res.json(applications);
-    } catch (err) {
-      res.status(500).json({ message: err.message });
+    const email = req.query.email;
+    if (!email) {
+        return res.status(400).send("Email query parameter is required");
     }
-  });
+
+    try {
+        const applications = await Application.find({ email });
+        res.json(applications);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: err.message });
+    }
+});
 
 
+// Route to decline an application by ID
+router.put('/decline/:id', async (req, res) => {
+    try {
+        const applicationId = req.params.id;
+        const updatedApplication = await Application.findByIdAndUpdate(applicationId, { status: 'Declined' }, { new: true });
+        if (!updatedApplication) {
+            return res.status(404).send("Application not found");
+        }
+        res.json({ message: "Application declined successfully", application: updatedApplication });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error declining application");
+    }
+});
+
+// Route to get total number of declined applications
+router.get('/declined/total', async (req, res) => {
+    try {
+        const totalDeclinedApplications = await Application.countDocuments({ status: 'Declined' });
+        res.json({ total: totalDeclinedApplications });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error fetching total declined applications count");
+    }
+});
 
 // Route to delete an application by ID
 router.delete('/delete/:id', async (req, res) => {
@@ -131,5 +162,29 @@ router.put('/approve/:id', async (req, res) => {
         res.status(500).send("Error approving application");
     }
 });
+// Route to get total number of pending applications
+router.get('/pending/total', async (req, res) => {
+    try {
+        const totalPendingApplications = await Application.countDocuments({ status: 'Pending' });
+        res.json({ total: totalPendingApplications });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error fetching total pending applications count");
+    }
+});
+
+
+// Route to get total number of applications
+router.get('/total', async (req, res) => {
+    try {
+        const totalApplications = await Application.countDocuments({});
+        res.json({ total: totalApplications });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error fetching total applications count");
+    }
+});
+
+
 
 module.exports = router;

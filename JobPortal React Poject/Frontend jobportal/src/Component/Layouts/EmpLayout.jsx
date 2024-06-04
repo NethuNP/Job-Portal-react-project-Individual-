@@ -2,6 +2,7 @@ import React from 'react';
 import { EmpSidebar } from '../EmpComponent/EmpSidebar';
 
 import { Outlet } from 'react-router-dom';
+import EmpHeader from '../EmpComponent/EmpHeader';
 
 const EmpLayout = () => {
     return (
@@ -10,6 +11,7 @@ const EmpLayout = () => {
                 <EmpSidebar />
             </div>
             <div className='w-[89%]  border-blue'>
+                <EmpHeader/>
                <Outlet/>
                 </div>
 

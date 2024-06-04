@@ -6,9 +6,11 @@ import { LuLogOut } from "react-icons/lu";
 import { FaRegUserCircle } from "react-icons/fa";
 import { MdFeedback } from "react-icons/md";
 import { IoBagCheck } from "react-icons/io5";
+import AdminHeader from "./AdminHeader";
 
 export const AdminSidebar = () => {
   return (
+    
     <div className="fixed top-0 left-0 bg-[#1E0342] text-white shadow-xl z-[999] w-[10rem] max-w-[10rem] overflow-hidden h-screen">
       <FaRegUserCircle size={50} color="white" className="ml-12 mt-6" />
       <div className="px-[15px] py-[30px] flex items-center justify-center border-b-[1px] border-[#EDEDED]/[0.3]">

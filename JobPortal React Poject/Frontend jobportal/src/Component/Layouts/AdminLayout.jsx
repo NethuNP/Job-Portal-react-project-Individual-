@@ -1,6 +1,7 @@
 import React from 'react'
 import { AdminSidebar } from '../AdminComponent/AdminSidebar'
 import { Outlet } from 'react-router-dom'
+import AdminHeader from '../AdminComponent/AdminHeader'
 
 
 
@@ -15,7 +16,7 @@ const AdminLayout = () => {
     </div>
     <div className='w-[89%] border-blue '>
        
-       
+       <AdminHeader/>
        <Outlet/>
         </div>
         

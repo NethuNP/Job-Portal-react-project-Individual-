@@ -87,7 +87,7 @@ const Router= () => {
 
         </Route>
         
-        <Route path="/employer/emplogin" element={<EmpLogin/>}/>
+        
         <Route path="/employer" element={<EmpLayout/>}>
         <Route path ="/employer/empdashboard" element={<EmpDashboard/>}/>
         <Route path="/employer" element={<Navigate to="/emplogin"/>}/>
@@ -97,6 +97,8 @@ const Router= () => {
         <Route path="/employer/managejob" element ={<ManageJob/>}/>
         <Route path="/employer/applications" element={<Applications/>}/>
         <Route path="/employer/logout" element={<Emplogout/>}/>
+        
+        
         
         </Route>
 

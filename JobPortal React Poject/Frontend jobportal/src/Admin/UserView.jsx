@@ -7,7 +7,7 @@ const UserView = () => {
   return (
     <div>
     <div>
-      <AdminHeader />
+      
     
     
       <AllUsers />

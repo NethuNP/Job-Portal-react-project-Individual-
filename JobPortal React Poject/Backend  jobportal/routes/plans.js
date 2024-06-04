@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Plan = require('../models/Plan');
 
+
 // GET all plans
 router.get('/', async (req, res) => {
     try {
@@ -33,5 +34,15 @@ router.post('/', async (req, res) => {
         res.status(500).json({ error: 'Failed to create plan' });
     }
 });
+
+
+
+// payment
+router.post('/plans', async (req,res) =>{
+    const product = await stripe.products.create ({
+
+    })
+
+})
 
 module.exports = router;

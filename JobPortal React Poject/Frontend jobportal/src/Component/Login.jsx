@@ -86,7 +86,7 @@ const Login = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-gray-100 pt-2 mt-12">
       <div className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center bg-gray-100">
-        <div className="bg-white rounded-2xl shadow-2xl flex w-2/3 max-w-4xl" data-aos="zoom-in">
+        <div className="bg-white rounded-2xl shadow-2xl flex w-2/3 max-w-4xl">
           <div className="w-3/5 p-5 relative">
             <div className="font-bold text-left">
               <span className="text-blue">JOB</span>NEST

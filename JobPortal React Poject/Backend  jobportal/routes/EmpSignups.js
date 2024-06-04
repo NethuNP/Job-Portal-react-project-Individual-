@@ -155,6 +155,19 @@ router.route("/get/:id").get(async (req, res) => {
   }
 });
 
+
+// Route to get the total count of EmpSignup documents
+router.get('/total', async (req, res) => {
+  try {
+    const total = await EmpSignup.countDocuments();
+    res.status(200).json({ total });
+  } catch (error) {
+    console.error('Error fetching total count of EmpSignup:', error);
+    res.status(500).json({ error: 'Failed to fetch total count of EmpSignup' });
+  }
+});
+
+
 // Route to login a employer 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;

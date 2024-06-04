@@ -26,6 +26,23 @@ router.post('/add', async (req, res) => {
   }
 });
 
+
+router.post('/reply/:id', async (req, res) => {
+  const feedbackId = req.params.id;
+  const { reply } = req.body;
+
+  try {
+    const updatedFeedback = await Feedback.findByIdAndUpdate(feedbackId, { reply }, { new: true });
+    if (!updatedFeedback) {
+      return res.status(404).json({ error: 'Feedback not found' });
+    }
+    res.status(200).json({ message: 'Reply submitted successfully', updatedFeedback });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to submit reply' });
+  }
+});
+
+
 // Route to delete feedback by ID
 router.delete('/delete/:id', async (req, res) => {
   const feedbackId = req.params.id;

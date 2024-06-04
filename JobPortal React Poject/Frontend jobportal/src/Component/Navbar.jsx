@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const Navbar = () => {
     const [isMenuOpen, setMenuOpen] = useState(false);
-    const { seeker, dispatch } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
     const handleMenuToggler = () => {
         setMenuOpen(!isMenuOpen);
@@ -20,13 +20,13 @@ const Navbar = () => {
         // Check if the toast message has been displayed
         const toastDisplayed = localStorage.getItem("toastDisplayed");
       
-        if (seeker && !toastDisplayed) {
+        if (user && !toastDisplayed) {
           // Display welcome message when user logs in
-          toast.success(`Welcome ${seeker.firstName}`);
+          toast.success(`Welcome ${user.firstName}`);
           // Set flag to indicate that the toast message has been displayed
           localStorage.setItem("toastDisplayed", true);
         }
-      }, [seeker]);
+      }, [user]);
     const navItems = [
         { path: "/home", title: "Home" },
         { path: "/jobs", title: "Jobs" },
@@ -58,9 +58,9 @@ const Navbar = () => {
                 
 
    {/* Signup and login */}
-   {seeker ? (
+   {user ? (
             <div className="flex items-center space-x-4">
-              <span className="text-[#6f8ebd]">Welcome, {seeker.firstName}</span>
+              <span className="text-[#6f8ebd]">Welcome, {user.firstName}</span>
              {/*} <button
                 onClick={handleLogout}
                 className="py-2 px-5 border rounded bg-blue text-white  hover:bg-blue dark:hover:text-white"

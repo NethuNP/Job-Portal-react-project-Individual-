@@ -4,6 +4,9 @@ import { FaTrash } from "react-icons/fa";
 import { GrView } from "react-icons/gr";
 import AdminHeader from '../Component/AdminComponent/AdminHeader';
 import { MdFileDownloadDone } from "react-icons/md";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function JobCategory() {
     const [jobs, setJobs] = useState([]);
@@ -36,7 +39,7 @@ export default function JobCategory() {
                 .then(() => {
                     // Filter out the deleted job from the state
                     setJobs(prevJobs => prevJobs.filter(job => job._id !== id));
-                    alert("Job deleted successfully!");
+                    toast.success("Job deleted successfully!"); // Display success message
                 })
                 .catch((err) => {
                     console.log(err);
@@ -44,7 +47,7 @@ export default function JobCategory() {
                 });
         }
     };
-
+    
     const approveJob = (id, companyName) => {
         if (window.confirm(`Are you sure you want to approve ${companyName}?`)) {
             axios
@@ -52,7 +55,7 @@ export default function JobCategory() {
                 .then(() => {
                     // Filter out the approved job from the state
                     setJobs(prevJobs => prevJobs.filter(job => job._id !== id));
-                    alert("Job approved successfully!");
+                    toast.success("Job approved successfully!"); // Display success message
                 })
                 .catch((err) => {
                     console.log(err);
@@ -60,6 +63,7 @@ export default function JobCategory() {
                 });
         }
     };
+    
 
     // Pagination logic
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -82,7 +86,7 @@ export default function JobCategory() {
 
     return (
         <div>
-            <AdminHeader />
+        
             <div className="container mx-auto xl:px-30 px-4 bg-[#F8F9FC] mt-20 h-full w-full pb-10">
                 <div className="py-4 px-10">
                     <h1 className="text-blue text-[28px] leading-[40px] cursor-pointer font-semibold">
@@ -101,6 +105,7 @@ export default function JobCategory() {
                                                 <th scope="col" className="px-6 py-3 text-center">Job Location</th>
                                                 <th scope="col" className="px-6 py-3 text-center">Posting Date</th>
                                                 <th scope="col" className="px-6 py-3 text-center">Expiry Date</th>
+                                                <th scope="col" className="px-6 py-3 text-center">Status</th>
                                                 <th scope="col" className="px-6 py-3 text-center">Actions</th>
                                             </tr>
                                         </thead>
@@ -116,6 +121,8 @@ export default function JobCategory() {
                                                     <td className="px-6 py-4 text-center">{job.jobLocation}</td>
                                                     <td className="px-6 py-4 text-center">{job.postingDate}</td>
                                                     <td className="px-6 py-4 text-center">{job.expireryDate}</td>
+                                                    <td className="px-6 py-4 text-center">{job.status}</td>
+
                                                     <td className="px-6 py-4 text-center flex justify-center">
                                                         <button className="bg-green-500 hover:bg-yellow-600 text-gray-200 font-bold px-1 py-1 rounded mt-3">
                                                             <GrView />

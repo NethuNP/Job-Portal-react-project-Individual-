@@ -5,6 +5,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const app = express();
 require("dotenv").config();
+const stripe = require ('stripe')('pk_test_51PKe7ORxcVO3OP0UvNt0CeRvpSOORc1WoNBTaN0DJHgFIsq5DrV3yzaG4nhSJQJENhqybl9T8WWH8F7k5D1VmXbB004RKv0zTV')
 
 const PORT = process.env.PORT || 8070;
 

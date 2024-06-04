@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaTrash } from "react-icons/fa";
 import { RiMessage2Fill } from "react-icons/ri";
+import { ToastContainer, toast } from 'react-toastify'; // Import ToastContainer and toast
+import 'react-toastify/dist/ReactToastify.css'; // Import CSS for styling
 import AdminHeader from '../Component/AdminComponent/AdminHeader';
 
 export default function JobCategory() {
@@ -55,31 +57,42 @@ export default function JobCategory() {
     };
 
     const submitReply = () => {
-        const updatedFeedback = [...feedback];
-        updatedFeedback[selectedFeedback.index] = {
-            ...updatedFeedback[selectedFeedback.index],
-            reply: replyContent
-        };
-        setFeedback(updatedFeedback); // Update the state with the new reply
-        closeReplyPopup();
-    };
-
-    const deleteFeedback = (feedbackId) => {
-        axios.delete(`http://localhost:8070/fedbacks/delete/${feedbackId}`)
+        axios.post(`http://localhost:8070/fedbacks/reply/${selectedFeedback._id}`, { reply: replyContent })
             .then((res) => {
-                const updatedFeedback = feedback.filter(item => item._id !== feedbackId);
-                setFeedback(updatedFeedback);
-                alert("Feedback deleted successfully");
+                const updatedFeedback = [...feedback];
+                updatedFeedback[selectedFeedback.index] = {
+                    ...updatedFeedback[selectedFeedback.index],
+                    reply: replyContent
+                };
+                setFeedback(updatedFeedback); // Update the state with the new reply
+                toast.success("Reply sent successfully");
+                closeReplyPopup();
             })
             .catch((err) => {
                 setError(err.message);
+                toast.error("Failed to send reply");
             });
+    };
+
+    const deleteFeedback = (feedbackId) => {
+        if (window.confirm(`Are you sure you want to delete feedback ?`)) {
+            axios.delete(`http://localhost:8070/fedbacks/delete/${feedbackId}`)
+                .then((res) => {
+                    const updatedFeedback = feedback.filter(item => item._id !== feedbackId);
+                    setFeedback(updatedFeedback);
+                    toast.success("Feedback deleted successfully"); // Use toast.success for success notification
+                })
+                .catch((err) => {
+                    setError(err.message);
+                    toast.error("Failed to delete feedback"); // Use toast.error for error notification
+                });
+        }
     };
 
     return (
         <div>
             <AdminHeader />
-
+            <ToastContainer /> {/* Add this line to render the toast notifications */}
             <div className="container mx-auto xl:px-30 px-4 bg-white mt-20 h-full w-full pb-10">
                 <div className="py-4 px-10">
                     <h1 className="text-blue text-[28px] leading-[40px] cursor-pointer font-semibold text-center">

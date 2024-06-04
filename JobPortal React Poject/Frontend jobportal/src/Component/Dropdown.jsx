@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const Dropdown = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const { seeker, dispatch } = useContext(AuthContext);
+  const { user, dispatch } = useContext(AuthContext);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -24,25 +24,25 @@ const Dropdown = () => {
     // Check if the toast message has been displayed
     const toastDisplayed = localStorage.getItem("toastDisplayed");
   
-    if (seeker && !toastDisplayed) {
+    if (user && !toastDisplayed) {
       // Display welcome message when user logs in
-      toast.success(`Welcome ${seeker.firstName}`);
+      toast.success(`Welcome ${user.firstName}`);
       // Set flag to indicate that the toast message has been displayed
       localStorage.setItem("toastDisplayed", "true");
     }
-  }, [seeker]);
+  }, [user]);
 
   return (
-    <div className="flex items-center justify-end relative">
+    <div className="flex items-center justify-end">
       <button
         type="button"
-        className="flex text-sm bg-blue-950 rounded-full md:me-0 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-400 "
+        className="flex  text-sm bg-blue-950 rounded-full md:me-0 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-400 "
         id="user-menu-button"
         aria-expanded={isDropdownOpen ? "true" : "false"}
         aria-controls="user-dropdown"
         onClick={toggleDropdown}
       >
-        <span className="sr-only">Open user menu</span>
+        <span className=""></span>
         <img
           className="h-12 w-12 rounded-full"
           src="./images/9131529.png"
@@ -58,10 +58,10 @@ const Dropdown = () => {
           <div className="px-4 py-3 flex items-center justify-between">
             <div>
               <span className="block text-sm text-blue font-semibold">
-              {seeker.firstName}
+              {user.firstName}
               </span>
               <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
-                {seeker.email}
+                {user.email}
               </span>
             </div>
 
@@ -94,7 +94,7 @@ const Dropdown = () => {
             <li className="flex items-center hover:bg-gray-100 dark:hover:bg-gray-600">
               <RiLogoutBoxRLine/>
               <a
-                href="#"
+                href="/login"
                 onClick={handleLogout}
                 className=" px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white flex items-center"
               >

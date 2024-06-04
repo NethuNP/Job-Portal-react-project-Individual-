@@ -5,7 +5,7 @@ const Reports = () => {
   return (
     <div>
 
-      <AdminHeader/>
+      
     
         <div className='bg-[#F8F9FC]'>
           <h1>Reports</h1>

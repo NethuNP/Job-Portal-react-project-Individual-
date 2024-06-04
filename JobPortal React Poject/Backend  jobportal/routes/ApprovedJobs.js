@@ -44,6 +44,17 @@ router.get("/", async (req, res) => {
     }
 });
 
+// Fetch total approved jobs count
+router.get("/total", async (req, res) => {
+    try {
+        const totalApprovedJobs = await ApprovedJob.countDocuments();
+        res.json({ total: totalApprovedJobs });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error fetching total approved jobs count");
+    }
+});
+
 // Update approved job by ID
 router.put("/update/:id", async (req, res) => {
     try {

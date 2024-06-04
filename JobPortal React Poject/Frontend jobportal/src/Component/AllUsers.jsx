@@ -70,10 +70,10 @@ export default function AllUsers() {
                                 <thead className="text-xs uppercase bg-[#10439F] dark:bg-gray-900 text-white">
                                     <tr>
                                         <th scope="col" className="p-4"></th>
-                                        <th scope="col" className="px-6 py-3">First Name</th>
-                                        <th scope="col" className="px-6 py-3">Last Name</th>
-                                        <th scope="col" className="px-6 py-3">Email</th>
-                                        <th scope="col" className="px-6 py-3">Actions</th>
+                                        <th scope="col" className="px-5 py-3">First Name</th>
+                                        <th scope="col" className="px-5 py-3">Last Name</th>
+                                        <th scope="col" className="px-5 py-3">Email</th>
+                                        <th scope="col" className="px-3 py-3">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -87,9 +87,7 @@ export default function AllUsers() {
                                             <td>{user.lastName}</td>
                                             <td>{user.email}</td>
                                             <td className="flex">
-                                                <button className="bg-green-500 hover:bg-yellow-600 text-gray-200 font-bold px-1 py-1 rounded mt-3 ml-6">
-                                                    <GrView />
-                                                </button>
+                                               
                                                 <button className="bg-red-500 hover:bg-red-600 text-gray-200 font-bold px-1 py-1 rounded ml-2 mt-3" onClick={() => deleteUser(user._id, user.firstName)}>
                                                     <FaTrash />
                                                 </button>

@@ -54,7 +54,12 @@ const JobSchema = new Schema({
     employmentType: {
         type: String,
         required:false // or true if it's required
+    },
+    status: {
+        type: String,
+        required: true
     }
+    
 });
 
 const Job = mongoose.model("Job", JobSchema);

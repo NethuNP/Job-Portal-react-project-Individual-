@@ -28,6 +28,10 @@ const EmpRegSchema = new Schema({
         type: String,
         required: true
     },
+    selectedPlan: {
+        type: Schema.Types.ObjectId,
+        ref: "Plan", // Reference to the Plan model
+      },
    role: {
         type: String,
         enum: ["admin", "seeker", "employer"],

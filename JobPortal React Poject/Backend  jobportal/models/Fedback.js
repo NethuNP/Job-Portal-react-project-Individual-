@@ -14,6 +14,10 @@ const FeedbackSchema = new Schema ({
         type:String,
         required:true
     },
+    reply:{
+        type:String
+    
+    }
     
 });
 

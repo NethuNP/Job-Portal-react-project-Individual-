@@ -2,14 +2,15 @@ const express = require("express");
 const router = express.Router();
 const Job = require("../models/job");
 const ApprovedJob = require("../models/ApprovedJob");
+const Application = require ("../models/Application");
 
 // Insert Route
 router.post('/add', async (req, res) => {
     try {
-        const { jobTitle, companyName, minPrice, maxPrice, salaryType, jobLocation, postingDate, expireryDate, experienceLevel, requiredSkill, companyLogo, employmentType, description, postedBy, jobCategory } = req.body;
+        const { jobTitle, companyName, minPrice, maxPrice, salaryType, jobLocation, postingDate, expireryDate, experienceLevel, requiredSkill, companyLogo, employmentType, description, postedBy,status, jobCategory } = req.body;
 
         const newJob = new Job({
-            jobTitle, companyName, minPrice, maxPrice, salaryType, jobLocation, postingDate, expireryDate, experienceLevel, requiredSkill, companyLogo, employmentType, description, postedBy, jobCategory
+            jobTitle, companyName, minPrice, maxPrice, salaryType, jobLocation, postingDate, expireryDate, experienceLevel, requiredSkill, companyLogo, employmentType, description, postedBy,status, jobCategory
         });
 
         await newJob.save();
@@ -32,14 +33,26 @@ router.get("/", (req, res) => {
         });
 });
 
+// Fetch total jobs count
+router.get("/total", async (req, res) => {
+    try {
+        const totalJobs = await Job.countDocuments();
+        res.json({ total: totalJobs });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error fetching total jobs count");
+    }
+});
+
+
 // Update job by ID
 router.put("/update/:id", async (req, res) => {
     try {
         const jobId = req.params.id;
-        const { jobTitle, companyName, minPrice, maxPrice, salaryType, jobLocation, postingDate, expireryDate, experienceLevel, requiredSkill, companyLogo, employmentType, description, jobCategory, postedBy } = req.body;
+        const { jobTitle, companyName, minPrice, maxPrice, salaryType, jobLocation, postingDate, expireryDate, experienceLevel, requiredSkill, companyLogo, employmentType, description, jobCategory, status, postedBy } = req.body;
 
         const updateJob = {
-            jobTitle, companyName, minPrice, maxPrice, salaryType, jobLocation, postingDate, expireryDate, experienceLevel, requiredSkill, companyLogo, employmentType, description, postedBy, jobCategory
+            jobTitle, companyName, minPrice, maxPrice, salaryType, jobLocation, postingDate, expireryDate, experienceLevel, requiredSkill, companyLogo, employmentType, description, postedBy, status, jobCategory
         };
 
         await Job.findByIdAndUpdate(jobId, updateJob);
