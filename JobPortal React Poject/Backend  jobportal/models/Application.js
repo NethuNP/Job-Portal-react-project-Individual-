@@ -29,6 +29,10 @@ const applicationSchema = new mongoose.Schema({
         type: String,
         required: true // Store only filename
     },
+    emailSent: {
+        type: Boolean,
+        default: false // Initially, email has not been sent
+    },
     mimeType: {
         type: String,
         required: true

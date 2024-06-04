@@ -1,12 +1,5 @@
-import React from 'react';
-import { PieChart, Pie, Cell } from 'recharts';
-
-const data = [
-    { name: 'Pending', value: 400 },
-    { name: 'Interview', value: 300 },
-    { name: 'Declined', value: 300 },
-    { name: 'Approve', value: 200 },
-];
+import React, { useEffect, useState } from 'react';
+import { PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
@@ -24,37 +17,85 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
             textAnchor={x > cx ? 'start' : 'end'}
             dominantBaseline="central"
         >
-            {`${(percent * 100).toFixed(0)}%`}
+            {`${(percent * 100).toFixed(2)}%`}
         </text>
     );
 };
 
 const Charts = () => {
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const pendingResponse = await fetch('http://localhost:8070/applications/pending/percentage');
+                const declinedResponse = await fetch('http://localhost:8070/applications/declined/percentage');
+                const approvedResponse = await fetch('http://localhost:8070/applications/approved/percentage');
+
+                const [pendingResult, declinedResult, approvedResult] = await Promise.all([
+                    pendingResponse.json(),
+                    declinedResponse.json(),
+                    approvedResponse.json()
+                ]);
+
+                const pendingPercentage = parseFloat(pendingResult.percentage);
+                const declinedPercentage = parseFloat(declinedResult.percentage);
+                const approvedPercentage = parseFloat(approvedResult.percentage);
+
+                const newData = [
+                    { name: 'Pending', value: pendingPercentage },
+                    { name: 'Declined', value: declinedPercentage },
+                    { name: 'Approved', value: approvedPercentage }
+                ];
+
+                setData(newData);
+                setLoading(false);
+            } catch (err) {
+                console.error("Error fetching data:", err);
+                setError("Failed to fetch data");
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
+
     return (
-        <div className="flex items-center p-">
-            <PieChart width={400} height={400}>
-                <Pie
-                    data={data}
-                    cx="50%"
-                    cy="30%"
-                    labelLine={false}
-                    label={renderCustomizedLabel}
-                    outerRadius={100}
-                    fill="#8884d8"
-                    dataKey="value"
-                >
-                    {data.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                </Pie>
-            </PieChart>
-            <div className="flex flex-col items-start ml-3">
-                {data.map((item, index) => (
-                    <div key={index} className="flex items-center mb-2">
-                        <div className="h-5 w-5" style={{ backgroundColor: COLORS[index % COLORS.length] }}></div>
-                        <p className="ml-2 font-bold">{item.name}</p>
-                    </div>
-                ))}
+        <div className="container mx-auto grid grid-cols-2 gap-4">
+            <div>
+                <h2 className="text-2xl  mb-4 mt-5 text-gray-500 font-bold ">Application Status</h2>
+                <PieChart width={500} height={400}>
+                    <Pie
+                        data={data}
+                        cx={200}
+                        cy={200}
+                        labelLine={false}
+                        label={renderCustomizedLabel}
+                        outerRadius={140}
+                        fill="#8884d8"
+                        dataKey="value"
+                    >
+                        {data.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                    </Pie>
+                    <Legend verticalAlign="bottom" height={36} />
+                </PieChart>
+            </div>
+            <div className='mt-20'>
+                <LineChart width={400} height={400} data={data} >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend verticalAlign="bottom" height={36} />
+                    <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{ r: 8 }} />
+                </LineChart>
             </div>
         </div>
     );

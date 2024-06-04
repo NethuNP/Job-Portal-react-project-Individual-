@@ -1,0 +1,58 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { FaEdit, FaTrash } from "react-icons/fa";
+
+export default function AllUsers() {
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+        function getUsers() {
+            axios.get("http://localhost:8070/registers/")
+                .then((res) => {
+                    console.log(res.data);
+                    setUsers(res.data);
+                })
+                .catch((err) => {
+                    alert(err.message);
+                });
+        }
+        getUsers();
+    }, []);
+
+    return (
+        <div className='flex flex-col justify-center items-center h-screen bg-slate-300'>
+            
+                <h2 className="text-xl font-bold mb-4 items-start">All Users</h2>
+                <table className="border border-gray-500 bg-white rounded">
+                    <thead>
+                        <tr className="bg-blue text-white">
+                            <th className="border border-gray-400 px-4 py-1">ID</th>
+                            <th className="border border-gray-400 px-4 py-1">First Name</th>
+                            <th className="border border-gray-400 px-4 py-2">LastName</th>
+                            <th className="border border-gray-400 px-4 py-2">Email</th>
+                            <th className="border border-gray-400 px-4 py-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {users.map((user) => (
+                            <tr key={user.id} className="hover:bg-gray-100">
+                                <td className="border border-gray-400 px-4 py-2">{user.index}</td>
+                                <td className="border border-gray-400 px-4 py-2">{user.firstName}</td>
+                                <td className="border border-gray-400 px-4 py-2">{user.lastName}</td>
+                                <td className="border border-gray-400 px-4 py-2">{user.email}</td>
+                                <td className="border border-gray-400 px-4 py-2">
+                                    <button className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold px-1 py-1 rounded">
+                                        <FaEdit />
+                                    </button>
+                                    <button className="bg-red-500 hover:bg-red-600 text-white font-bold px-1 py-1 rounded ml-2">
+                                        <FaTrash />
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        
+    );
+}

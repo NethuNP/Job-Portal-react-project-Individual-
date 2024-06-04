@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import EmpHeader from "../Component/EmpComponent/EmpHeader";
 import { FaDownload, FaTrash } from "react-icons/fa";
 import { MdFileDownloadDone } from "react-icons/md";
 import html2canvas from 'html2canvas';
@@ -28,10 +27,28 @@ const Applications = () => {
       setApplications(data);
     } catch (error) {
       console.error(error);
+      // Handle error fetching applications
     }
   };
 
-  
+  const handleSendEmail = async (email) => {
+    try {
+      const response = await fetch('http://localhost:8070/applications/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+      });
+      if (!response.ok) {
+        throw new Error('Failed to send email');
+      }
+      // Handle success
+    } catch (error) {
+      console.error('Error sending email:', error.message);
+      // Handle error sending email
+    }
+  };
 
   const handleView = (application) => {
     if (application.application) {
@@ -43,7 +60,6 @@ const Applications = () => {
     }
   };
 
-  
   const downloadPDF = () => {
     const input = pdfRef.current;
     html2canvas(input).then((canvas) => {
@@ -75,10 +91,10 @@ const Applications = () => {
             : application
         )
       );
-      alert("Application approved successfully");
+      // Handle success
     } catch (error) {
       console.error("Error approving application:", error);
-      alert("Error approving application");
+      // Handle error approving application
     }
   };
 
@@ -103,15 +119,13 @@ const Applications = () => {
             : application
         )
       );
-      alert("Application declined successfully");
+      // Handle success
     } catch (error) {
       console.error("Error declining application:", error);
-      alert("Error declining application");
+      // Handle error declining application
     }
   };
 
-
-  // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const filteredApplications = selectedStatus === "All"
@@ -136,7 +150,7 @@ const Applications = () => {
   return (
     <div>
       <div className="container mx-auto xl:px-30 px-4 bg-white mt-20 h-full w-full pb-10">
-        <div className="py-[px] ">
+        <div className="py-[px]">
           <h1 className="text-blue text-[28px] leading-[40px] cursor-pointer font-semibold text-center">
             Applications
           </h1>
@@ -144,10 +158,7 @@ const Applications = () => {
             <section>
               <div className="mt-[130px] relative mx-1">
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-                  
-                    
-                <table className="w-full text-sm text-left rtl:text-right text-black dark:text-white items-center m-auto border-2 shadow-3xl border-gray-300 rounded-xl">
-
+                  <table className="w-full text-sm text-left rtl:text-right text-black dark:text-white items-center m-auto border-2 shadow-3xl border-gray-300 rounded-xl">
                     <thead className="text-xs uppercase bg-[#2c42a5] dark:bg-gray-900 text-white">
                       <tr>
                         <th scope="col" className="p-5 text-center"></th>
@@ -195,7 +206,7 @@ const Applications = () => {
 
                             <button
                               className="bg-green-500 hover:bg-green-700 text-gray-200 font-bold px-1 py-1 rounded ml-2 mt-3"
-                              onClick={() => (application._id)}
+                              onClick={() => handleSendEmail(application.email)}
                             >
                               <FaUsers className="ml-1" />
                             </button>
@@ -209,7 +220,6 @@ const Applications = () => {
             </section>
           </div>
         </div>
-        {/* Pagination */}
         <div className="flex justify-center mt-4 space-x-8 text-blue">
           <button
             onClick={prevPage}

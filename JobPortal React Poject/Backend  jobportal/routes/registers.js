@@ -235,7 +235,7 @@ async function sendApprovalEmail(email) {
       secure: true,
       auth: {
         user: 'jobnestlanka@gmail.com',
-        pass: process.env.EMAIL_PASSWORD
+        pass: 'setk uqql cczt jvee'
       }
     });
 

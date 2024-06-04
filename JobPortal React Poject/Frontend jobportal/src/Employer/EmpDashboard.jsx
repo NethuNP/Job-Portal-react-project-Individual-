@@ -113,15 +113,15 @@ const EmpDashboard = () => {
             
           </div>
 
-          <div className='basis-[30%] border bg-white shadow-md cursor-pointer rounded-[4px] w-[700px] h'>
-        <div className='bg-[#F8F9FC] flex items-center justify-between py-[10px] px-[10px] border-b-[1px] border-white'>
-            <h2>Jobs</h2>
+          
+        <div className='bg-[#F8F9FC] flex items-center justify-between  border-b-[1px] border-white mt-1'>
+            <h2 className='text-gray-500 text-2xl font-semibold '></h2>
         </div>
         
           <Charts/>
         
             
-    </div>
+    
 
     
           <div>

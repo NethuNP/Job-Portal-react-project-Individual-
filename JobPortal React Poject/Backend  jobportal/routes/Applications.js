@@ -4,6 +4,7 @@ const Application = require('../models/Application');
 const router = express.Router();
 const fs = require('fs');
 const path = require('path');
+const nodemailer = require('nodemailer'); // Import nodemailer
 
 // Ensure the uploads directory exists
 const uploadDir = path.join(__dirname, '../uploads');
@@ -105,7 +106,6 @@ router.get('/applications', async (req, res) => {
     }
 });
 
-
 // Route to decline an application by ID
 router.put('/decline/:id', async (req, res) => {
     try {
@@ -132,6 +132,25 @@ router.get('/declined/total', async (req, res) => {
     }
 });
 
+// Route to get percentage of declined applications
+router.get('/declined/percentage', async (req, res) => {
+    try {
+        const totalApplications = await Application.countDocuments({});
+        const totalDeclinedApplications = await Application.countDocuments({ status: 'Declined' });
+
+        if (totalApplications === 0) {
+            return res.json({ percentage: 0 }); // If there are no applications, return 0%
+        }
+
+        const declinedPercentage = (totalDeclinedApplications / totalApplications) * 100;
+        res.json({ percentage: declinedPercentage });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error fetching percentage of declined applications");
+    }
+});
+
+
 // Route to delete an application by ID
 router.delete('/delete/:id', async (req, res) => {
     try {
@@ -156,12 +175,34 @@ router.put('/approve/:id', async (req, res) => {
         if (!updatedApplication) {
             return res.status(404).send("Application not found");
         }
+        
         res.json({ message: "Application approved successfully", application: updatedApplication });
     } catch (err) {
         console.error(err);
         res.status(500).send("Error approving application");
     }
 });
+
+
+// Route to get percentage of approved applications
+router.get('/approved/percentage', async (req, res) => {
+    try {
+        const totalApplications = await Application.countDocuments({});
+        const totalApprovedApplications = await Application.countDocuments({ status: 'Approved' });
+
+        if (totalApplications === 0) {
+            return res.json({ percentage: 0 }); // If there are no applications, return 0%
+        }
+
+        const approvedPercentage = (totalApprovedApplications / totalApplications) * 100;
+        res.json({ percentage: approvedPercentage });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error fetching percentage of approved applications");
+    }
+});
+
+
 // Route to get total number of pending applications
 router.get('/pending/total', async (req, res) => {
     try {
@@ -172,7 +213,6 @@ router.get('/pending/total', async (req, res) => {
         res.status(500).send("Error fetching total pending applications count");
     }
 });
-
 
 // Route to get total number of applications
 router.get('/total', async (req, res) => {
@@ -185,6 +225,75 @@ router.get('/total', async (req, res) => {
     }
 });
 
+// Route to get percentage of pending applications
+router.get('/pending/percentage', async (req, res) => {
+    try {
+        const totalApplications = await Application.countDocuments({});
+        const totalPendingApplications = await Application.countDocuments({ status: 'Pending' });
+
+        if (totalApplications === 0) {
+            return res.json({ percentage: 0 }); // If there are no applications, return 0%
+        }
+
+        const pendingPercentage = (totalPendingApplications / totalApplications) * 100;
+        res.json({ percentage: pendingPercentage });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error fetching percentage of pending applications");
+    }
+});
+ 
+// Route to get total number of interviews
+router.get('/interviews/total', async (req, res) => {
+    try {
+        const totalInterviews = await Application.countDocuments({ interview: true });
+        res.json({ total: totalInterviews });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error fetching total interviews count");
+    }
+});
+
+// Route to get total number of emails sent
+router.get('/emails/total', async (req, res) => {
+    try {
+        const totalEmailsSent = await Application.countDocuments({ emailSent: true });
+        res.json({ total: totalEmailsSent });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error fetching total emails sent count");
+    }
+});
 
 
+
+router.post('/send-email', async (req, res) => {
+    try {
+      const { email } = req.body;
+  
+        let transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: {
+                user: 'jobnestlanka@gmail.com',
+                pass: 'setk uqql cczt jvee'
+            }
+        });
+
+        let info = await transporter.sendMail({
+            from: 'jobnestlanka@gmail.com',
+            to: email,
+            subject: 'Invitation for Interviews',
+            text: `Your JOBNEST account has been approved ✅! 
+              Your email: ${email} 
+              Hurry up...🥳🥳🥳 Log in to your account and access the world of jobs with us... Thanks - JOBNEST Team`
+        });
+
+        console.log('Message sent: %s', info.messageId);
+    } catch (error) {
+        console.error('Error sending approval email:', error);
+    }
+}
+)
 module.exports = router;

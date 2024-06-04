@@ -79,10 +79,13 @@ const MyJobs = () => {
                 <MdOutlineMailOutline className="text-blue-600" />
                 <p>{user.email}</p>
               </div>
-              <div className='h-auto w-[400px]'>
+              
+              <div className='h-auto w-[400px] ml-16'>
                 <img src='/images/NA_October_10.jpg' alt="Job Vacancy" />
               </div>
+              
             </>
+            
           )}
           {error && (
             <p className="text-red-500">{error}</p>
@@ -95,21 +98,24 @@ const MyJobs = () => {
           <ul className="grid gap-6">
             {currentJobs.map((job) => (
               <motion.li
-              key={job._id}
-              className=" border border-gray-200 p-6 rounded-lg shadow-sm bg-slate-200 hover:bg-slate-300 flex justify-between items-center"
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.5, ease: 'easeOut' }}
-          >
-              <div className="flex-1">
+                key={job._id}
+                className=" border border-gray-200 p-6 rounded-lg shadow-sm bg-slate-200 hover:bg-slate-300 flex justify-between items-center"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+              >
+                <div className="flex-1">
                   <h3 className="text-lg font-semibold text-blue-700 mb-2">{job.jobTitle}</h3>
                   <p className="text-gray-700 mb-1"><span className="font-medium">Company Name:</span> {job.companyName}</p>
                   <p className="text-gray-700 mb-1"><span className="font-medium">Location:</span> {job.jobLocation}</p>
-              </div>
-              <p className="text-gray-700 mb-1 ml-4"><span className=" text-red-600 font-semibold">Status:</span> {job.status}</p>
-          </motion.li>
+                </div>
+                <p className="text-gray-700 mb-1 ml-4"><span className=" text-red-600 font-semibold">Status:</span> {job.status}</p>
+              </motion.li>
             ))}
-            {jobs.length === 0 && !error && (
-              <p className="text-center text-2xl text-blue font-semibold h-[200px]">No jobs found.</p>
+           {jobs.length === 0 && !error && (
+                <div className='h-auto w-[400px] ml-16'>
+                  
+                  <img src='/images/3828537.jpg' alt="No Jobs Found" />
+                </div>
             )}
           </ul>
           {/* Pagination */}
