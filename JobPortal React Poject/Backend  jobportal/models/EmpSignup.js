@@ -7,7 +7,11 @@ const EmpRegSchema = new Schema({
         type: String,
         required: true
     },
-    businessOwner: {
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
         type: String,
         required: true
     },

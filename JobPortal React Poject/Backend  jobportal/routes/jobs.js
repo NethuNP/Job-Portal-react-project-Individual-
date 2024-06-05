@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Job = require("../models/job");
 const ApprovedJob = require("../models/ApprovedJob");
-const Application = require ("../models/Application");
+
 
 // Insert Route
 router.post('/add', async (req, res) => {
@@ -20,6 +20,8 @@ router.post('/add', async (req, res) => {
         res.status(500).send("Failed to add job");
     }
 });
+
+
 
 // Fetch all jobs
 router.get("/", (req, res) => {
@@ -49,10 +51,10 @@ router.get("/total", async (req, res) => {
 router.put("/update/:id", async (req, res) => {
     try {
         const jobId = req.params.id;
-        const { jobTitle, companyName, minPrice, maxPrice, salaryType, jobLocation, postingDate, expireryDate, experienceLevel, requiredSkill, companyLogo, employmentType, description, jobCategory, status, postedBy } = req.body;
+        const { email,jobTitle, companyName, minPrice, maxPrice, salaryType, jobLocation, postingDate, expireryDate, experienceLevel, requiredSkill, companyLogo, employmentType, description, jobCategory, status, postedBy } = req.body;
 
         const updateJob = {
-            jobTitle, companyName, minPrice, maxPrice, salaryType, jobLocation, postingDate, expireryDate, experienceLevel, requiredSkill, companyLogo, employmentType, description, postedBy, status, jobCategory
+            email,jobTitle, companyName, minPrice, maxPrice, salaryType, jobLocation, postingDate, expireryDate, experienceLevel, requiredSkill, companyLogo, employmentType, description, postedBy, status, jobCategory
         };
 
         await Job.findByIdAndUpdate(jobId, updateJob);

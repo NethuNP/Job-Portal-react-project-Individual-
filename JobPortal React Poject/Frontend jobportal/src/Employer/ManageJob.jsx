@@ -1,32 +1,49 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import { GrView } from "react-icons/gr";
+import { AuthContext } from '../Component/context/AuthContext';
 import EmpHeader from "../Component/EmpComponent/EmpHeader";
 
+
 export default function JobCategory() {
+  const { user } = useContext(AuthContext);
   const [jobs, setJobs] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [editedJob, setEditedJob] = useState(null);
+  const [editedJob, setEditedJob] = useState({
+    companyName: "",
+    jobTitle: "",
+    jobLocation: "",
+    postingDate: "", // You might want to set this with a default value
+    expireryDate: "" // You might want to set this with a default value
+  });
   const [showDescription, setShowDescription] = useState(false);
   const [selectedJobDescription, setSelectedJobDescription] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5; // Adjust the number of items per page as needed
 
   useEffect(() => {
-    function getJobs() {
-      axios
-        .get("http://localhost:8070/jobs/")
-        .then((res) => {
-          console.log(res.data);
-          setJobs(res.data);
-        })
-        .catch((err) => {
-          alert(err.message);
+    const fetchJobs = async () => {
+      if (!user || !user.email) return;
+
+      try {
+        const response = await axios.get('http://localhost:8070/jobs', {
+          params: {
+            email: user.email,
+          },
         });
-    }
-    getJobs();
-  }, []);
+        const filteredJobs = response.data.filter(job => job.postedBy === user.email);
+        setJobs(filteredJobs);
+        setError(null); // Reset error state on success
+      } catch (error) {
+        console.error('Error fetching jobs:', error);
+        setError('There was an error fetching the jobs. Please try again later.');
+        setJobs([]); // Reset jobs state to empty array on error
+      }
+    };
+
+    fetchJobs();
+  }, [user]);
 
   jobs.sort((a, b) => {
     const dateA = new Date(a.postingDate);
@@ -75,7 +92,13 @@ export default function JobCategory() {
   };
 
   const handleCloseEditModal = () => {
-    setEditedJob(null);
+    setEditedJob({
+      companyName: "",
+      jobTitle: "",
+      jobLocation: "",
+      postingDate: "", // You might want to set this with a default value
+      expireryDate: "" // You might want to set this with a default value
+    });
     setShowEditModal(false);
   };
 

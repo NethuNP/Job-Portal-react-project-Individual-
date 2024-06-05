@@ -15,6 +15,7 @@ const UserProfileForm = () => {
 
   const [formData, setFormData] = useState(initialFormData);
   const [currentSection, setCurrentSection] = useState("general");
+  const [showProfilePopup, setShowProfilePopup] = useState(false); // State for managing popup visibility
 
   useEffect(() => {
     if (user) {
@@ -47,39 +48,45 @@ const UserProfileForm = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    try {
-      const formDataToSend = new FormData();
-      for (const key in formData) {
-        formDataToSend.append(key, formData[key]);
-      }
-
-      const response = await fetch("/update/:id", {
-        method: "PUT",
-        body: formDataToSend,
-      });
-
-      if (response.ok) {
-        const updatedUser = await response.json();
-        setFormData({
-          ...formData,
-          ...updatedUser,
-          profileImagePreview: updatedUser.profileImage
-            ? URL.createObjectURL(updatedUser.profileImage)
-            : "",
-        });
-        alert("Profile updated successfully");
-      } else {
-        const errorData = await response.json();
-        alert(`Error: ${errorData.message}`);
-      }
-    } catch (error) {
-      console.error("Error updating profile:", error);
-      alert("Error updating profile");
+  try {
+    if (!user || !user._id) {
+      // Handle case where user or user.id is not available
+      console.error("User or user ID not available");
+      return;
     }
-  };
+
+    const formDataToSend = new FormData();
+    formDataToSend.append("firstName", formData.firstName);
+    formDataToSend.append("lastName", formData.lastName);
+    formDataToSend.append("email", formData.email);
+
+    const response = await fetch(`/update/${_id}`, { // Changed 'seeker.id' to 'user.id'
+      method: "PUT",
+      body: formDataToSend,
+    });
+
+    if (response.ok) {
+      const updatedUser = await response.json();
+      setFormData({
+        ...formData,
+        ...updatedUser,
+        profileImagePreview: updatedUser.profileImage
+          ? URL.createObjectURL(updatedUser.profileImage)
+          : "",
+      });
+      alert("Profile updated successfully");
+    } else {
+      const errorData = await response.json();
+      alert(`Error: ${errorData.message}`);
+    }
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    alert("Error updating profile");
+  }
+};
 
   const handleCancel = () => {
     if (user) {
@@ -93,6 +100,11 @@ const UserProfileForm = () => {
     } else {
       setFormData(initialFormData);
     }
+  };
+
+  // Function to toggle the visibility of the profile popup
+  const toggleProfilePopup = () => {
+    setShowProfilePopup(!showProfilePopup);
   };
 
   return (
@@ -140,7 +152,10 @@ const UserProfileForm = () => {
                       </label>
                     </div>
                   </div>
-                  <button className="px-3 py-1 rounded-md text-blue">
+                  <button
+                    className="px-3 py-1 rounded-md text-blue"
+                    onClick={toggleProfilePopup} // Add onClick event to open the popup
+                  >
                     View Profile
                   </button>
                 </div>
@@ -196,6 +211,32 @@ const UserProfileForm = () => {
           </div>
         </div>
       </div>
+      {/* Render the profile popup conditionally */}
+      {showProfilePopup && (
+        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg">
+            <h3 className="text-2xl font-semibold mb-4">Profile Details</h3>
+            <div className="flex items-center mb-4">
+              <img
+                src={formData.profileImagePreview || "./images/9131529.png"}
+                alt="Profile"
+                className="w-24 h-24 rounded-full border ml-20"
+              />
+            </div>
+            
+            <p className="mb-2">First Name: <span className="ml-2"> {formData.firstName}</span></p>
+            <p className="mb-2">Last Name:<span className="ml-2"> {formData.lastName}</span></p>
+            <p>Email: <span className="ml-2">{formData.email}</span></p>
+            {/* Add more profile details here */}
+            <button
+              className="mt-4 px-4 py-2 bg-blue text-white rounded-md ml-48"
+              onClick={toggleProfilePopup}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -21,7 +21,7 @@ const EmpHeader = () => {
       <div className='flex items-center gap-[15px] relative'>
         {user ? (
           <div className="flex items-center space-x-4">
-            <span className="text-[#6f8ebd]">Welcome, {user.businessOwner}</span>
+          <span className="text-[#6f8ebd]">Welcome, {user.firstName}</span>
             <EmpDropdown />
             <button
               type="button"

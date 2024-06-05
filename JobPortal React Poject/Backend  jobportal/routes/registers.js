@@ -84,7 +84,7 @@ router.post('/add', async (req, res) => {
 // Route to update a user
 router.put('/update/:id', async (req, res) => {
   const { id } = req.params;
-  const { firstName, lastName, email, password, confirmPassword } = req.body;
+  const { firstName, lastName, email } = req.body;
 
   if (password !== confirmPassword) {
     return res.status(400).send('Passwords do not match');
@@ -161,6 +161,37 @@ router.route("/get/:id").get(async (req, res) => {
       success: false,
       message: "Failed to fetch user",
     });
+  }
+});
+
+// Route to update user profile
+router.put("/update/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await register.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update user profile fields
+    user.firstName = req.body.firstName || user.firstName;
+    user.lastName = req.body.lastName || user.lastName;
+    user.email = req.body.email || user.email;
+
+    // Update profile image if sent in the request body
+    if (req.body.profileImage) {
+      user.profileImage = req.body.profileImage; // Assuming profileImage is a base64 encoded string
+    }
+
+    // Save the updated user profile
+    await user.save();
+
+    // Return the updated user profile
+    res.status(200).json(user);
+  } catch (error) {
+    console.error("Error updating user profile:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 

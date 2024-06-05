@@ -16,9 +16,9 @@ const Plans = () => {
     };
 
     const packages = [
-        { name: "Starter", monthlyPrice: 19, yearlyPrice: 199, description: "buymw n wdnbw dbw ", monthlyPostJobs: 5, yearlyPostJobs: 50, trialDays: 5 },
-        { name: "Advance", monthlyPrice: 39, yearlyPrice: 399, description: "buymw n wdnbw dbw ", monthlyPostJobs: 10, yearlyPostJobs: 100, trialDays: 10 },
-        { name: "Premium", monthlyPrice: 59, yearlyPrice: 599, description: "buymw n wdnbw dbw ", monthlyPostJobs: 15, yearlyPostJobs: 150, trialDays: 14, green: <MdCircle /> }
+        { name: "Starter", monthlyPrice: 19, yearlyPrice: 199, description: "Join with our Starter Pack", monthlyPostJobs: 5, yearlyPostJobs: 50, trialDays: 5 },
+        { name: "Advance", monthlyPrice: 39, yearlyPrice: 399, description: "Join with our Advance Pack", monthlyPostJobs: 10, yearlyPostJobs: 100, trialDays: 10 },
+        { name: "Premium", monthlyPrice: 59, yearlyPrice: 599, description: "Join with our Premium Pack ", monthlyPostJobs: 15, yearlyPostJobs: 150, trialDays: 14, green: <MdCircle /> }
     ];
 
     return (

@@ -8,7 +8,8 @@ import "aos/dist/aos.css";
 
 const EmpSignup = () => {
   const [companyName, setCompanyName] = useState("");
-  const [businessOwner, setBusinessOwner] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [contactno, setContactNo] = useState("");
   const [address, setAddress] = useState("");
@@ -24,11 +25,14 @@ const EmpSignup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     if (companyName === "") {
       toast.error("Company Name is required");
-    } else if (businessOwner === "") {
-      toast.error("Owner Name is required");
+    } else if (firstName === "") {
+      toast.error("First Name is required");
+    }
+    else if (lastName === "") {
+      toast.error("Last Name is required");
     } else if (email === "") {
       toast.error("Email is required");
     } else if (!email.includes("@")) {
@@ -51,24 +55,26 @@ const EmpSignup = () => {
       sendData();
     }
   };
-
+  
   const sendData = () => {
     const newEmp = {
       companyName,
-      businessOwner,
+      firstName,
+      lastName,
       email,
       contactno,
       address,
       password,
       confirmPassword
     };
-
+  
     axios.post("http://localhost:8070/empsignups/add", newEmp)
       .then(() => {
         toast.success("Company Registration Successful!");
         navigate("/login");
         setCompanyName("");
-        setBusinessOwner("");
+        setFirstName("");
+        setLastName("");
         setEmail("");
         setContactNo("");
         setAddress("");
@@ -81,6 +87,7 @@ const EmpSignup = () => {
         toast.error("Error registering company");
       });
   };
+  
 
   return (
     <div className="min-h-screen py-14 bg-gray-100 mt-20">
@@ -102,33 +109,41 @@ const EmpSignup = () => {
             </a>
           </div>
           <div className="w-full lg:w-3/5 py-10 px-12 bg-white">
-            <p className="mb-6 text-blue text-2xl font-bold ml-10">Create Your Business Account.</p>
-            <form onSubmit={handleSubmit}>
-              <div className="grid grid-cols-2 gap-5">
-                <input
-                  type="text"
-                  placeholder="Company Name"
-                  className="bg-gray-100 rounded py-1 px-2 w-4/5 ml-10 text-black placeholder:text-gray-400"
-                  value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
-                />
-                <input
-                  type="text"
-                  placeholder="Owner Name"
-                  className="bg-gray-100 text-black placeholder:text-gray-400 rounded py-1 px-2 w-4/5"
-                  value={businessOwner}
-                  onChange={(e) => setBusinessOwner(e.target.value)}
-                />
-              </div>
-              <div className="mt-5">
-                <input
-                  type="text"
-                  placeholder="Email"
-                  className="bg-gray-100 text-black placeholder:text-gray-400 rounded py-1 px-2 w-4/5 ml-10"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
+  <p className="mb-6 text-blue text-2xl font-bold ml-10">Create Your Business Account.</p>
+  <form onSubmit={handleSubmit}>
+    <div className="grid grid-cols-2 gap-5">
+      <input
+        type="text"
+        placeholder="Company Name"
+        className="bg-gray-100 rounded py-1 px-2 w-4/5 ml-10 text-black placeholder:text-gray-400"
+        value={companyName}
+        onChange={(e) => setCompanyName(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="First Name"
+        className="bg-gray-100 text-black placeholder:text-gray-400 rounded py-1 px-2 w-4/5"
+        value={firstName}
+        onChange={(e) => setFirstName(e.target.value)}
+      />
+    </div>
+    <div className="mt-5">
+    <input
+      type="text"
+      placeholder="Last Name"
+      className="bg-gray-100 text-black placeholder:text-gray-400 rounded py-1 px-2 w-4/5 ml-10"
+      value={lastName}
+      onChange={(e) => setLastName(e.target.value)}
+    /></div>
+    <div className="mt-5">
+      <input
+        type="text"
+        placeholder="Email"
+        className="bg-gray-100 text-black placeholder:text-gray-400 rounded py-1 px-2 w-4/5 ml-10"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+    </div>
               <div className="mt-5">
                 <input
                   type="text"

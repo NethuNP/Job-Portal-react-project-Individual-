@@ -31,7 +31,7 @@ const authenticateRole = (role) => (req, res, next) => {
 // Route for registering a new user
 router.post('/add', async (req, res) => {
   try {
-    const { companyName, businessOwner, email, contactno, address, password, confirmPassword } = req.body;
+    const { companyName, firstName,lastName, email, contactno, address, password, confirmPassword } = req.body;
 
     if (password !== confirmPassword) {
       return res.status(400).send('Passwords do not match');
@@ -47,7 +47,8 @@ router.post('/add', async (req, res) => {
 
     const newEmp = new EmpSignup({
       companyName,
-      businessOwner,
+      firstName,
+      lastName,
       email,
       contactno,
       address,
@@ -87,7 +88,8 @@ router.put('/update/:id', async (req, res) => {
 
     const updatedUser = {
       companyName,
-      businessOwner,
+      firstName,
+      lastName,
       email,
       contactno,
       address,
@@ -166,6 +168,34 @@ router.get('/total', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch total count of EmpSignup' });
   }
 });
+
+// Route to get employer by email
+router.get('/email/:email', async (req, res) => {
+  const { email } = req.params;
+
+  try {
+    const employer = await EmpSignup.findOne({ email });
+    if (!employer) {
+      return res.status(404).json({
+        success: false,
+        message: "Employer not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Employer found",
+      data: employer,
+    });
+  } catch (error) {
+    console.error("Error fetching employer by email:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch employer",
+    });
+  }
+});
+
 
 
 // Route to login a employer 

@@ -87,7 +87,7 @@ export default function JobCategory() {
     return (
         <div>
         
-            <div className="container mx-auto xl:px-30 px-4 bg-[#F8F9FC] mt-20 h-full w-full pb-10">
+            <div className="container mx-auto xl:px-30 px-4 bg-white mt-20 h-full w-full pb-10">
                 <div className="py-4 px-10">
                     <h1 className="text-blue text-[28px] leading-[40px] cursor-pointer font-semibold">
                         Jobs

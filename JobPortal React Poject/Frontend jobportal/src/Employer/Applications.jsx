@@ -5,6 +5,8 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { TiCancel } from "react-icons/ti";
 import { FaUsers } from "react-icons/fa";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Applications = () => {
   const [applications, setApplications] = useState([]);
@@ -12,6 +14,7 @@ const Applications = () => {
   const [selectedStatus, setSelectedStatus] = useState("All");
   const itemsPerPage = 4;
   const pdfRef = useRef(null);
+  
 
   useEffect(() => {
     fetchApplications();
@@ -43,10 +46,10 @@ const Applications = () => {
       if (!response.ok) {
         throw new Error('Failed to send email');
       }
-      // Handle success
+      toast.success("Email sent successfully");
     } catch (error) {
       console.error('Error sending email:', error.message);
-      // Handle error sending email
+      toast.error("Failed to send email");
     }
   };
 
@@ -91,10 +94,10 @@ const Applications = () => {
             : application
         )
       );
-      // Handle success
+      toast.success("Application approved successfully");
     } catch (error) {
       console.error("Error approving application:", error);
-      // Handle error approving application
+      toast.error("Failed to approve application");
     }
   };
 
