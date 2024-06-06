@@ -82,8 +82,8 @@ const PostJob = () => {
     <div>
       
       <div className="max-w-screen-2xl container mx-auto xl:px-30 px-4 bg-[#F8F9FC] mt-16 h-full pb-10">
-        <div className="text-black font-sans font-bold text-3xl ml-20 pt-[25px]">
-          Post <span className="text-blue">Jobs</span>
+        <div className="text-black font-sans font-bold text-3xl ml-20 pt-[30px]">
+          Post <span className="text-blue">Jobs</span> Here ...
         </div>
         <form onSubmit={sendData} className="space-y-5">
           <div className="bg-gray-100 py-[10px] px-lg:px-16 ml-[150px] mr-[150px] mt-10 border-2 shadow-3xl p-6 rounded-3xl">

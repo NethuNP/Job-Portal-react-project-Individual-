@@ -175,13 +175,42 @@ router.put('/approve/:id', async (req, res) => {
         if (!updatedApplication) {
             return res.status(404).send("Application not found");
         }
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: {
+                user: 'jobnestlanka@gmail.com', // Use environment variable for email
+                pass:'setk uqql cczt jvee'  // Use environment variable for password
+            }
+        });
+
+        // Configure mail options
+        const mailOptions = {
+            from: 'jobnestlanka@gmail.com',
+            to: updatedApplication.email,
+            subject: 'Approval Email',
+            text: `Congratulations! Your application for the job ${updatedApplication.jobTitle} at ${updatedApplication.companyName} has been approved. Log in to JobNest for more details.`
+        };
+
+        // Send email
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error('Error sending approval email:', error);
+                return res.status(500).send("Application approved but failed to send email");
+            }
+            console.log('Approval email sent: %s', info.messageId);
+            res.json({ message: "Application approved successfully and email sent", application: updatedApplication });
+        });
         
         res.json({ message: "Application approved successfully", application: updatedApplication });
     } catch (err) {
         console.error(err);
         res.status(500).send("Error approving application");
     }
-});
+}
+
+);
 
 
 // Route to get percentage of approved applications
@@ -261,15 +290,15 @@ router.get('/emails/total', async (req, res) => {
         res.json({ total: totalEmailsSent });
     } catch (err) {
         console.error(err);
-        res.status(500).send("Error fetching total emails sent count");
+        res.status(500).sendcompanyName("Error fetching total emails sent count");
     }
 });
 
 
 
-router.post('/send-email', async (req, res) => {
+router.post('/interview/:id', async (req, res) => {
     try {
-      const { email } = req.body;
+      const { email} = req.body;
   
         let transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
@@ -285,9 +314,9 @@ router.post('/send-email', async (req, res) => {
             from: 'jobnestlanka@gmail.com',
             to: email,
             subject: 'Invitation for Interviews',
-            text: `Your JOBNEST account has been approved ✅! 
+            text: `Congratulations! 
               Your email: ${email} 
-              Hurry up...🥳🥳🥳 Log in to your account and access the world of jobs with us... Thanks - JOBNEST Team`
+             We are Happy to inform You are selected for your applying job on JobNest. Login to the JobNest for View more details Thanks - JOBNEST Team`
         });
 
         console.log('Message sent: %s', info.messageId);

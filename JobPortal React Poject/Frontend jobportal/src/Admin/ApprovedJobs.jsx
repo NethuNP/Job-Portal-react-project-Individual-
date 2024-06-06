@@ -97,9 +97,7 @@ export default function ApprovedJobs() {
                                                     <td className="px-6 py-4 text-center">{job.postingDate}</td>
                                                     <td className="px-6 py-4 text-center">{job.expireryDate}</td>
                                                     <td className="px-6 py-4 text-center flex justify-center">
-                                                        <button className="bg-green-500 hover:bg-yellow-600 text-gray-200 font-bold px-1 py-1 rounded mt-3">
-                                                            <GrView />
-                                                        </button>
+                                                        
                                                         <button className="bg-red-500 hover:bg-red-600 text-gray-200 font-bold px-1 py-1 rounded ml-2 mt-3" onClick={() => deleteJob(job._id, job.companyName)}>
                                                             <FaTrash />
                                                         </button>

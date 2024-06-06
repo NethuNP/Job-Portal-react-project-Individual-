@@ -147,6 +147,8 @@ const JDetails = () => {
                                 <FaMoneyCheckDollar className='mr-2 text-[20px]' />
                                 <span className='font-semibold'>Salary: Rs: {approvedJob.minPrice} - {approvedJob.maxPrice}</span>
                             </div>
+
+                            
                         </div>
                         <div className='bg-white p-4 rounded col-span-2 shadow-3xl'>
                             <div className='font-semibold text-2xl text-blue'>Description</div>

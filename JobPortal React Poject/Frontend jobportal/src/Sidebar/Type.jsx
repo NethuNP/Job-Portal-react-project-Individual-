@@ -17,7 +17,7 @@ const Type = ({ handleChange }) => {
 
         <InputField handleChange={handleInputChange} value='full-time' title='Full-time' name='test' />
         <InputField handleChange={handleInputChange} value='part-time' title='Part-time' name='test' />
-        <InputField handleChange={handleInputChange} value='internship' title='Internship' name='test' />
+        
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ import Layout from "../Component/Layouts/Layout";
 import AdminLayout from "../Component/Layouts/AdminLayout";
 
 
-import Adminlogin from "../Admin/Adminlogin";
+
 import Dashboard from "../Admin/Dashboard";
 import UserView from "../Admin/UserView";
 import JobCategory from "../Admin/JobCategory";
@@ -40,12 +40,6 @@ import EmpSignup from "../Employer/EmpSignup";
 
 
 
-
-//import Feedbacks from "../Admin/Feedbacks";
-
-
-
-
 const Router= () => {
  
   return (
@@ -64,14 +58,9 @@ const Router= () => {
       <Route path="/userprofile" element={<UserProfile/>}/>
       <Route path="/empsignup" element={<EmpSignup/>}/>
 
-    
-     
    
       </Route>
 
-    
-
-      
       <Route path="/admin" element={<AdminLayout />}>
         <Route path="/admin" element={<Navigate to="/admin/dashboard" />} />
         <Route path="/admin/dashboard" element={<Dashboard/>}/>
@@ -102,10 +91,6 @@ const Router= () => {
         
         
         </Route>
-
-        
-        
-        
 
 
 
