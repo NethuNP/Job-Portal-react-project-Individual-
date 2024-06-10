@@ -66,6 +66,23 @@ router.put("/approve/:id", async (req, res) => {
         res.status(500).send('Server error');
     }
 });
+// Fetch approved job by ID
+router.get("/get/:id", async (req, res) => {
+    try {
+        const jobId = req.params.id;
+        const job = await ApprovedJob.findById(jobId);
+        if (!job) {
+            return res.status(404).json({ message: "Job not found" });
+        }
+        res.status(200).json({ job });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Error fetching job details" });
+    }
+});
+
+module.exports = router;
+
 
 // Function to send approval email
 async function sendApprovalEmail(postedBy) {

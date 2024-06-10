@@ -39,7 +39,9 @@ const EmpSignup = () => {
       toast.error("Email is invalid");
     } else if (contactno === "") {
       toast.error("Contact No is required");
-    } else if (address === "") {
+    }  else if (contactno.length !== 10) {
+      toast.error("Contact No must be exactly 10 characters");
+    }else if (address === "") {
       toast.error("Address is required");
     } else if (password === "") {
       toast.error("Password is required");

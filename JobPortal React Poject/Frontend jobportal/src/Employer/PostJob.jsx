@@ -272,7 +272,7 @@ const PostJob = () => {
             <div className="w-full">
               <label className="block mb-2 font-semibold">Job Posted By</label>
               <input
-                type="text"
+                type="email"
                 placeholder="Your email"
                 {...register("postedBy")}
                 className="block w-full flex-1 border-1 bg-white py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6 border-2 border-neutral-200"

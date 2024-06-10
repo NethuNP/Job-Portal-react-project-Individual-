@@ -16,7 +16,7 @@ const JDetails = () => {
    // const [user, setUser] = useState(null); // Assume user state
 
     useEffect(() => {
-        fetch(`http://localhost:8070/approvedjobs/get/${id}`)
+        fetch(`http://localhost:8070/approvedJobs/get/${id}`)
             .then(res => res.json())
             .then(data => setApprovedJob(data.job))
             .catch(error => {
@@ -119,7 +119,7 @@ const JDetails = () => {
                             <button className='bg-blue text-white px-4 py-3 mt-10 rounded-md' onClick={() => setShowUploadSection(true)}> Apply Now </button>
                         ) : (
                             <div className="text base text-primary font-medium space-x-5 hidden lg:block">
-                                <Link to="/login" className="py-2 px-5 bg-blue text-white border-2 border-blue rounded font-bold hover:text-blue hover:bg-white mt-20">
+                                <Link to="/login" className="py-2 px-5 bg-blue text-white border-2 border-blue rounded font-bold hover:text-blue hover:bg-white mt-10">
                                     Register For Apply
                                 </Link>
                             </div>

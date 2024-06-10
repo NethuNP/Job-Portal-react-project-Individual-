@@ -65,6 +65,7 @@ router.put("/update/:id", async (req, res) => {
     }
 });
 
+
 // Delete job by ID
 router.delete("/delete/:id", async (req, res) => {
     try {

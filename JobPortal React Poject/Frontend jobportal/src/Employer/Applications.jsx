@@ -56,7 +56,7 @@ const Applications = () => {
       toast.success("Application status updated to Interviewed");
     } catch (error) {
       console.error("Error updating application status:", error);
-      toast.error("Failed to update application status to Interviewed");
+     // toast.error("Failed to update application status to Interviewed");
     }
   };
 
@@ -215,12 +215,7 @@ const Applications = () => {
                           >
                             <MdFileDownloadDone />
                           </button>
-                          <button
-                            className="bg-green-500 hover:bg-green-700 text-gray-200 font-bold px-1 py-1 rounded"
-                            onClick={() => handleInterview(application._id)}
-                          >
-                            <FaUsers />
-                          </button>
+                          
                         </td>
                       </tr>
                     ))}
