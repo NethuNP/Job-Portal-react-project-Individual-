@@ -97,9 +97,9 @@ const Home = () => {
           </div>
         </div>
 
-        <div>
+        {/*<div>
         <Slider/>
-  </div>
+  </div>*/}
 
         
 

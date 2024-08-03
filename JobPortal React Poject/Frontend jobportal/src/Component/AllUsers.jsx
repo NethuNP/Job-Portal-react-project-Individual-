@@ -56,7 +56,7 @@ export default function AllUsers() {
     };
 
     return (
-        <div className='bg-[#F8F9FC] mt-16'>
+        <div className='bg-white mt-16'>
             <div className="py-[25px] px-[60px]">
                 <h1 className="text-blue text-[28px] leading-[40px] cursor-pointer font-semibold">
                     Registered Users  
@@ -79,7 +79,7 @@ export default function AllUsers() {
                                 <tbody>
                                     {currentUsers.map((user, index) => (
                                         <tr
-                                            className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                                            className="bg-gray-100 border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                                             key={index}
                                         >
                                             <td className="w-4 p-4">{indexOfFirstItem + index + 1}</td>

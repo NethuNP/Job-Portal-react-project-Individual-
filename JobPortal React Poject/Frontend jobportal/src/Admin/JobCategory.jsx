@@ -101,7 +101,7 @@ export default function JobCategory() {
                                         <tbody>
                                             {currentJobs.map((job, index) => (
                                                 <tr
-                                                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                                                    className="bg-gray-100 border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                                                     key={index}
                                                 >
                                                     <td className="p-4 text-center">{indexOfFirstItem + index + 1}</td>

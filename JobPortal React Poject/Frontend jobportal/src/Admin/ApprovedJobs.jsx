@@ -82,7 +82,7 @@ export default function ApprovedJobs() {
                                                 <th scope="col" className="px-6 py-3 text-center">Posting Date</th>
                                                 <th scope="col" className="px-6 py-3 text-center">Expiry Date</th>
                                                 <th scope="col" className="px-6 py-3 text-center">Actions</th>
-                                                <th scope ='col' className='px-6 py-3 text-center'>New</th>
+                                                
                                             </tr>
                                         </thead>
                                         <tbody>

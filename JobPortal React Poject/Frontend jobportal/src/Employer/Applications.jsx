@@ -173,7 +173,7 @@ const Applications = () => {
                 <table className="w-full text-sm text-left text-black border-2 shadow-xl border-gray-300 rounded-xl">
                   <thead className="text-xs uppercase bg-[#2c42a5] text-white">
                     <tr>
-                      <th scope="col" className="p-5 text-center">#</th>
+                      <th scope="col" className="p-5 text-center">No</th>
                       <th scope="col" className="px-6 py-1 text-center">Company Name</th>
                       <th scope="col" className="px-6 py-3 text-center">Job Title</th>
                       <th scope="col" className="px-6 py-3 text-center">Job Location</th>

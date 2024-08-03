@@ -1,39 +1,55 @@
-import React, {useEffect } from "react";
-import InputField from '../Component/InputField';
-
+import React, { useState } from "react";
 
 const Category = ({ handleChange }) => {
-  const handleInputChange = (event) => {
-    const selectedValue = event.target.value; // Extract the selected value
-    handleChange(selectedValue); // Pass the selected value to the parent component
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const categories = [
+    'Education',
+    'Healthcare',
+    'Marketing',
+    'IT',
+    'Restaurant'
+  ];
+
+  const handleTagClick = (category) => {
+    setSelectedCategory(prev => {
+      const newSelection = prev === category ? null : category;
+      
+      handleChange(newSelection); // Notify parent component of the change
+      return newSelection;
+    });
   };
 
-  
-
   return (
-    <div>
-    <div className='bg-slate-100 rounded justify-center px-4 py-2 '>
-      <h4 className='text-lg font-medium mb-2 text-blue'>Select Category</h4>
-      <div>
-        <label className='sidebar-label-container block relative mb-3 cursor-pointer'>
-          <input type='radio' name='category' value='' onChange={handleInputChange} />
-          <span className='checkmark'></span>Any
-        </label>
-
-        <InputField handleChange={handleInputChange} value='Education' title='Education' name='category' />
-        <InputField handleChange={handleInputChange} value='Healthcare' title='Healthcare' name='category' />
-        <InputField handleChange={handleInputChange} value='Marketing' title='Marketing' name='category' />
-        <InputField handleChange={handleInputChange} value='Information Technology' title='Information Technology' name='category' />
-        <InputField handleChange={handleInputChange} value='Restaurant' title='Restaurant' name='category' />
+    <div className="p-6 bg-slate-100">
+      <h4 className="text-lg font-medium mb-6 text-blue">Select Category</h4>
+      <div className="flex flex-wrap gap-2 mb-6">
+        {categories.map(category => (
+          <button
+            key={category}
+            onClick={() => handleTagClick(category)}
+            className={`flex-1 min-w-[100px] px-3 py-3 rounded-2xl transition-colors duration-300 text-sm ${
+              selectedCategory === category
+                ? 'bg-blue text-white'
+                : 'bg-gray-200 text-black'
+            }`}
+          >
+            {category}
+          </button>
+        ))}
       </div>
-    </div>
-    <div>
-        <img src="./images/vecteezy-businessman-with-a-la-unscreen.gif" autoPlay muted loop className='h-[180px] mt-10 ' ></img>
-        
-    </div>
-    <div className=" text-blue px-10 font-semibold mt-24">
-      jobnestlanka@gmail.com
-    </div>
+      <div className="flex justify-center mb-6">
+        <img
+          src="./images/vecteezy-businessman-with-a-la-unscreen.gif"
+          alt="Animated GIF"
+          autoPlay
+          muted
+          loop
+          className='h-[180px]'
+        />
+      </div>
+      <div className="text-blue text-center font-semibold mt-8">
+        jobnestlanka@gmail.com
+      </div>
     </div>
   );
 };

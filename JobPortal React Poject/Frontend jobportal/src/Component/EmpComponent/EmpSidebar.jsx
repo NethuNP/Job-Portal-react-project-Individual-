@@ -34,19 +34,19 @@ export const EmpSidebar = () => {
           </a>
         </div>
 
-        <div className="py-[20px] border-b-[1px] border-[#EDEDED]/[0.3] w-full px-2">
+     {/*   <div className="py-[20px] border-b-[1px] border-[#EDEDED]/[0.3] w-full px-2">
           <a href="/employer/plans" className="flex items-center gap-[10px]">
             <FaGem color="white" />
             <button className="text-white font-normal">Packages</button>
           </a>
-        </div>
+        </div>*/}
 
-        <div className="py-[20px] border-b-[1px] border-[#EDEDED]/[0.3] w-full px-2">
+        {/*<div className="py-[20px] border-b-[1px] border-[#EDEDED]/[0.3] w-full px-2">
           <a href="/employer/managejob" className="flex items-center gap-[10px]">
             <MdManageAccounts color="white" />
             <button className="text-white font-normal">Manage Job</button>
           </a>
-        </div>
+        </div>*/}
 
         <div className="py-[20px] w-full px-2">
           <a href="/employer/applications" className="flex items-center gap-[10px]">
