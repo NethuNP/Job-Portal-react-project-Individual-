@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios"; // Add this import statement
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { IoMdMail } from "react-icons/io";
 import { FaLocationDot } from "react-icons/fa6";
@@ -7,7 +9,6 @@ import { FaFacebook, FaLinkedin, FaInstagram } from "react-icons/fa";
 import { BsTwitterX } from "react-icons/bs";
 import Aos from "aos";
 import "aos/dist/aos.css";
-import Chatbot from "../Component/chatbot";
 
 const ContactUs = () => {
   const [name, setName] = useState("");
@@ -30,18 +31,20 @@ const ContactUs = () => {
 
     try {
       await axios.post("http://localhost:8070/fedbacks/add", newFeedback);
-      alert("Feedback Added");
+      toast.success("Feedback Added");
       setName("");
       setEmail("");
       setMessage("");
     } catch (err) {
       console.error("Error adding feedback:", err);
       setError("There was an error adding the feedback.");
+      toast.error("There was an error adding the feedback.");
     }
   };
 
   return (
     <div className="bg-gray-100 antialiased pt-5 mt-20 min-h-screen">
+      <ToastContainer />
       <div className="flex w-full min-h-[60vh] justify-center items-center">
         <div
           className="flex flex-col md:flex-row md:space-x-56 space-y-6 md:space-y-0 w-full max-w-4xl p-8 sm:p-10 rounded-xl shadow-lg text-white overflow-hidden mb-5"

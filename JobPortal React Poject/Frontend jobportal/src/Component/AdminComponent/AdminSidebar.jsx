@@ -38,7 +38,7 @@ export const AdminSidebar = () => {
       <div className="flex items-center gap-[15px] py-[20px] border-b-[1px] border-[#EDEDED]/[0.3] px-2">
         <a href="/admin/jobcategory" className="flex items-center gap-[10px]">
           <BsLayersFill color="white" />
-          <button className="text-white font-normal">Category</button>
+          <button className="text-white font-normal">All Jobs</button>
         </a>
       </div>
 

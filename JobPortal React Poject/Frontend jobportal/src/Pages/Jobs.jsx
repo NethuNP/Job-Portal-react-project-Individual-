@@ -6,30 +6,25 @@ import { Sidebar } from "../Sidebar/Sidebar";
 import axios from "axios";
 import Category from "../Sidebar/Category";
 
-
 const Jobs = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
-
   const [jobs, setJobs] = useState([]);
   const [query, setQuery] = useState("");
+  const [jobLocation, setJobLocation] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState({ query: "", jobLocation: "" });
   const itemsPerPage = 3;
 
- useEffect(()=>{
-  axios.get ("http://localhost:8070/approvedjobs/")
-  .then ((res) =>{
-    setJobs(res.data);
-
-  })
-  .catch ((err)=>{
-    console.error(err);
-    alert ("Error fetching jobs");
-
-  })
- })
-  const handleInputChange = (event) => {
-    setQuery(event.target.value);
-  };
+  useEffect(() => {
+    axios.get("http://localhost:8070/approvedjobs/")
+      .then((res) => {
+        setJobs(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("Error fetching jobs");
+      });
+  }, []);
 
   // Calculate the index range
   const calculatePageRange = () => {
@@ -55,52 +50,57 @@ const Jobs = () => {
     }
   };
 
-  
   // Main function to filter data
-const filteredData = (jobs, selected, query) => {
-  let filteredJobs = jobs;
+  const filteredData = (jobs, selected, searchTerm) => {
+    let filteredJobs = jobs;
 
-  if (query) {
-    filteredJobs = filteredJobs.filter(
-      (job) => job.jobTitle && job.jobTitle.toLowerCase().includes(query.toLowerCase())
-    );
-  }
-
-  if (typeof selected === "string") {
-    if (selected) {
+    if (searchTerm.query) {
       filteredJobs = filteredJobs.filter(
-        ({ experienceLevel, employmentType, jobCategory }) =>
-          (experienceLevel &&
-            experienceLevel.toLowerCase() === selected.toLowerCase()) ||
-          (employmentType &&
-            employmentType.toLowerCase() === selected.toLowerCase()) ||
-          (jobCategory && jobCategory.toLowerCase() === selected.toLowerCase())
+        (job) =>
+          job.jobTitle &&
+          job.jobTitle.toLowerCase().includes(searchTerm.query.toLowerCase())
       );
     }
-  } else {
-    console.error("Selected category is not a string:", selected);
-  }
-  // Slice the data based on current page
-  const { startIndex, endIndex } = calculatePageRange();
-  filteredJobs = filteredJobs.slice(startIndex, endIndex);
 
-  return filteredJobs.map((data, index) => (
-    <Card key={`${data.id}-${index}`} data={data} />
-  ));
-};
+    if (searchTerm.jobLocation) {
+      filteredJobs = filteredJobs.filter(
+        (job) =>
+          job.jobLocation &&
+          job.jobLocation.toLowerCase().includes(searchTerm.jobLocation.toLowerCase())
+      );
+    }
 
+    if (typeof selected === "string") {
+      if (selected) {
+        filteredJobs = filteredJobs.filter(
+          ({ experienceLevel, employmentType, jobCategory }) =>
+            (experienceLevel &&
+              experienceLevel.toLowerCase() === selected.toLowerCase()) ||
+            (employmentType &&
+              employmentType.toLowerCase() === selected.toLowerCase()) ||
+            (jobCategory && jobCategory.toLowerCase() === selected.toLowerCase())
+        );
+      }
+    } else {
+      console.error("Selected category is not a string:", selected);
+    }
+    // Slice the data based on current page
+    const { startIndex, endIndex } = calculatePageRange();
+    filteredJobs = filteredJobs.slice(startIndex, endIndex);
 
+    return filteredJobs;
+  };
 
-  
+  const result = filteredData(jobs, selectedCategory, searchTerm);
 
-  const result = filteredData(jobs, selectedCategory, query);
-
-
-  
+  const handleSearch = (event) => {
+    event.preventDefault();
+    setSearchTerm({ query, jobLocation });
+  };
 
   return (
     <div>
-      <form>
+      <form onSubmit={handleSearch}>
         <div className="flex justify-center md:flex-row flex-col md:gap-5 gap-4 pt-5 mt-24">
           <div className="flex md:rounded-s-md rounded shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring focus-indigo-600 md:w-1/4 w-full">
             <input
@@ -109,7 +109,7 @@ const filteredData = (jobs, selected, query) => {
               id="title"
               placeholder="What position are you looking for?"
               className="block flex-1 border-0 bg-transparent py-1.5 pl-8 text-gray-900 placeholder:text-gray-400 focus:right-0 sm:text-sm sm:leading-6"
-              onChange={handleInputChange}
+              onChange={(e) => setQuery(e.target.value)}
               value={query}
             />
             <FiSearch className="absolute mt-2.5 ml-2 text-gray-400" />
@@ -117,11 +117,12 @@ const filteredData = (jobs, selected, query) => {
           <div className="flex md:rounded-s-none rounded shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring focus-indigo-600 md:w-1/4 w-full">
             <input
               type="text"
-              name="location"
-              id="location"
+              name="jobLocation"
+              id="jobLocation"
               placeholder="Location"
               className="block flex-1 border-0 bg-transparent py-1.5 pl-8 text-gray-900 placeholder:text-gray-400 focus:right-0 sm:text-sm sm:leading-6"
-              value={""}
+              onChange={(e) => setJobLocation(e.target.value)}
+              value={jobLocation}
             />
             <FiMapPin className="absolute mt-2.5 ml-2 text-gray-400" />
           </div>
@@ -140,11 +141,19 @@ const filteredData = (jobs, selected, query) => {
           <div className="bg-slate-300 p-4 rounded shadow-gray-400 border-2 font-bold">
             Filter
           </div>
-          <Sidebar handleChange={setSelectedCategory}/>
+          <Sidebar handleChange={setSelectedCategory} />
         </div>
         {/* Job cards */}
         <div className="col-span-2 bg-white p-4 rounded-sm">
-          <AllJobs result={result} />
+          {result.length > 0 ? (
+            <AllJobs result={result.map((data, index) => (
+              <Card key={`${data.id}-${index}`} data={data} />
+            ))} />
+          ) : (
+            <div className="text-center text-blue text-3xl mt-48 font-bold">
+              Jobs not found
+            </div>
+          )}
           {/* Pagination */}
           {result.length > 0 && (
             <div className="flex justify-center mt-4 space-x-8 text-blue">

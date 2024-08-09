@@ -5,10 +5,10 @@ import { GrView } from "react-icons/gr";
 import { AuthContext } from '../Component/context/AuthContext';
 import EmpHeader from "../Component/EmpComponent/EmpHeader";
 import { toast } from 'react-toastify';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { Link } from 'react-router-dom';
 import { FaHandPointRight } from "react-icons/fa";
 
-export default function JobCategory() {
+export default function MyApprovedJobs() {
   const { user } = useContext(AuthContext);
   const [jobs, setJobs] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -20,7 +20,7 @@ export default function JobCategory() {
     postingDate: "",
     expireryDate: "",
     description: "",
-    status: "Pending" // Default status
+    status: "Approved" // Default status
   });
   const [showDescription, setShowDescription] = useState(false);
   const [selectedJobDescription, setSelectedJobDescription] = useState("");
@@ -34,14 +34,14 @@ export default function JobCategory() {
 
       setLoading(true);
       try {
-        const response = await axios.get('http://localhost:8070/jobs/', {
+        const response = await axios.get('http://localhost:8070/approvedjobs/', {
           params: { email: user.email },
         });
         // Ensure the filtering is correctly done
         const filteredJobs = response.data.filter(job => job.postedBy === user.email);
         setJobs(filteredJobs.map(job => ({
           ...job,
-          status: job.status || "Pending" // Default to "Pending" if status is not available
+          status: job.status || "Approved" // Default to "Approved" if status is not available
         })));
       } catch (error) {
         console.error('Error fetching jobs:', error);
@@ -78,9 +78,11 @@ export default function JobCategory() {
     }
 
     try {
-      await axios.put(`http://localhost:8070/jobs/update/${editedJob._id}`, editedJob);
+      // Make sure to send status as "Approved" regardless of changes in the form
+      const updatedJob = { ...editedJob, status: "Approved" };
+      await axios.put(`http://localhost:8070/jobs/update/${editedJob._id}`, updatedJob);
       setShowEditModal(false);
-      setJobs(jobs.map(job => job._id === editedJob._id ? editedJob : job));
+      setJobs(jobs.map(job => job._id === editedJob._id ? updatedJob : job));
       toast.success("Job updated successfully!");
     } catch (err) {
       console.error(err);
@@ -102,7 +104,7 @@ export default function JobCategory() {
       postingDate: "",
       expireryDate: "",
       description: "",
-      status: "Pending" // Reset status to default
+      status: "Approved" // Reset status to default
     });
     setShowEditModal(false);
   };
@@ -140,20 +142,15 @@ export default function JobCategory() {
       <EmpHeader />
       <div className="container xl:px-30 px-4 bg-white mt-20 h-full w-full pb-10">
         <div className="py-[px] px-[100px]">
-          <h1 className="text-blue text-[28px] leading-[40px] cursor-pointer font-semibold mt-28"> {/* Reduced margin-top */}
-            Jobs
+          <h1 className="text-blue text-[28px] leading-[40px] cursor-pointer font-semibold mt-28">
+            My Approved Jobs
           </h1>
-          <div className="-mt-5">
+          
+          <div className="-mt-20">
             <section>
-              <div className="mt-[50px] relative mx-1"> {/* Adjusted margin-top */}
-                <div className="absolute top-0 right-0 mr-4 z-10">
-                  <Link to="/employer/myapprovedjobs" className="flex items-center text-blue hover:underline font-semibold">
-                    My Approved Jobs
-                    <FaHandPointRight className="ml-2" />
-                  </Link>
-                </div>
+              <div className="mt-[130px] relative mx-1">
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-                  <table className="w-full text-sm text-left rtl:text-right text-black dark:text-white items-center m-auto border-2 shadow-3xl border-gray-300 rounded-xl mt-12">
+                  <table className="w-full text-sm text-left rtl:text-right text-black dark:text-white items-center m-auto border-2 shadow-3xl border-gray-300 rounded-xl">
                     <thead className="text-xs uppercase bg-[#2c42a5] dark:bg-gray-900 text-white">
                       <tr>
                         <th scope="col" className="p-5 text-center"></th>
@@ -197,12 +194,7 @@ export default function JobCategory() {
                               >
                                 <FaTrash />
                               </button>
-                              <button
-                                className="bg-yellow-500 hover:bg-yellow-600 text-gray-200 font-bold px-1 py-1 rounded ml-2 mt-3"
-                                onClick={() => handleEdit(job)}
-                              >
-                                <FaEdit />
-                              </button>
+                             
                             </td>
                           </tr>
                         ))
@@ -306,10 +298,9 @@ export default function JobCategory() {
                     value={editedJob.status}
                     onChange={(e) => setEditedJob({ ...editedJob, status: e.target.value })}
                     className="w-full bg-gray-100 px-3 py-2 rounded border border-gray-300 focus:outline-none focus:bg-white focus:border-blue-500"
+                    disabled // Disable editing of status
                   >
-                    <option value="Pending">Pending</option>
                     <option value="Approved">Approved</option>
-                    <option value="Rejected">Rejected</option>
                   </select>
                 </div>
                 <div className="flex justify-end mt-4">

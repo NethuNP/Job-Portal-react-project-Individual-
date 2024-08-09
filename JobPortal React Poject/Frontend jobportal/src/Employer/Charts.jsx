@@ -66,17 +66,17 @@ const Charts = () => {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <div className="container mx-auto grid grid-cols-2 gap-4">
+        <div className="container mx-auto grid grid-cols-2 gap-4 ml-10">
             <div>
-                <h2 className="text-2xl  mb-4 mt-5 text-gray-500 font-bold ">Application Status</h2>
-                <PieChart width={500} height={400}>
+                <h2 className="text-xl   text-gray-500 font-bold">Application Status</h2>
+                <PieChart width={300} height={300}>
                     <Pie
                         data={data}
-                        cx={200}
-                        cy={200}
+                        cx={150}
+                        cy={150}
                         labelLine={false}
                         label={renderCustomizedLabel}
-                        outerRadius={140}
+                        outerRadius={100}
                         fill="#8884d8"
                         dataKey="value"
                     >
@@ -87,18 +87,18 @@ const Charts = () => {
                     <Legend verticalAlign="bottom" height={36} />
                 </PieChart>
             </div>
-            <div className='mt-20'>
-                <LineChart width={400} height={400} data={data} >
+            <div className='mt-10'>
+                <LineChart width={300} height={300} data={data}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
                     <YAxis />
                     <Tooltip />
                     <Legend verticalAlign="bottom" height={36} />
-                    <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{ r: 8 }} />
+                    <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{ r: 5 }} />
                 </LineChart>
             </div>
         </div>
     );
-}
+};
 
 export default Charts;

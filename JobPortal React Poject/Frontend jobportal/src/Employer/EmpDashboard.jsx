@@ -44,7 +44,7 @@ const EmpDashboard = () => {
   return (
     <div >
       {/* Header */}
-      <div className='flex items-center justify-between shadow-3xl h-[70px] px-[25px]'>
+      <div className='flex items-center justify-between shadow-3xl  px-[25px]'>
         <div className='flex items-center rounded-[5px]'>
           <input
             type='text'
@@ -67,9 +67,9 @@ const EmpDashboard = () => {
       {/* Body */}
       <div>
         <div className='pt-[25px] px-[25px] bg-[#F8F9FC]'>
-          <div className='flex items-center justify-between'>
+          {/*<div className='flex items-center justify-between'>
             <h1 className='text-[#2E59D9] text-[28px] leading-[34px] font-normal cursor-pointer'>Dashboard</h1>
-          </div>
+          </div>*/}
 
           {/* User Info */}
           <div>

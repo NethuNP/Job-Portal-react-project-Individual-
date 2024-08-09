@@ -44,14 +44,15 @@ const empsignupsRouter = require ("./routes/EmpSignups.js")
 
 
 app.use("/jobs",jobRouter);
-app.use ("/registers" , registerRouter)
-app.use("/approvedjobs", approvedJobRouter)
+app.use ("/registers" , registerRouter);
+app.use("/approvedjobs", approvedJobRouter);
 app.use(cors());
 app.use(express.json());
 app.use('/applications', applicationRouter);
 app.use('/employers', employerRouter);
 app.use ('/fedbacks', fedbackRouter);
 app.use ('/empsignups',empsignupsRouter)
+
 
 
 
