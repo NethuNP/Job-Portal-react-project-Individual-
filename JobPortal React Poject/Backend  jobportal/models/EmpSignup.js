@@ -21,7 +21,7 @@ const EmpRegSchema = new Schema({
         unique: true
     },
     contactno: {
-        type: String,  // Changed to String to avoid leading zeros issue
+        type: String,  
         required: true
     },
     address: {
@@ -34,7 +34,7 @@ const EmpRegSchema = new Schema({
     },
     selectedPlan: {
         type: Schema.Types.ObjectId,
-        ref: "Plan", // Reference to the Plan model
+        ref: "Plan", 
       },
    role: {
         type: String,

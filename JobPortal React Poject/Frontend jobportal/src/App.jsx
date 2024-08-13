@@ -1,24 +1,14 @@
-
-import Chatbot from './Component/chatbot';
-import Router from './Router/Router';
+import Chatbot from "./Component/chatbot";
+import Router from "./Router/Router";
 
 import "./index.css";
-
 
 const App = () => {
   return (
     <div>
-      
-    <Router/>
-    
-    
-
-    
-    
-    
+      <Router />
     </div>
-    
-  )
-}
+  );
+};
 
-export default App
+export default App;

@@ -1,4 +1,3 @@
-// models/Employer.js
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -7,7 +6,7 @@ const employerSchema = new Schema({
   password: { type: String, required: true },
   companyName: { type: String, required: true },
 
-  // Add other fields as necessary
+  
 });
 
 module.exports = mongoose.model('Employer', employerSchema);

@@ -1,9 +1,9 @@
-import React, { useState, useContext, useEffect } from 'react';
-import axios from 'axios';
-import { AuthContext } from '../Component/context/AuthContext';
+import React, { useState, useContext, useEffect } from "react";
+import axios from "axios";
+import { AuthContext } from "../Component/context/AuthContext";
 import { FaUserTie } from "react-icons/fa";
 import { MdOutlineMailOutline } from "react-icons/md";
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 const MyJobs = () => {
   const { user } = useContext(AuthContext);
@@ -17,17 +17,21 @@ const MyJobs = () => {
       if (!user || !user.email) return;
 
       try {
-        const response = await axios.get('http://localhost:8070/applications', {
+        const response = await axios.get("http://localhost:8070/applications", {
           params: {
             email: user.email,
           },
         });
-        const filteredJobs = response.data.filter(job => job.email === user.email);
+        const filteredJobs = response.data.filter(
+          (job) => job.email === user.email
+        );
         setJobs(filteredJobs);
-        setError(null); // Reset error state on success
+        setError(null);
       } catch (error) {
-        console.error('Error fetching jobs:', error);
-        setError('There was an error fetching the jobs. Please try again later.');
+        console.error("Error fetching jobs:", error);
+        setError(
+          "There was an error fetching the jobs. Please try again later."
+        );
         setJobs([]); // Reset jobs state to empty array on error
       }
     };
@@ -68,54 +72,60 @@ const MyJobs = () => {
         <div className="bg-white p-8 rounded-lg shadow-md">
           {user && (
             <>
-              <div className='text-2xl font-semibold text-blue pb-4'>
+              <div className="text-2xl font-semibold text-blue pb-4">
                 My Details
               </div>
               <div className="flex items-center gap-3 font-semibold mb-4 text-gray-700">
                 <FaUserTie className="text-blue-600" />
-                <p>{user.firstName} {user.lastName}</p>
+                <p>
+                  {user.firstName} {user.lastName}
+                </p>
               </div>
               <div className="flex items-center gap-3 font-semibold mb-4 text-gray-700">
                 <MdOutlineMailOutline className="text-blue-600" />
                 <p>{user.email}</p>
               </div>
-              
-              <div className='h-auto w-[400px] ml-16'>
-                <img src='/images/NA_October_10.jpg' alt="Job Vacancy" />
+
+              <div className="h-auto w-[400px] ml-16">
+                <video src="/images/myjobs.mp4" alt="Job Vacancy" />
               </div>
-              
             </>
-            
           )}
-          {error && (
-            <p className="text-red-500">{error}</p>
-          )}
+          {error && <p className="text-red-500">{error}</p>}
         </div>
         <div className="bg-white p-8 rounded-lg shadow-md">
-          <div className='text-blue text-2xl font-semibold pb-4'>
-            My Jobs
-          </div>
+          <div className="text-blue text-2xl font-semibold pb-4">My Jobs</div>
           <ul className="grid gap-6">
             {currentJobs.map((job) => (
               <motion.li
                 key={job._id}
                 className=" border border-gray-200 p-6 rounded-lg shadow-sm bg-slate-200 hover:bg-slate-300 flex justify-between items-center"
                 whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.5, ease: 'easeOut' }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
               >
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-blue-700 mb-2">{job.jobTitle}</h3>
-                  <p className="text-gray-700 mb-1"><span className="font-medium">Company Name:</span> {job.companyName}</p>
-                  <p className="text-gray-700 mb-1"><span className="font-medium">Location:</span> {job.jobLocation}</p>
+                  <h3 className="text-lg font-semibold text-blue-700 mb-2">
+                    {job.jobTitle}
+                  </h3>
+                  <p className="text-gray-700 mb-1">
+                    <span className="font-medium">Company Name:</span>{" "}
+                    {job.companyName}
+                  </p>
+                  <p className="text-gray-700 mb-1">
+                    <span className="font-medium">Location:</span>{" "}
+                    {job.jobLocation}
+                  </p>
                 </div>
-                <p className="text-gray-700 mb-1 ml-4"><span className=" text-red-600 font-semibold">Status:</span> {job.status}</p>
+                <p className="text-gray-700 mb-1 ml-4">
+                  <span className=" text-red-600 font-semibold">Status:</span>{" "}
+                  {job.status}
+                </p>
               </motion.li>
             ))}
-           {jobs.length === 0 && !error && (
-                <div className='h-auto w-[400px] ml-16'>
-                  
-                  <img src='/images/3828537.jpg' alt="No Jobs Found" />
-                </div>
+            {jobs.length === 0 && !error && (
+              <div className="h-auto w-[400px] ml-16">
+                <img src="/images/3828537.jpg" alt="No Jobs Found" />
+              </div>
             )}
           </ul>
           {/* Pagination */}

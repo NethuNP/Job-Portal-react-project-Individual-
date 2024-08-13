@@ -16,7 +16,8 @@ const Jobs = () => {
   const itemsPerPage = 3;
 
   useEffect(() => {
-    axios.get("http://localhost:8070/approvedjobs/")
+    axios
+      .get("http://localhost:8070/approvedjobs/")
       .then((res) => {
         setJobs(res.data);
       })
@@ -66,7 +67,9 @@ const Jobs = () => {
       filteredJobs = filteredJobs.filter(
         (job) =>
           job.jobLocation &&
-          job.jobLocation.toLowerCase().includes(searchTerm.jobLocation.toLowerCase())
+          job.jobLocation
+            .toLowerCase()
+            .includes(searchTerm.jobLocation.toLowerCase())
       );
     }
 
@@ -78,7 +81,8 @@ const Jobs = () => {
               experienceLevel.toLowerCase() === selected.toLowerCase()) ||
             (employmentType &&
               employmentType.toLowerCase() === selected.toLowerCase()) ||
-            (jobCategory && jobCategory.toLowerCase() === selected.toLowerCase())
+            (jobCategory &&
+              jobCategory.toLowerCase() === selected.toLowerCase())
         );
       }
     } else {
@@ -146,9 +150,11 @@ const Jobs = () => {
         {/* Job cards */}
         <div className="col-span-2 bg-white p-4 rounded-sm">
           {result.length > 0 ? (
-            <AllJobs result={result.map((data, index) => (
-              <Card key={`${data.id}-${index}`} data={data} />
-            ))} />
+            <AllJobs
+              result={result.map((data, index) => (
+                <Card key={`${data.id}-${index}`} data={data} />
+              ))}
+            />
           ) : (
             <div className="text-center text-blue text-3xl mt-48 font-bold">
               Jobs not found
@@ -165,14 +171,11 @@ const Jobs = () => {
                 Previous
               </button>
               <span className="mx-2 text-black">
-                Page {currentPage} of{" "}
-                {Math.ceil(jobs.length / itemsPerPage)}
+                Page {currentPage} of {Math.ceil(jobs.length / itemsPerPage)}
               </span>
               <button
                 onClick={nextPage}
-                disabled={
-                  currentPage === Math.ceil(jobs.length / itemsPerPage)
-                }
+                disabled={currentPage === Math.ceil(jobs.length / itemsPerPage)}
                 className="hover:underline"
               >
                 Next

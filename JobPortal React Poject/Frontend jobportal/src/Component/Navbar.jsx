@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { FaBarsStaggered, FaXmark } from "react-icons/fa6";
-import Switch from '@mui/material/Switch';
-import { FaRegUserCircle } from "react-icons/fa";
+
+
 import Dropdown from './Dropdown';
 import { AuthContext } from "../Component/context/AuthContext";
 import { toast } from "react-toastify"; 
@@ -35,7 +35,7 @@ const Navbar = () => {
         { path: "/contactus", title: "Contact Us" },
     ];
 
-    // Conditionally add the "My Jobs" item if user is logged in
+    // Add the "My Jobs" item if user is logged in
     if (user) {
         navItems.splice(2, 0, { path: "/myjobs", title: "My Jobs" });
     }

@@ -2,10 +2,10 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import { GrView } from "react-icons/gr";
-import { AuthContext } from '../Component/context/AuthContext';
+import { AuthContext } from "../Component/context/AuthContext";
 import EmpHeader from "../Component/EmpComponent/EmpHeader";
-import { toast } from 'react-toastify';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 import { FaHandPointRight } from "react-icons/fa";
 
 export default function JobCategory() {
@@ -20,7 +20,7 @@ export default function JobCategory() {
     postingDate: "",
     expireryDate: "",
     description: "",
-    status: "Pending" // Default status
+    status: "Pending",
   });
   const [showDescription, setShowDescription] = useState(false);
   const [selectedJobDescription, setSelectedJobDescription] = useState("");
@@ -34,17 +34,21 @@ export default function JobCategory() {
 
       setLoading(true);
       try {
-        const response = await axios.get('http://localhost:8070/jobs/', {
+        const response = await axios.get("http://localhost:8070/jobs/", {
           params: { email: user.email },
         });
         // Ensure the filtering is correctly done
-        const filteredJobs = response.data.filter(job => job.postedBy === user.email);
-        setJobs(filteredJobs.map(job => ({
-          ...job,
-          status: job.status || "Pending" // Default to "Pending" if status is not available
-        })));
+        const filteredJobs = response.data.filter(
+          (job) => job.postedBy === user.email
+        );
+        setJobs(
+          filteredJobs.map((job) => ({
+            ...job,
+            status: job.status || "Pending",
+          }))
+        );
       } catch (error) {
-        console.error('Error fetching jobs:', error);
+        console.error("Error fetching jobs:", error);
         toast.error("Error fetching jobs");
       } finally {
         setLoading(false);
@@ -78,9 +82,12 @@ export default function JobCategory() {
     }
 
     try {
-      await axios.put(`http://localhost:8070/jobs/update/${editedJob._id}`, editedJob);
+      await axios.put(
+        `http://localhost:8070/jobs/update/${editedJob._id}`,
+        editedJob
+      );
       setShowEditModal(false);
-      setJobs(jobs.map(job => job._id === editedJob._id ? editedJob : job));
+      setJobs(jobs.map((job) => (job._id === editedJob._id ? editedJob : job)));
       toast.success("Job updated successfully!");
     } catch (err) {
       console.error(err);
@@ -102,7 +109,7 @@ export default function JobCategory() {
       postingDate: "",
       expireryDate: "",
       description: "",
-      status: "Pending" // Reset status to default
+      status: "Pending", // Reset status to default
     });
     setShowEditModal(false);
   };
@@ -140,14 +147,21 @@ export default function JobCategory() {
       <EmpHeader />
       <div className="container xl:px-30 px-4 bg-white mt-20 h-full w-full pb-10">
         <div className="py-[px] px-[100px]">
-          <h1 className="text-blue text-[28px] leading-[40px] cursor-pointer font-semibold mt-28"> {/* Reduced margin-top */}
+          <h1 className="text-blue text-[28px] leading-[40px] cursor-pointer font-semibold mt-28">
+            {" "}
+            {/* Reduced margin-top */}
             Jobs
           </h1>
           <div className="-mt-5">
             <section>
-              <div className="mt-[50px] relative mx-1"> {/* Adjusted margin-top */}
+              <div className="mt-[50px] relative mx-1">
+                {" "}
+                {/* Adjusted margin-top */}
                 <div className="absolute top-0 right-0 mr-4 z-10">
-                  <Link to="/employer/myapprovedjobs" className="flex items-center text-blue hover:underline font-semibold">
+                  <Link
+                    to="/employer/myapprovedjobs"
+                    className="flex items-center text-blue hover:underline font-semibold"
+                  >
                     My Approved Jobs
                     <FaHandPointRight className="ml-2" />
                   </Link>
@@ -157,19 +171,35 @@ export default function JobCategory() {
                     <thead className="text-xs uppercase bg-[#2c42a5] dark:bg-gray-900 text-white">
                       <tr>
                         <th scope="col" className="p-5 text-center"></th>
-                        <th scope="col" className="px-6 py-1 text-center">Company Name</th>
-                        <th scope="col" className="px-6 py-3 text-center">Job Title</th>
-                        <th scope="col" className="px-6 py-3 text-center">Job Location</th>
-                        <th scope="col" className="px-6 py-3 text-center">Posting Date</th>
-                        <th scope="col" className="px-6 py-3 text-center">Expiry Date</th>
-                        <th scope="col" className="px-6 py-3 text-center">Status</th>
-                        <th scope="col" className="px-6 py-3 text-center">Actions</th>
+                        <th scope="col" className="px-6 py-1 text-center">
+                          Company Name
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-center">
+                          Job Title
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-center">
+                          Job Location
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-center">
+                          Posting Date
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-center">
+                          Expiry Date
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-center">
+                          Status
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-center">
+                          Actions
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       {loading ? (
                         <tr>
-                          <td colSpan="8" className="text-center py-4">Loading...</td>
+                          <td colSpan="8" className="text-center py-4">
+                            Loading...
+                          </td>
                         </tr>
                       ) : (
                         currentJobs.map((job, index) => (
@@ -177,23 +207,41 @@ export default function JobCategory() {
                             className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                             key={job._id}
                           >
-                            <td className="p-4 text-center">{indexOfFirstItem + index + 1}</td>
-                            <td className="px-6 py-4 text-center">{job.companyName}</td>
-                            <td className="px-6 py-4 text-center">{job.jobTitle}</td>
-                            <td className="px-6 py-4 text-center">{job.jobLocation}</td>
-                            <td className="px-6 py-4 text-center">{job.postingDate}</td>
-                            <td className="px-6 py-4 text-center">{job.expireryDate}</td>
-                            <td className="px-6 py-4 text-center">{job.status}</td>
+                            <td className="p-4 text-center">
+                              {indexOfFirstItem + index + 1}
+                            </td>
+                            <td className="px-6 py-4 text-center">
+                              {job.companyName}
+                            </td>
+                            <td className="px-6 py-4 text-center">
+                              {job.jobTitle}
+                            </td>
+                            <td className="px-6 py-4 text-center">
+                              {job.jobLocation}
+                            </td>
+                            <td className="px-6 py-4 text-center">
+                              {job.postingDate}
+                            </td>
+                            <td className="px-6 py-4 text-center">
+                              {job.expireryDate}
+                            </td>
+                            <td className="px-6 py-4 text-center">
+                              {job.status}
+                            </td>
                             <td className="px-6 py-4 text-center flex justify-center">
                               <button
                                 className="bg-green-500 hover:bg-green-600 text-gray-200 font-bold px-1 py-1 rounded mt-3"
-                                onClick={() => handleViewDescription(job.description)}
+                                onClick={() =>
+                                  handleViewDescription(job.description)
+                                }
                               >
                                 <GrView />
                               </button>
                               <button
                                 className="bg-red-500 hover:bg-red-600 text-gray-200 font-bold px-1 py-1 rounded ml-2 mt-3"
-                                onClick={() => deleteJob(job._id, job.companyName)}
+                                onClick={() =>
+                                  deleteJob(job._id, job.companyName)
+                                }
                               >
                                 <FaTrash />
                               </button>
@@ -246,7 +294,12 @@ export default function JobCategory() {
                   <input
                     id="companyName"
                     value={editedJob.companyName}
-                    onChange={(e) => setEditedJob({ ...editedJob, companyName: e.target.value })}
+                    onChange={(e) =>
+                      setEditedJob({
+                        ...editedJob,
+                        companyName: e.target.value,
+                      })
+                    }
                     className="w-full bg-gray-100 px-3 py-2 rounded border border-gray-300 focus:outline-none focus:bg-white focus:border-blue-500"
                     readOnly
                   />
@@ -258,7 +311,9 @@ export default function JobCategory() {
                   <input
                     id="jobTitle"
                     value={editedJob.jobTitle}
-                    onChange={(e) => setEditedJob({ ...editedJob, jobTitle: e.target.value })}
+                    onChange={(e) =>
+                      setEditedJob({ ...editedJob, jobTitle: e.target.value })
+                    }
                     className="w-full bg-gray-100 px-3 py-2 rounded border border-gray-300 focus:outline-none focus:bg-white focus:border-blue-500"
                   />
                 </div>
@@ -269,7 +324,12 @@ export default function JobCategory() {
                   <input
                     id="jobLocation"
                     value={editedJob.jobLocation}
-                    onChange={(e) => setEditedJob({ ...editedJob, jobLocation: e.target.value })}
+                    onChange={(e) =>
+                      setEditedJob({
+                        ...editedJob,
+                        jobLocation: e.target.value,
+                      })
+                    }
                     className="w-full bg-gray-100 px-3 py-2 rounded border border-gray-300 focus:outline-none focus:bg-white focus:border-blue-500"
                   />
                 </div>
@@ -280,7 +340,12 @@ export default function JobCategory() {
                   <input
                     id="postingDate"
                     value={editedJob.postingDate}
-                    onChange={(e) => setEditedJob({ ...editedJob, postingDate: e.target.value })}
+                    onChange={(e) =>
+                      setEditedJob({
+                        ...editedJob,
+                        postingDate: e.target.value,
+                      })
+                    }
                     className="w-full bg-gray-100 px-3 py-2 rounded border border-gray-300 focus:outline-none focus:bg-white focus:border-blue-500"
                     readOnly
                   />
@@ -292,7 +357,12 @@ export default function JobCategory() {
                   <input
                     id="expireryDate"
                     value={editedJob.expireryDate}
-                    onChange={(e) => setEditedJob({ ...editedJob, expireryDate: e.target.value })}
+                    onChange={(e) =>
+                      setEditedJob({
+                        ...editedJob,
+                        expireryDate: e.target.value,
+                      })
+                    }
                     className="w-full bg-gray-100 px-3 py-2 rounded border border-gray-300 focus:outline-none focus:bg-white focus:border-blue-500"
                     readOnly
                   />
@@ -304,7 +374,9 @@ export default function JobCategory() {
                   <select
                     id="status"
                     value={editedJob.status}
-                    onChange={(e) => setEditedJob({ ...editedJob, status: e.target.value })}
+                    onChange={(e) =>
+                      setEditedJob({ ...editedJob, status: e.target.value })
+                    }
                     className="w-full bg-gray-100 px-3 py-2 rounded border border-gray-300 focus:outline-none focus:bg-white focus:border-blue-500"
                   >
                     <option value="Pending">Pending</option>

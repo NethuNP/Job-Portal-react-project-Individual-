@@ -25,13 +25,12 @@ const EmpSignup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     if (companyName === "") {
       toast.error("Company Name is required");
     } else if (firstName === "") {
       toast.error("First Name is required");
-    }
-    else if (lastName === "") {
+    } else if (lastName === "") {
       toast.error("Last Name is required");
     } else if (email === "") {
       toast.error("Email is required");
@@ -39,9 +38,9 @@ const EmpSignup = () => {
       toast.error("Email is invalid");
     } else if (contactno === "") {
       toast.error("Contact No is required");
-    }  else if (contactno.length !== 10) {
+    } else if (contactno.length !== 10) {
       toast.error("Contact No must be exactly 10 characters");
-    }else if (address === "") {
+    } else if (address === "") {
       toast.error("Address is required");
     } else if (password === "") {
       toast.error("Password is required");
@@ -57,7 +56,7 @@ const EmpSignup = () => {
       sendData();
     }
   };
-  
+
   const sendData = () => {
     const newEmp = {
       companyName,
@@ -67,10 +66,11 @@ const EmpSignup = () => {
       contactno,
       address,
       password,
-      confirmPassword
+      confirmPassword,
     };
-  
-    axios.post("http://localhost:8070/empsignups/add", newEmp)
+
+    axios
+      .post("http://localhost:8070/empsignups/add", newEmp)
       .then(() => {
         toast.success("Company Registration Successful!");
         navigate("/login");
@@ -89,15 +89,18 @@ const EmpSignup = () => {
         toast.error("Error registering company");
       });
   };
-  
 
   return (
     <div className="min-h-screen py-14 bg-gray-100 mt-20">
       <div className="container bg-gray-100 mx-auto">
-        <div className="flex flex-col lg:flex-row-reverse w-10/12 lg:w-8/12 bg-white rounded-2xl mx-auto shadow-2xl overflow-hidden" data-aos="zoom-out">
+        <div
+          className="flex flex-col lg:flex-row-reverse w-10/12 lg:w-8/12 bg-white rounded-2xl mx-auto shadow-2xl overflow-hidden"
+          data-aos="zoom-out"
+        >
           <div
             className="w-full lg:w-2/5 flex flex-col items-center justify-center"
-            style={{ backgroundImage: "url('/images/27053.jpg')" }}>
+            style={{ backgroundImage: "url('/images/27053.jpg')" }}
+          >
             <h2 className="text-3xl font-bold mb-3 text-white">Welcome!</h2>
             <div className="border-2 w-10 border-white mb-3"></div>
             <p className="mb-6 text-white text-center">
@@ -111,41 +114,44 @@ const EmpSignup = () => {
             </a>
           </div>
           <div className="w-full lg:w-3/5 py-10 px-12 bg-white">
-  <p className="mb-6 text-blue text-2xl font-bold ml-10">Create Your Business Account.</p>
-  <form onSubmit={handleSubmit}>
-    <div className="grid grid-cols-2 gap-5">
-      <input
-        type="text"
-        placeholder="Company Name"
-        className="bg-gray-100 rounded py-1 px-2 w-4/5 ml-10 text-black placeholder:text-gray-400"
-        value={companyName}
-        onChange={(e) => setCompanyName(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="First Name"
-        className="bg-gray-100 text-black placeholder:text-gray-400 rounded py-1 px-2 w-4/5"
-        value={firstName}
-        onChange={(e) => setFirstName(e.target.value)}
-      />
-    </div>
-    <div className="mt-5">
-    <input
-      type="text"
-      placeholder="Last Name"
-      className="bg-gray-100 text-black placeholder:text-gray-400 rounded py-1 px-2 w-4/5 ml-10"
-      value={lastName}
-      onChange={(e) => setLastName(e.target.value)}
-    /></div>
-    <div className="mt-5">
-      <input
-        type="text"
-        placeholder="Email"
-        className="bg-gray-100 text-black placeholder:text-gray-400 rounded py-1 px-2 w-4/5 ml-10"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-    </div>
+            <p className="mb-6 text-blue text-2xl font-bold ml-10">
+              Create Your Business Account.
+            </p>
+            <form onSubmit={handleSubmit}>
+              <div className="grid grid-cols-2 gap-5">
+                <input
+                  type="text"
+                  placeholder="Company Name"
+                  className="bg-gray-100 rounded py-1 px-2 w-4/5 ml-10 text-black placeholder:text-gray-400"
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                />
+                <input
+                  type="text"
+                  placeholder="First Name"
+                  className="bg-gray-100 text-black placeholder:text-gray-400 rounded py-1 px-2 w-4/5"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+              </div>
+              <div className="mt-5">
+                <input
+                  type="text"
+                  placeholder="Last Name"
+                  className="bg-gray-100 text-black placeholder:text-gray-400 rounded py-1 px-2 w-4/5 ml-10"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+              </div>
+              <div className="mt-5">
+                <input
+                  type="text"
+                  placeholder="Email"
+                  className="bg-gray-100 text-black placeholder:text-gray-400 rounded py-1 px-2 w-4/5 ml-10"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
               <div className="mt-5">
                 <input
                   type="text"

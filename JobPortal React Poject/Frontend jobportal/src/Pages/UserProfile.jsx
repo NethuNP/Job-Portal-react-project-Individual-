@@ -15,7 +15,7 @@ const UserProfileForm = () => {
 
   const [formData, setFormData] = useState(initialFormData);
   const [currentSection, setCurrentSection] = useState("general");
-  const [showProfilePopup, setShowProfilePopup] = useState(false); // State for managing popup visibility
+  const [showProfilePopup, setShowProfilePopup] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -48,45 +48,45 @@ const UserProfileForm = () => {
     }
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  try {
-    if (!user || !user._id) {
-      // Handle case where user or user.id is not available
-      console.error("User or user ID not available");
-      return;
-    }
+    try {
+      if (!user || !user._id) {
+        // Handle case where user or user.id is not available
+        console.error("User or user ID not available");
+        return;
+      }
 
-    const formDataToSend = new FormData();
-    formDataToSend.append("firstName", formData.firstName);
-    formDataToSend.append("lastName", formData.lastName);
-    formDataToSend.append("email", formData.email);
+      const formDataToSend = new FormData();
+      formDataToSend.append("firstName", formData.firstName);
+      formDataToSend.append("lastName", formData.lastName);
+      formDataToSend.append("email", formData.email);
 
-    const response = await fetch(`/update/${_id}`, { // Changed 'seeker.id' to 'user.id'
-      method: "PUT",
-      body: formDataToSend,
-    });
-
-    if (response.ok) {
-      const updatedUser = await response.json();
-      setFormData({
-        ...formData,
-        ...updatedUser,
-        profileImagePreview: updatedUser.profileImage
-          ? URL.createObjectURL(updatedUser.profileImage)
-          : "",
+      const response = await fetch(`/update/${_id}`, {
+        method: "PUT",
+        body: formDataToSend,
       });
-      alert("Profile updated successfully");
-    } else {
-      const errorData = await response.json();
-      alert(`Error: ${errorData.message}`);
+
+      if (response.ok) {
+        const updatedUser = await response.json();
+        setFormData({
+          ...formData,
+          ...updatedUser,
+          profileImagePreview: updatedUser.profileImage
+            ? URL.createObjectURL(updatedUser.profileImage)
+            : "",
+        });
+        alert("Profile updated successfully");
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.message}`);
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      alert("Error updating profile");
     }
-  } catch (error) {
-    console.error("Error updating profile:", error);
-    alert("Error updating profile");
-  }
-};
+  };
 
   const handleCancel = () => {
     if (user) {
@@ -223,10 +223,16 @@ const UserProfileForm = () => {
                 className="w-24 h-24 rounded-full border ml-20"
               />
             </div>
-            
-            <p className="mb-2">First Name: <span className="ml-2"> {formData.firstName}</span></p>
-            <p className="mb-2">Last Name:<span className="ml-2"> {formData.lastName}</span></p>
-            <p>Email: <span className="ml-2">{formData.email}</span></p>
+
+            <p className="mb-2">
+              First Name: <span className="ml-2"> {formData.firstName}</span>
+            </p>
+            <p className="mb-2">
+              Last Name:<span className="ml-2"> {formData.lastName}</span>
+            </p>
+            <p>
+              Email: <span className="ml-2">{formData.email}</span>
+            </p>
             {/* Add more profile details here */}
             <button
               className="mt-4 px-4 py-2 bg-blue text-white rounded-md ml-48"

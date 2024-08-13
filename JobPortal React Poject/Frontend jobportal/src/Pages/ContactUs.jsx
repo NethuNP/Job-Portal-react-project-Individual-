@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { IoMdMail } from "react-icons/io";
 import { FaLocationDot } from "react-icons/fa6";
@@ -116,7 +116,10 @@ const ContactUs = () => {
                 />
               </div>
               <div>
-                <label htmlFor="message" className="text-sm text-blue font-bold">
+                <label
+                  htmlFor="message"
+                  className="text-sm text-blue font-bold"
+                >
                   Message
                 </label>
                 <textarea

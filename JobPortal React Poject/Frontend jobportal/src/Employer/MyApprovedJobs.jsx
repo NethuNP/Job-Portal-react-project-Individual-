@@ -2,11 +2,9 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import { GrView } from "react-icons/gr";
-import { AuthContext } from '../Component/context/AuthContext';
+import { AuthContext } from "../Component/context/AuthContext";
 import EmpHeader from "../Component/EmpComponent/EmpHeader";
-import { toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
-import { FaHandPointRight } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 export default function MyApprovedJobs() {
   const { user } = useContext(AuthContext);
@@ -20,7 +18,7 @@ export default function MyApprovedJobs() {
     postingDate: "",
     expireryDate: "",
     description: "",
-    status: "Approved" // Default status
+    status: "Approved",
   });
   const [showDescription, setShowDescription] = useState(false);
   const [selectedJobDescription, setSelectedJobDescription] = useState("");
@@ -34,17 +32,24 @@ export default function MyApprovedJobs() {
 
       setLoading(true);
       try {
-        const response = await axios.get('http://localhost:8070/approvedjobs/', {
-          params: { email: user.email },
-        });
-        // Ensure the filtering is correctly done
-        const filteredJobs = response.data.filter(job => job.postedBy === user.email);
-        setJobs(filteredJobs.map(job => ({
-          ...job,
-          status: job.status || "Approved" // Default to "Approved" if status is not available
-        })));
+        const response = await axios.get(
+          "http://localhost:8070/approvedjobs/",
+          {
+            params: { email: user.email },
+          }
+        );
+
+        const filteredJobs = response.data.filter(
+          (job) => job.postedBy === user.email
+        );
+        setJobs(
+          filteredJobs.map((job) => ({
+            ...job,
+            status: job.status || "Approved",
+          }))
+        );
       } catch (error) {
-        console.error('Error fetching jobs:', error);
+        console.error("Error fetching jobs:", error);
         toast.error("Error fetching jobs");
       } finally {
         setLoading(false);
@@ -80,9 +85,14 @@ export default function MyApprovedJobs() {
     try {
       // Make sure to send status as "Approved" regardless of changes in the form
       const updatedJob = { ...editedJob, status: "Approved" };
-      await axios.put(`http://localhost:8070/jobs/update/${editedJob._id}`, updatedJob);
+      await axios.put(
+        `http://localhost:8070/jobs/update/${editedJob._id}`,
+        updatedJob
+      );
       setShowEditModal(false);
-      setJobs(jobs.map(job => job._id === editedJob._id ? updatedJob : job));
+      setJobs(
+        jobs.map((job) => (job._id === editedJob._id ? updatedJob : job))
+      );
       toast.success("Job updated successfully!");
     } catch (err) {
       console.error(err);
@@ -104,7 +114,7 @@ export default function MyApprovedJobs() {
       postingDate: "",
       expireryDate: "",
       description: "",
-      status: "Approved" // Reset status to default
+      status: "Approved", // Reset status to default
     });
     setShowEditModal(false);
   };
@@ -145,7 +155,7 @@ export default function MyApprovedJobs() {
           <h1 className="text-blue text-[28px] leading-[40px] cursor-pointer font-semibold mt-28">
             My Approved Jobs
           </h1>
-          
+
           <div className="-mt-20">
             <section>
               <div className="mt-[130px] relative mx-1">
@@ -154,19 +164,35 @@ export default function MyApprovedJobs() {
                     <thead className="text-xs uppercase bg-[#2c42a5] dark:bg-gray-900 text-white">
                       <tr>
                         <th scope="col" className="p-5 text-center"></th>
-                        <th scope="col" className="px-6 py-1 text-center">Company Name</th>
-                        <th scope="col" className="px-6 py-3 text-center">Job Title</th>
-                        <th scope="col" className="px-6 py-3 text-center">Job Location</th>
-                        <th scope="col" className="px-6 py-3 text-center">Posting Date</th>
-                        <th scope="col" className="px-6 py-3 text-center">Expiry Date</th>
-                        <th scope="col" className="px-6 py-3 text-center">Status</th>
-                        <th scope="col" className="px-6 py-3 text-center">Actions</th>
+                        <th scope="col" className="px-6 py-1 text-center">
+                          Company Name
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-center">
+                          Job Title
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-center">
+                          Job Location
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-center">
+                          Posting Date
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-center">
+                          Expiry Date
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-center">
+                          Status
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-center">
+                          Actions
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       {loading ? (
                         <tr>
-                          <td colSpan="8" className="text-center py-4">Loading...</td>
+                          <td colSpan="8" className="text-center py-4">
+                            Loading...
+                          </td>
                         </tr>
                       ) : (
                         currentJobs.map((job, index) => (
@@ -174,27 +200,44 @@ export default function MyApprovedJobs() {
                             className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                             key={job._id}
                           >
-                            <td className="p-4 text-center">{indexOfFirstItem + index + 1}</td>
-                            <td className="px-6 py-4 text-center">{job.companyName}</td>
-                            <td className="px-6 py-4 text-center">{job.jobTitle}</td>
-                            <td className="px-6 py-4 text-center">{job.jobLocation}</td>
-                            <td className="px-6 py-4 text-center">{job.postingDate}</td>
-                            <td className="px-6 py-4 text-center">{job.expireryDate}</td>
-                            <td className="px-6 py-4 text-center">{job.status}</td>
+                            <td className="p-4 text-center">
+                              {indexOfFirstItem + index + 1}
+                            </td>
+                            <td className="px-6 py-4 text-center">
+                              {job.companyName}
+                            </td>
+                            <td className="px-6 py-4 text-center">
+                              {job.jobTitle}
+                            </td>
+                            <td className="px-6 py-4 text-center">
+                              {job.jobLocation}
+                            </td>
+                            <td className="px-6 py-4 text-center">
+                              {job.postingDate}
+                            </td>
+                            <td className="px-6 py-4 text-center">
+                              {job.expireryDate}
+                            </td>
+                            <td className="px-6 py-4 text-center">
+                              {job.status}
+                            </td>
                             <td className="px-6 py-4 text-center flex justify-center">
                               <button
                                 className="bg-green-500 hover:bg-green-600 text-gray-200 font-bold px-1 py-1 rounded mt-3"
-                                onClick={() => handleViewDescription(job.description)}
+                                onClick={() =>
+                                  handleViewDescription(job.description)
+                                }
                               >
                                 <GrView />
                               </button>
                               <button
                                 className="bg-red-500 hover:bg-red-600 text-gray-200 font-bold px-1 py-1 rounded ml-2 mt-3"
-                                onClick={() => deleteJob(job._id, job.companyName)}
+                                onClick={() =>
+                                  deleteJob(job._id, job.companyName)
+                                }
                               >
                                 <FaTrash />
                               </button>
-                             
                             </td>
                           </tr>
                         ))
@@ -238,7 +281,12 @@ export default function MyApprovedJobs() {
                   <input
                     id="companyName"
                     value={editedJob.companyName}
-                    onChange={(e) => setEditedJob({ ...editedJob, companyName: e.target.value })}
+                    onChange={(e) =>
+                      setEditedJob({
+                        ...editedJob,
+                        companyName: e.target.value,
+                      })
+                    }
                     className="w-full bg-gray-100 px-3 py-2 rounded border border-gray-300 focus:outline-none focus:bg-white focus:border-blue-500"
                     readOnly
                   />
@@ -250,7 +298,9 @@ export default function MyApprovedJobs() {
                   <input
                     id="jobTitle"
                     value={editedJob.jobTitle}
-                    onChange={(e) => setEditedJob({ ...editedJob, jobTitle: e.target.value })}
+                    onChange={(e) =>
+                      setEditedJob({ ...editedJob, jobTitle: e.target.value })
+                    }
                     className="w-full bg-gray-100 px-3 py-2 rounded border border-gray-300 focus:outline-none focus:bg-white focus:border-blue-500"
                   />
                 </div>
@@ -261,7 +311,12 @@ export default function MyApprovedJobs() {
                   <input
                     id="jobLocation"
                     value={editedJob.jobLocation}
-                    onChange={(e) => setEditedJob({ ...editedJob, jobLocation: e.target.value })}
+                    onChange={(e) =>
+                      setEditedJob({
+                        ...editedJob,
+                        jobLocation: e.target.value,
+                      })
+                    }
                     className="w-full bg-gray-100 px-3 py-2 rounded border border-gray-300 focus:outline-none focus:bg-white focus:border-blue-500"
                   />
                 </div>
@@ -272,7 +327,12 @@ export default function MyApprovedJobs() {
                   <input
                     id="postingDate"
                     value={editedJob.postingDate}
-                    onChange={(e) => setEditedJob({ ...editedJob, postingDate: e.target.value })}
+                    onChange={(e) =>
+                      setEditedJob({
+                        ...editedJob,
+                        postingDate: e.target.value,
+                      })
+                    }
                     className="w-full bg-gray-100 px-3 py-2 rounded border border-gray-300 focus:outline-none focus:bg-white focus:border-blue-500"
                     readOnly
                   />
@@ -284,7 +344,12 @@ export default function MyApprovedJobs() {
                   <input
                     id="expireryDate"
                     value={editedJob.expireryDate}
-                    onChange={(e) => setEditedJob({ ...editedJob, expireryDate: e.target.value })}
+                    onChange={(e) =>
+                      setEditedJob({
+                        ...editedJob,
+                        expireryDate: e.target.value,
+                      })
+                    }
                     className="w-full bg-gray-100 px-3 py-2 rounded border border-gray-300 focus:outline-none focus:bg-white focus:border-blue-500"
                     readOnly
                   />
@@ -296,7 +361,9 @@ export default function MyApprovedJobs() {
                   <select
                     id="status"
                     value={editedJob.status}
-                    onChange={(e) => setEditedJob({ ...editedJob, status: e.target.value })}
+                    onChange={(e) =>
+                      setEditedJob({ ...editedJob, status: e.target.value })
+                    }
                     className="w-full bg-gray-100 px-3 py-2 rounded border border-gray-300 focus:outline-none focus:bg-white focus:border-blue-500"
                     disabled // Disable editing of status
                   >

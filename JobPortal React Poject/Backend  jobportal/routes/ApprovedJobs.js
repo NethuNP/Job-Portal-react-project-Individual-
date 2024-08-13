@@ -93,12 +93,11 @@ async function sendApprovalEmail(postedBy) {
             port: 465,
             secure: true,
             auth: {
-                user: process.env.EMAIL_USER, // use environment variable for email
-                pass: process.env.EMAIL_PASS  // use environment variable for password
+                user: process.env.EMAIL_USER, // environment variable for email
+                pass: process.env.EMAIL_PASS  // environment variable for password
             }
         });
 
-        // send mail with defined transport object and capture the result
         let info = await transporter.sendMail({
             from: process.env.EMAIL_USER,
             to: postedBy,

@@ -1,4 +1,3 @@
-// routes/employers.js
 const express = require('express');
 const router = express.Router();
 const Employer = require('../models/Employer');

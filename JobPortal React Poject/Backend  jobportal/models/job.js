@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const JobSchema = new Schema({
     email:{
-        type: Schema.Types.ObjectId, // Assuming empId is a reference to EmpRegSchema
+        type: Schema.Types.ObjectId, 
         ref: "EmpReg" 
     },
     companyName: {
@@ -53,11 +53,11 @@ const JobSchema = new Schema({
     },
     jobCategory: {
         type: String,
-        required:true // or true if it's required
+        required:true 
     },
     employmentType: {
         type: String,
-        required:false // or true if it's required
+        required:false 
     },
     status: {
         type: String,

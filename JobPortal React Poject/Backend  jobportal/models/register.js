@@ -23,13 +23,6 @@ const RegSchema = new Schema({
         type: String,
         required: false
     },   
-
-    /*token:{
-        type:String,
-        default:null
-    },
-  
-*/
     role: {
         type: String,
         enum: ["admin", "seeker",],

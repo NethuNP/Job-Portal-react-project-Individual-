@@ -12,7 +12,7 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [isChecked, setIsChecked] = useState(false); // Corrected the state name
+  const [isChecked, setIsChecked] = useState(false);
 
   const navigate = useNavigate();
 
@@ -44,7 +44,7 @@ const SignUp = () => {
       toast.error(<div>Checkbox is required</div>);
     } else {
       toast.success(<div> Successful!</div>);
-      // Proceed with form submission if all fields are valid
+
       sendData();
     }
   };
@@ -55,14 +55,15 @@ const SignUp = () => {
       lastName,
       email,
       password,
-      confirmPassword
+      confirmPassword,
     };
 
-    axios.post("http://localhost:8070/registers/add", newUser)
+    axios
+      .post("http://localhost:8070/registers/add", newUser)
       .then(() => {
         toast.success(<div> Registration Successful!</div>);
         navigate("/login");
-        // Optionally reset form fields after successful registration
+
         setFirstName("");
         setLastName("");
         setEmail("");
@@ -79,15 +80,20 @@ const SignUp = () => {
   return (
     <div className="min-h-screen py-14 bg-gray-100 mt-20 ">
       <div className="container bg-gray-100 mx-auto">
-        <div className="flex flex-col lg:flex-row w-10/12 lg:w-8/12 bg-white rounded-2xl mx-auto shadow-2xl overflow-hidden" data-aos="zoom-out">
+        <div
+          className="flex flex-col lg:flex-row w-10/12 lg:w-8/12 bg-white rounded-2xl mx-auto shadow-2xl overflow-hidden"
+          data-aos="zoom-out"
+        >
           <div
             className="w-full lg:w-2/5 flex flex-col items-center justify-center"
-            style={{ backgroundImage: "url('/images/27053.jpg')" }}>
-
-            <h2 className="text-3xl font-bold mb-3 text-white ">Register as Company</h2>
+            style={{ backgroundImage: "url('/images/27053.jpg')" }}
+          >
+            <h2 className="text-3xl font-bold mb-3 text-white ">
+              Register as Company
+            </h2>
             <div className="border-2 w-10 border-white mb-3"></div>
             <p className="mb-6 text-white text-center">
-              Want to post jobs for your <br/> company
+              Want to post jobs for your <br /> company
             </p>
             <a
               href="./empsignup"
@@ -97,7 +103,9 @@ const SignUp = () => {
             </a>
           </div>
           <div className="w-full lg:w-3/5 py-10 px-12 bg-white">
-            <p className="mb-6 text-blue text-2xl font-bold ml-10">Create Your Own Account.</p>
+            <p className="mb-6 text-blue text-2xl font-bold ml-10">
+              Create Your Own Account.
+            </p>
             <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-2 gap-5 ">
                 <input
@@ -151,7 +159,7 @@ const SignUp = () => {
                     onChange={(e) => setIsChecked(e.target.checked)}
                   />
                   <span>
-                     I accept the{" "}
+                    I accept the{" "}
                     <a href="#" className="text-blue font-semibold">
                       Terms of use
                     </a>{" "}

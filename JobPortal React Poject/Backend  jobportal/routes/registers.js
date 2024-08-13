@@ -181,7 +181,7 @@ router.put("/update/:id", async (req, res) => {
 
     // Update profile image if sent in the request body
     if (req.body.profileImage) {
-      user.profileImage = req.body.profileImage; // Assuming profileImage is a base64 encoded string
+      user.profileImage = req.body.profileImage; 
     }
 
     // Save the updated user profile
@@ -227,7 +227,7 @@ router.post('/login', async (req, res) => {
     const token = jwt.sign(
       {
         id: seeker._id,
-        role: seeker.role, // Assuming role is stored in the user document
+        role: seeker.role, // role is stored in the user document
       },
       process.env.JWT_SECRET,
       { expiresIn: "15d" }

@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { FaRegUser } from "react-icons/fa";
 import { IoSettingsOutline } from "react-icons/io5";
 import { RiLogoutBoxRLine } from "react-icons/ri";
-import Switch from '@mui/material/Switch';
+import Switch from "@mui/material/Switch";
 import { AuthContext } from "../Component/context/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -23,7 +23,7 @@ const EmpDropdown = () => {
   useEffect(() => {
     // Check if the toast message has been displayed
     const toastDisplayed = localStorage.getItem("toastDisplayed");
-  
+
     if (user && !toastDisplayed) {
       // Display welcome message when user logs in
       toast.success(`Welcome ${user.businessOwner}`);
@@ -58,22 +58,16 @@ const EmpDropdown = () => {
           <div className="px-4 py-3 flex items-center justify-between">
             <div>
               <span className="block text-sm text-blue font-semibold">
-              {user.businessOwner}
+                {user.businessOwner}
               </span>
               <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
                 {user.email}
               </span>
             </div>
-
-            {/* Assuming you need a Switch component */}
-           {/*} <Switch
-              checked={false} // Adjust this based on your role logic
-              onChange={() => {}}
-      />*/}
           </div>
           <ul className="py-2 " aria-labelledby="user-menu-button ">
             <li className="flex items-center pl-5 hover:bg-gray-100 dark:hover:bg-gray-600">
-              <FaRegUser  />
+              <FaRegUser />
               <a
                 href="/userprofile"
                 className=" px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white flex items-center"
@@ -92,7 +86,7 @@ const EmpDropdown = () => {
               </a>
             </li>
             <li className="flex items-center pl-5 hover:bg-gray-100 dark:hover:bg-gray-600">
-              <RiLogoutBoxRLine/>
+              <RiLogoutBoxRLine />
               <a
                 href="/login"
                 onClick={handleLogout}

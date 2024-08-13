@@ -4,7 +4,11 @@ import { useForm } from "react-hook-form";
 import Creatable from "react-select/creatable";
 
 const PostJob = () => {
-  const { register, formState: { errors }, reset } = useForm();
+  const {
+    register,
+    formState: { errors },
+    reset,
+  } = useForm();
 
   const [companyName, setCompanyName] = useState("");
   const [jobTitle, setJobTitle] = useState("");
@@ -33,7 +37,7 @@ const PostJob = () => {
 
   useEffect(() => {
     // Set today's date as default value for postingDate
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Date().toISOString().split("T")[0];
     setPostingDate(today);
   }, []);
 
@@ -73,7 +77,8 @@ const PostJob = () => {
       postedBy,
       jobCategory,
     };
-    axios.post("http://localhost:8070/jobs/add", newJob)
+    axios
+      .post("http://localhost:8070/jobs/add", newJob)
       .then(() => {
         alert("Job Added");
         reset(); // Reset all form fields
@@ -85,12 +90,16 @@ const PostJob = () => {
 
   return (
     <div className="max-w-screen-lg mx-auto bg-gray-50 mt-16 p-8 rounded-lg shadow-lg">
-      <h2 className="text-3xl font-bold text-center text-blue mb-10">Post Jobs Here</h2>
+      <h2 className="text-3xl font-bold text-center text-blue mb-10">
+        Post Jobs Here
+      </h2>
       <form onSubmit={sendData} className="space-y-6">
         {/* Job Title and Company Name */}
         <div className="grid lg:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Job Title</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Job Title
+            </label>
             <input
               type="text"
               placeholder="Enter job title"
@@ -100,7 +109,9 @@ const PostJob = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Company Name</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Company Name
+            </label>
             <input
               type="text"
               placeholder="Enter company name"
@@ -114,7 +125,9 @@ const PostJob = () => {
         {/* Salary Details */}
         <div className="grid lg:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Minimum Salary</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Minimum Salary
+            </label>
             <input
               type="number"
               placeholder="Enter minimum salary"
@@ -124,7 +137,9 @@ const PostJob = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Maximum Salary</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Maximum Salary
+            </label>
             <input
               type="number"
               placeholder="Enter maximum salary"
@@ -138,7 +153,9 @@ const PostJob = () => {
         {/* Salary Type and Job Location */}
         <div className="grid lg:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Salary Type</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Salary Type
+            </label>
             <select
               {...register("salaryType")}
               className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
@@ -151,7 +168,9 @@ const PostJob = () => {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Job Location</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Job Location
+            </label>
             <input
               type="text"
               placeholder="Enter job location"
@@ -164,19 +183,23 @@ const PostJob = () => {
 
         {/* Posting and Expiry Date */}
         <div className="grid lg:grid-cols-2 gap-6">
-        <div>
-  <label className="block text-sm font-medium text-gray-700 mb-2">Posting Date</label>
-  <input
-    type="date"
-    {...register("postingDate")}
-    value={postingDate} // Set the value to the state
-    readOnly // Make the field read-only
-    className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-  />
-</div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Posting Date
+            </label>
+            <input
+              type="date"
+              {...register("postingDate")}
+              value={postingDate} // Set the value to the state
+              readOnly // Make the field read-only
+              className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Expiry Date</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Expiry Date
+            </label>
             <input
               type="date"
               {...register("expireryDate")}
@@ -189,7 +212,9 @@ const PostJob = () => {
         {/* Experience Level and Job Category */}
         <div className="grid lg:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Experience Level</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Experience Level
+            </label>
             <select
               {...register("experienceLevel")}
               className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
@@ -202,7 +227,9 @@ const PostJob = () => {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Job Category</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Job Category
+            </label>
             <select
               {...register("jobCategory")}
               className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
@@ -212,7 +239,9 @@ const PostJob = () => {
               <option value="Education">Education</option>
               <option value="Healthcare">Healthcare</option>
               <option value="Marketing">Marketing</option>
-              <option value="Information Technology">Information Technology</option>
+              <option value="Information Technology">
+                Information Technology
+              </option>
               <option value="Management">Management</option>
             </select>
           </div>
@@ -220,7 +249,9 @@ const PostJob = () => {
 
         {/* Required Skills */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Required Skills</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Required Skills
+          </label>
           <Creatable
             isMulti
             options={options}
@@ -231,7 +262,9 @@ const PostJob = () => {
 
         {/* Job Description */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Job Description</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Job Description
+          </label>
           <textarea
             rows="5"
             placeholder="Enter job description"
@@ -243,7 +276,9 @@ const PostJob = () => {
 
         {/* Upload Company Logo */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Upload Company Logo</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Upload Company Logo
+          </label>
           <input
             type="file"
             accept=".jpeg, .png, .jpg"
@@ -254,7 +289,9 @@ const PostJob = () => {
 
         {/* Posted By */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Posted By</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Posted By
+          </label>
           <input
             type="text"
             placeholder="Enter your name"

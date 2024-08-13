@@ -19,7 +19,10 @@ export const EmpSidebar = () => {
 
       <div className="flex flex-col items-center gap-[15px] pt-[30px]">
         <div className="py-[20px] border-b-[1px] border-[#EDEDED]/[0.3] w-full px-2">
-          <a href="/employer/empdashboard" className="flex items-center gap-[10px]">
+          <a
+            href="/employer/empdashboard"
+            className="flex items-center gap-[10px]"
+          >
             <FaTachometerAlt color="white" />
             <button className="text-[15px] leading-[20px] font-bold text-white">
               Dashboard
@@ -34,7 +37,7 @@ export const EmpSidebar = () => {
           </a>
         </div>
 
-     {/*   <div className="py-[20px] border-b-[1px] border-[#EDEDED]/[0.3] w-full px-2">
+        {/*   <div className="py-[20px] border-b-[1px] border-[#EDEDED]/[0.3] w-full px-2">
           <a href="/employer/plans" className="flex items-center gap-[10px]">
             <FaGem color="white" />
             <button className="text-white font-normal">Packages</button>
@@ -42,14 +45,20 @@ export const EmpSidebar = () => {
         </div>*/}
 
         <div className="py-[20px] border-b-[1px] border-[#EDEDED]/[0.3] w-full px-2">
-          <a href="/employer/managejob" className="flex items-center gap-[10px]">
+          <a
+            href="/employer/managejob"
+            className="flex items-center gap-[10px]"
+          >
             <MdManageAccounts color="white" />
             <button className="text-white font-normal">Manage Job</button>
           </a>
         </div>
 
         <div className="py-[20px] w-full px-2">
-          <a href="/employer/applications" className="flex items-center gap-[10px]">
+          <a
+            href="/employer/applications"
+            className="flex items-center gap-[10px]"
+          >
             <FaRegNewspaper color="white" />
             <button className="text-white font-normal">Applications</button>
           </a>

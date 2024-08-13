@@ -4,9 +4,9 @@ const Application = require('../models/Application');
 const router = express.Router();
 const fs = require('fs');
 const path = require('path');
-const nodemailer = require('nodemailer'); // Import nodemailer
+const nodemailer = require('nodemailer'); 
 
-// Ensure the uploads directory exists
+// uploads directory exists
 const uploadDir = path.join(__dirname, '../uploads');
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
@@ -180,8 +180,8 @@ router.put('/approve/:id', async (req, res) => {
             port: 465,
             secure: true,
             auth: {
-                user: 'jobnestlanka@gmail.com', // Use environment variable for email
-                pass:'setk uqql cczt jvee'  // Use environment variable for password
+                user: 'jobnestlanka@gmail.com', // environment variable for email
+                pass:'setk uqql cczt jvee'  // environment variable for password
             }
         });
 

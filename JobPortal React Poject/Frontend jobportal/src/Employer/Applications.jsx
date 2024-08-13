@@ -56,7 +56,6 @@ const Applications = () => {
       toast.success("Application status updated to Interviewed");
     } catch (error) {
       console.error("Error updating application status:", error);
-     // toast.error("Failed to update application status to Interviewed");
     }
   };
 
@@ -142,8 +141,13 @@ const Applications = () => {
   const filteredApplications =
     selectedStatus === "All"
       ? applications
-      : applications.filter((application) => application.status === selectedStatus);
-  const currentApplications = filteredApplications.slice(indexOfFirstItem, indexOfLastItem);
+      : applications.filter(
+          (application) => application.status === selectedStatus
+        );
+  const currentApplications = filteredApplications.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -173,14 +177,30 @@ const Applications = () => {
                 <table className="w-full text-sm text-left text-black border-2 shadow-xl border-gray-300 rounded-xl">
                   <thead className="text-xs uppercase bg-[#2c42a5] text-white">
                     <tr>
-                      <th scope="col" className="p-5 text-center">No</th>
-                      <th scope="col" className="px-6 py-1 text-center">Company Name</th>
-                      <th scope="col" className="px-6 py-3 text-center">Job Title</th>
-                      <th scope="col" className="px-6 py-3 text-center">Job Location</th>
-                      <th scope="col" className="px-6 py-3 text-center">Date</th>
-                      <th scope="col" className="px-6 py-3 text-center">E-mail</th>
-                      <th scope="col" className="px-6 py-3 text-center">Status</th>
-                      <th scope="col" className="px-6 py-3 text-center">Actions</th>
+                      <th scope="col" className="p-5 text-center">
+                        No
+                      </th>
+                      <th scope="col" className="px-6 py-1 text-center">
+                        Company Name
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-center">
+                        Job Title
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-center">
+                        Job Location
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-center">
+                        Date
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-center">
+                        E-mail
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-center">
+                        Status
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-center">
+                        Actions
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -189,13 +209,27 @@ const Applications = () => {
                         className="bg-white border-b hover:bg-gray-50"
                         key={index}
                       >
-                        <td className="p-4 text-center">{indexOfFirstItem + index + 1}</td>
-                        <td className="px-6 py-4 text-center">{application.companyName}</td>
-                        <td className="px-6 py-4 text-center">{application.jobTitle}</td>
-                        <td className="px-6 py-4 text-center">{application.jobLocation}</td>
-                        <td className="px-6 py-4 text-center">{application.postingDate}</td>
-                        <td className="px-6 py-4 text-center">{application.email}</td>
-                        <td className="px-6 py-4 text-center">{application.status}</td>
+                        <td className="p-4 text-center">
+                          {indexOfFirstItem + index + 1}
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          {application.companyName}
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          {application.jobTitle}
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          {application.jobLocation}
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          {application.postingDate}
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          {application.email}
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          {application.status}
+                        </td>
                         <td className="px-6 py-4 text-center flex justify-center space-x-2">
                           <button
                             className="bg-red-500 hover:bg-red-600 text-gray-200 font-bold px-1 py-1 rounded"
@@ -215,7 +249,6 @@ const Applications = () => {
                           >
                             <MdFileDownloadDone />
                           </button>
-                          
                         </td>
                       </tr>
                     ))}
@@ -234,11 +267,15 @@ const Applications = () => {
             Previous
           </button>
           <span className="mx-2 text-black">
-            Page {currentPage} of {Math.ceil(filteredApplications.length / itemsPerPage)}
+            Page {currentPage} of{" "}
+            {Math.ceil(filteredApplications.length / itemsPerPage)}
           </span>
           <button
             onClick={nextPage}
-            disabled={currentPage === Math.ceil(filteredApplications.length / itemsPerPage)}
+            disabled={
+              currentPage ===
+              Math.ceil(filteredApplications.length / itemsPerPage)
+            }
             className="hover:underline"
           >
             Next

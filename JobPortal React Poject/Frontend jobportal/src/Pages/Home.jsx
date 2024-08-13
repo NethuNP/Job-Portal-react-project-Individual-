@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import Banner from "../Component/Banner";
-import Slider from "../Component/Slider";
-import Chatbot from "../Component/chatbot";
 
 const Home = () => {
   const [query, setQuery] = useState("");
@@ -76,7 +74,11 @@ const Home = () => {
                 data-aos="fade-down"
               >
                 <div>
-                  <img src="./images/secure.png" alt="" style={{ width: "400px" }} />
+                  <img
+                    src="./images/secure.png"
+                    alt=""
+                    style={{ width: "400px" }}
+                  />
                   <h5 className="text-xl font-semibold text-primary text-center mt-2 text-[#4F81C7]">
                     Reliable Service
                   </h5>
@@ -101,10 +103,11 @@ const Home = () => {
         <Slider/>
   </div>*/}
 
-        
-
         {/* Subscribe Us Section */}
-        <div className="flex-col md:flex-row flex items-center justify-center p-6 bg-white  rounded-tl-[35px] rounded-br-[35px] shadow-3xl mt-20 border-gray-300"data-aos="fade-up">
+        <div
+          className="flex-col md:flex-row flex items-center justify-center p-6 bg-white  rounded-tl-[35px] rounded-br-[35px] shadow-3xl mt-20 border-gray-300"
+          data-aos="fade-up"
+        >
           <div className="md:w-1/4 w-full mb-6 md:mb-0 pr-10">
             <img
               src="/images/44125599-removebg-preview.png"
@@ -113,29 +116,31 @@ const Home = () => {
             />
           </div>
           <div className="md:w-1/2 w-full p-6 bg-white rounded-lg shadow-lg">
-  <h2 className="text-3xl font-bold mb-4 text-blue">Subscribe to Our Newsletter</h2>
-  <p className="mb-4 font-semibold">Stay updated with the latest jobs and alerts.</p>
-  <form className="flex items-center" onSubmit={handleSubscribe}>
-    <input
-      type="email"
-      placeholder="Enter your email"
-      className="p-3 border border-gray-300 rounded-l mb-4 w-full"
-      value={email}
-      onChange={handleEmailChange}
-      required
-    />
-    <button
-      type="submit"
-      className="bg-blue-500 text-white p-3  bg-blue mb-4 ml-3 font-semibold rounded-md"
-    >
-      Subscribe
-    </button>
-  </form>
-</div>
-</div>
-
-
-      </div> 
+            <h2 className="text-3xl font-bold mb-4 text-blue">
+              Subscribe to Our Newsletter
+            </h2>
+            <p className="mb-4 font-semibold">
+              Stay updated with the latest jobs and alerts.
+            </p>
+            <form className="flex items-center" onSubmit={handleSubscribe}>
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="p-3 border border-gray-300 rounded-l mb-4 w-full"
+                value={email}
+                onChange={handleEmailChange}
+                required
+              />
+              <button
+                type="submit"
+                className="bg-blue-500 text-white p-3  bg-blue mb-4 ml-3 font-semibold rounded-md"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

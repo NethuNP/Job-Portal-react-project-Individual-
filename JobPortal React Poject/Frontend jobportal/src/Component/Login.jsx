@@ -1,11 +1,16 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
-import { FaFacebookF, FaLinkedinIn, FaGoogle, FaRegEnvelope } from "react-icons/fa";
+import {
+  FaFacebookF,
+  FaLinkedinIn,
+  FaGoogle,
+  FaRegEnvelope,
+} from "react-icons/fa";
 import { MdLockOutline } from "react-icons/md";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../Component/context/AuthContext";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -32,7 +37,10 @@ const Login = () => {
 
       try {
         // Attempt login as seeker
-        response = await axios.post('http://localhost:8070/registers/login', { email, password });
+        response = await axios.post("http://localhost:8070/registers/login", {
+          email,
+          password,
+        });
 
         if (response.data.success) {
           const { data } = response;
@@ -56,7 +64,10 @@ const Login = () => {
 
       try {
         // Attempt login as employer
-        response = await axios.post('http://localhost:8070/empsignups/login', { email, password });
+        response = await axios.post("http://localhost:8070/empsignups/login", {
+          email,
+          password,
+        });
 
         if (response.data.success) {
           const { data } = response;
@@ -92,16 +103,27 @@ const Login = () => {
               <span className="text-blue">JOB</span>NEST
             </div>
             <div className="py-10">
-              <h2 className="text-3xl font-bold text-blue">Sign in to Account</h2>
+              <h2 className="text-3xl font-bold text-blue">
+                Sign in to Account
+              </h2>
               <div className="border-2 w-10 border-white inline-block mb-2 "></div>
               <div className="flex justify-center  my-2">
-                <a href="#" className="border-2 border-gray-200 rounded-full p-3 mx-1 hover:text-blue">
+                <a
+                  href="#"
+                  className="border-2 border-gray-200 rounded-full p-3 mx-1 hover:text-blue"
+                >
                   <FaFacebookF className="text-sm" />
                 </a>
-                <a href="#" className="border-2 border-gray-200 rounded-full p-3 mx-1 hover:text-blue">
+                <a
+                  href="#"
+                  className="border-2 border-gray-200 rounded-full p-3 mx-1 hover:text-blue"
+                >
                   <FaLinkedinIn className="text-sm" />
                 </a>
-                <a href="#" className="border-2 border-gray-200 rounded-full p-3 mx-1 hover:text-blue">
+                <a
+                  href="#"
+                  className="border-2 border-gray-200 rounded-full p-3 mx-1 hover:text-blue"
+                >
                   <FaGoogle className="text-sm" />
                 </a>
               </div>
@@ -143,11 +165,15 @@ const Login = () => {
                       />
                       Remember me
                     </label>
-                    <a href="#" onClick={() => setIsModalOpen(true)} className="text-xs">
+                    <a
+                      href="#"
+                      onClick={() => setIsModalOpen(true)}
+                      className="text-xs"
+                    >
                       Forget Password?
                     </a>
                   </div>
-                  
+
                   <button
                     type="submit"
                     className="border-2 border-blue-500 text-blue-500 rounded-full px-12 py-2 inline-block font-semibold hover:bg-blue hover:text-white"
@@ -177,7 +203,6 @@ const Login = () => {
           </div>
         </div>
       </div>
-      
     </div>
   );
 };
