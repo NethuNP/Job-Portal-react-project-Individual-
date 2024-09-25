@@ -247,6 +247,26 @@ const PostJob = () => {
           </div>
         </div>
 
+        <div className="grid lg:grid-cols-2 gap-6">
+          <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+              Job Type
+            </label>
+            <select
+              {...register("employmentType")}
+              className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              onChange={(e) => setEmploymentType(e.target.value)}
+            >
+              <option value="">Select job Type</option>
+              <option value="Education">All</option>
+              <option value="full-time">Full-Time</option>
+              <option value="part-time">Part-Time</option>
+             
+             
+            </select>
+
+          </div></div>
+
         {/* Required Skills */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">

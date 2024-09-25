@@ -6,7 +6,7 @@ const Category = ({ handleChange }) => {
     "Education",
     "Healthcare",
     "Marketing",
-    "IT",
+    "Information Technology",
     "Restaurant",
   ];
 
